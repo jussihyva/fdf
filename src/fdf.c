@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:32:32 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/21 14:10:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/21 21:08:19 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,18 @@
 
 int			main(void)
 {
-	void	*mlx1_ptr;
-	void	*win1_ptr;
-	int		win1_width;
-	int		win1_length;
+	t_win_ptr	win1_ptr;
+	int			win1_width;
+	int			win1_length;
 
-	win1_width = 1000;
+	win1_width = 2000;
 	win1_length = 1000;
-	mlx1_ptr = mlx_init();
-	win1_ptr = mlx_new_window(mlx1_ptr, win1_width, win1_length, "MOI!");
-	mlx_loop(win1_ptr);
+	win1_ptr.mlx_ptr = mlx_init();
+	win1_ptr.win_ptr = mlx_new_window(win1_ptr.mlx_ptr, win1_width,
+														win1_length, "MOI!");
+	mlx_key_hook(win1_ptr.win_ptr, &keyboard_event, &win1_ptr);
+	mlx_mouse_hook(win1_ptr.win_ptr, &mouse_key_event, &win1_ptr);
+	mlx_hook(win1_ptr.win_ptr, 6, 0, &mouse_wheel_event, &win1_ptr);
+	mlx_loop(win1_ptr.mlx_ptr);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2020/08/21 15:52:38 by jkauppi          ###   ########.fr        #
+#    Updated: 2020/08/21 21:09:23 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBS		=	-lmlx
 SRC_FOLDER	=	src
 OBJ_FOLDER	=	obj
 INCLUDES	=	$(SRC_FOLDER)
-SRCS		=	draw_line.c
+SRCS		=	draw_line.c event_handler.c
 OBJS		=	$(addprefix $(OBJ_FOLDER)/, $(patsubst %.c, %.o, $(SRCS)))
 
 all: $(NAME)
@@ -39,5 +39,8 @@ fclean: clean
 	rm $(NAME)
 
 re: fclean all
-	
-.PHONY: all clean fclean re
+
+norm:
+	norminette *[ch]
+
+.PHONY: all clean fclean re norm
