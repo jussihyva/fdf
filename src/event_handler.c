@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 20:10:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 12:14:02 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/22 12:19:26 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,5 @@ int			close_window_event(void *screen_data)
 
 	win_ptr = (t_win_ptr *)screen_data;
 	ft_printf("Request to exit.\n");
-	exit (0);
+	exit(0);
 }
