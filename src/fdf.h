@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 12:08:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/22 17:24:03 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,41 @@
 # include "libft.h"
 # include "ft_printf.h"
 
-typedef struct	s_win_ptr
+typedef struct		s_fdf_data
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-}				t_win_ptr;
+	void			*mlx_ptr;
+	void			*win_ptr;
+}					t_fdf_data;
 
-void			draw_line(t_win_ptr *screen_data);
-int				keyboard_event(int key, void *screen_data);
-int				mouse_key_event(int button, int x, int y, void *screen_data);
-int				mouse_wheel_event(int x, int y, void *screen_data);
-int				close_window_event(void *screen_data);
+typedef struct		s_vec3
+{
+	int			x;
+	int			y;
+	int			z;
+}					t_vec3;
+
+typedef struct		s_line
+{
+	t_vec3			start_pos;
+	t_vec3			end_pos;
+	unsigned int	color;
+	t_vec3			current_pos;
+}					t_line;
+
+typedef enum		e_opt
+{
+	leaks = 0x01
+}					t_opt;
+
+typedef struct		s_input
+{
+	t_opt			opt;
+}					t_input;
+
+int					keyboard_event(int key, void *fdf_data);
+int					mouse_key_event(int button, int x, int y, void *fdf_data);
+int					mouse_wheel_event(int x, int y, void *fdf_data);
+int					close_window_event(void *fdf_data);
+void				*create_line_image(void *mlx_ptr);
 
 #endif

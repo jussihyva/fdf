@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2020/08/22 11:43:13 by jkauppi          ###   ########.fr        #
+#    Updated: 2020/08/22 14:44:52 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LIB_FOLDER	=	lib
 SRC_FOLDER	=	src
 OBJ_FOLDER	=	obj
 INCLUDES	=	-I $(SRC_FOLDER) -I $(LIB_FOLDER)
-SRCS		=	draw_line.c event_handler.c
+SRCS		=	draw_line.c event_handler.c image_line.c
 OBJS		=	$(addprefix $(OBJ_FOLDER)/, $(patsubst %.c, %.o, $(SRCS)))
 
 all: $(NAME)
