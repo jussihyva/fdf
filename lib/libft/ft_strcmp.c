@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 11:31:04 by jkauppi          ###   ########.fr       */
+/*   Created: 2019/10/19 14:14:24 by jkauppi           #+#    #+#             */
+/*   Updated: 2020/03/08 13:44:20 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#include "libft.h"
 
-# include "mlx.h"
-# include "libft.h"
-# include "ft_printf.h"
-
-typedef struct	s_win_ptr
+int		ft_strcmp(const char *s1, const char *s2)
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-}				t_win_ptr;
-
-void			draw_line(t_win_ptr *screen_data);
-int				keyboard_event(int key, void *screen_data);
-int				mouse_key_event(int button, int x, int y, void *screen_data);
-int				mouse_wheel_event(int x, int y, void *screen_data);
-
-#endif
+	while (*s1 == *s2)
+	{
+		if (!(*s1))
+			return (0);
+		s1++;
+		s2++;
+	}
+	return ((int)(*(unsigned char *)s1 - *(unsigned char *)s2));
+}

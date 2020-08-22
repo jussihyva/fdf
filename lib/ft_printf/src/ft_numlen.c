@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   ft_numlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 11:31:04 by jkauppi          ###   ########.fr       */
+/*   Created: 2019/12/28 15:21:05 by jkauppi           #+#    #+#             */
+/*   Updated: 2019/12/28 18:09:32 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#include "ft_printf.h"
 
-# include "mlx.h"
-# include "libft.h"
-# include "ft_printf.h"
-
-typedef struct	s_win_ptr
+size_t		ft_numlen(unsigned long long nbr, size_t base)
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-}				t_win_ptr;
+	size_t		c;
 
-void			draw_line(t_win_ptr *screen_data);
-int				keyboard_event(int key, void *screen_data);
-int				mouse_key_event(int button, int x, int y, void *screen_data);
-int				mouse_wheel_event(int x, int y, void *screen_data);
-
-#endif
+	c = 1;
+	while (nbr /= base)
+		c++;
+	return (c);
+}

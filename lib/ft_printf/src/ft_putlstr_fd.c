@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   ft_putlstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 11:31:04 by jkauppi          ###   ########.fr       */
+/*   Created: 2020/01/07 12:13:54 by jkauppi           #+#    #+#             */
+/*   Updated: 2020/01/10 13:00:09 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#include "ft_printf.h"
 
-# include "mlx.h"
-# include "libft.h"
-# include "ft_printf.h"
-
-typedef struct	s_win_ptr
+void		ft_putlstr_fd(char *s, size_t string_len, int fd)
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-}				t_win_ptr;
-
-void			draw_line(t_win_ptr *screen_data);
-int				keyboard_event(int key, void *screen_data);
-int				mouse_key_event(int button, int x, int y, void *screen_data);
-int				mouse_wheel_event(int x, int y, void *screen_data);
-
-#endif
+	write(fd, s, string_len);
+}

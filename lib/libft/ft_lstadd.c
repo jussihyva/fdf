@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   ft_lstadd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 11:31:04 by jkauppi          ###   ########.fr       */
+/*   Created: 2019/10/22 18:58:16 by jkauppi           #+#    #+#             */
+/*   Updated: 2020/03/07 13:33:54 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#include "libft.h"
 
-# include "mlx.h"
-# include "libft.h"
-# include "ft_printf.h"
-
-typedef struct	s_win_ptr
+void	ft_lstadd(t_list **alst, t_list *new)
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-}				t_win_ptr;
-
-void			draw_line(t_win_ptr *screen_data);
-int				keyboard_event(int key, void *screen_data);
-int				mouse_key_event(int button, int x, int y, void *screen_data);
-int				mouse_wheel_event(int x, int y, void *screen_data);
-
-#endif
+	if (*alst)
+	{
+		new->next = *alst;
+		new->prev = (*alst)->prev;
+		(*alst)->prev = new;
+		*alst = new;
+	}
+	else
+	{
+		*alst = new;
+		(*alst)->next = NULL;
+		(*alst)->prev = NULL;
+	}
+	return ;
+}

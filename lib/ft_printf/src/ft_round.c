@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   ft_round.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 11:31:04 by jkauppi          ###   ########.fr       */
+/*   Created: 2019/12/29 08:12:32 by jkauppi           #+#    #+#             */
+/*   Updated: 2019/12/30 12:51:09 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#include "ft_printf.h"
 
-# include "mlx.h"
-# include "libft.h"
-# include "ft_printf.h"
-
-typedef struct	s_win_ptr
+double			ft_round(double nbr, int base, size_t precision, int neg)
 {
-	void		*mlx_ptr;
-	void		*win_ptr;
-}				t_win_ptr;
+	double		round_value;
 
-void			draw_line(t_win_ptr *screen_data);
-int				keyboard_event(int key, void *screen_data);
-int				mouse_key_event(int button, int x, int y, void *screen_data);
-int				mouse_wheel_event(int x, int y, void *screen_data);
-
-#endif
+	round_value = (double)(base / 2);
+	while (precision--)
+		round_value /= base;
+	round_value /= base;
+	if (neg)
+		nbr -= round_value;
+	else
+		nbr += round_value;
+	return (nbr);
+}
