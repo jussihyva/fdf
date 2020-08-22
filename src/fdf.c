@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:32:32 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/21 21:08:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/22 12:14:45 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int			main(void)
 	mlx_key_hook(win1_ptr.win_ptr, &keyboard_event, &win1_ptr);
 	mlx_mouse_hook(win1_ptr.win_ptr, &mouse_key_event, &win1_ptr);
 	mlx_hook(win1_ptr.win_ptr, 6, 0, &mouse_wheel_event, &win1_ptr);
+	mlx_hook(win1_ptr.win_ptr, 17, 0, &close_window_event, &win1_ptr);
+	draw_line(&win1_ptr);
 	mlx_loop(win1_ptr.mlx_ptr);
 	return (0);
 }

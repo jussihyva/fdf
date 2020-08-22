@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 20:10:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 11:47:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/22 12:14:02 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ int			keyboard_event(int key, void *screen_data)
 	t_win_ptr	*win_ptr;
 
 	win_ptr = (t_win_ptr *)screen_data;
-	ft_putnbr(key);
-	draw_line(win_ptr);
+	ft_printf("%d\n", key);
 	return (1);
 }
 
@@ -29,8 +28,7 @@ int			mouse_key_event(int button, int x, int y, void *screen_data)
 	(void)x;
 	(void)y;
 	win_ptr = (t_win_ptr *)screen_data;
-	ft_putnbr(button);
-	draw_line(win_ptr);
+	ft_printf("%d\n", button);
 	return (1);
 }
 
@@ -41,7 +39,15 @@ int			mouse_wheel_event(int x, int y, void *screen_data)
 	(void)x;
 	(void)y;
 	win_ptr = (t_win_ptr *)screen_data;
-	ft_putchar('J');
-	draw_line(win_ptr);
+	ft_printf("%s\n", "J");
 	return (1);
+}
+
+int			close_window_event(void *screen_data)
+{
+	t_win_ptr	*win_ptr;
+
+	win_ptr = (t_win_ptr *)screen_data;
+	ft_printf("Request to exit.\n");
+	exit (0);
 }

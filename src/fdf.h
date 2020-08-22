@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 11:31:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/22 12:08:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ void			draw_line(t_win_ptr *screen_data);
 int				keyboard_event(int key, void *screen_data);
 int				mouse_key_event(int button, int x, int y, void *screen_data);
 int				mouse_wheel_event(int x, int y, void *screen_data);
+int				close_window_event(void *screen_data);
 
 #endif
