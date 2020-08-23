@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 14:34:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/23 14:10:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/23 17:24:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,7 @@ static void		draw_line(void *line_img, int x, int y)
 	line.current_pos.x = line.start_pos.x;
 	line.current_pos.y = line.start_pos.y;
 	line.current_pos.z = line.start_pos.z;
-	while (line.current_pos.x <= line.end_pos.x)
-	{
-		int_buffer[(line.current_pos.y * line_bytes / 4) +
-											line.current_pos.x] = line.color;
-		line.current_pos.x++;
-		line.current_pos.y++;
-	}
+	bresenham_draw_line_1(int_buffer, &line, line_bytes / 4);
 	return ;
 }
 

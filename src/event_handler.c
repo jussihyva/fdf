@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 20:10:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/23 14:25:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/23 17:15:17 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,18 @@ int				mouse_wheel_event(int x, int y, void *param)
 	t_fdf_data		*fdf_data;
 
 	fdf_data = (t_fdf_data *)param;
-	if (x >= 0 && y >= x && x < fdf_data->window.hight)
+	if (fdf_data->line_img)
+	{
+		mlx_destroy_image(fdf_data->mlx_ptr, fdf_data->line_img);
+		fdf_data->line_img = NULL;
+	}
+	mlx_clear_window(fdf_data->mlx_ptr, fdf_data->win_ptr);
+	if (x >= 0 && y >= 0 && x < fdf_data->window.width &&
+													y < fdf_data->window.hight)
 	{
 		ft_printf("x:%d y:%d\n", fdf_data->window.width,
 														fdf_data->window.hight);
 		ft_printf("x:%d y:%d\n", x, y);
-		if (fdf_data->line_img)
-			mlx_destroy_image(fdf_data->mlx_ptr, fdf_data->line_img);
-		mlx_clear_window(fdf_data->mlx_ptr, fdf_data->win_ptr);
 		fdf_data->line_img = create_line_image(fdf_data, x, y);
 		mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr,
 													fdf_data->line_img, 0, 0);

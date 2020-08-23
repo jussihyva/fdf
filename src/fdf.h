@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/23 14:14:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/23 17:09:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,7 @@ int					mouse_wheel_event(int x, int y, void *fdf_data);
 int					close_window_event(void *fdf_data);
 void				*create_line_image(t_fdf_data *fdf_data, int x, int y);
 void				read_opt(t_input *input, int *argc, char ***argv);
+void				bresenham_draw_line_1(int *buffer, t_line *line,
+															int line_length);
 
 #endif
