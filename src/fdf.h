@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/23 12:38:49 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/23 14:14:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,31 @@
 # include "libft.h"
 # include "ft_printf.h"
 
-/* *************** */
-/* KEYBOARD EVENTS */
-/* *************** */
+/*
+** KEYBOARD EVENTS
+*/
 
 # define ESC		53
+
+typedef struct		s_window
+{
+	int				width;
+	int				hight;
+}					t_window;
 
 typedef struct		s_fdf_data
 {
 	void			*mlx_ptr;
+	t_window		window;
 	void			*win_ptr;
+	void			*line_img;
 }					t_fdf_data;
 
 typedef struct		s_vec3
 {
-	int			x;
-	int			y;
-	int			z;
+	int				x;
+	int				y;
+	int				z;
 }					t_vec3;
 
 typedef struct		s_line
@@ -58,7 +66,7 @@ int					keyboard_event(int key, void *fdf_data);
 int					mouse_key_event(int button, int x, int y, void *fdf_data);
 int					mouse_wheel_event(int x, int y, void *fdf_data);
 int					close_window_event(void *fdf_data);
-void				*create_line_image(void *mlx_ptr);
+void				*create_line_image(t_fdf_data *fdf_data, int x, int y);
 void				read_opt(t_input *input, int *argc, char ***argv);
 
 #endif

@@ -6,45 +6,66 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 20:10:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/23 12:36:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/23 14:25:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int			keyboard_event(int key, void *fdf_data)
+static void		close_window(void)
+{
+	system("leaks fdf");
+	exit(0);
+}
+
+int				keyboard_event(int key, void *fdf_data)
 {
 	(void)fdf_data;
 	if (key == ESC)
 	{
 		ft_printf("Request (ESC key pressed) to exit.\n");
-		exit(0);
+		close_window();
 	}
 	else
 		ft_printf("%d\n", key);
-	return (1);
+	return (0);
 }
 
-int			mouse_key_event(int button, int x, int y, void *fdf_data)
+int				mouse_key_event(int button, int x, int y, void *param)
 {
+	t_fdf_data		*fdf_data;
+
 	(void)x;
 	(void)y;
-	(void)fdf_data;
+	fdf_data = (t_fdf_data *)param;
 	ft_printf("%d\n", button);
-	return (1);
+	return (0);
 }
 
-int			mouse_wheel_event(int x, int y, void *fdf_data)
+int				mouse_wheel_event(int x, int y, void *param)
 {
-	(void)x;
-	(void)y;
-	(void)fdf_data;
-	return (1);
+	t_fdf_data		*fdf_data;
+
+	fdf_data = (t_fdf_data *)param;
+	if (x >= 0 && y >= x && x < fdf_data->window.hight)
+	{
+		ft_printf("x:%d y:%d\n", fdf_data->window.width,
+														fdf_data->window.hight);
+		ft_printf("x:%d y:%d\n", x, y);
+		if (fdf_data->line_img)
+			mlx_destroy_image(fdf_data->mlx_ptr, fdf_data->line_img);
+		mlx_clear_window(fdf_data->mlx_ptr, fdf_data->win_ptr);
+		fdf_data->line_img = create_line_image(fdf_data, x, y);
+		mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr,
+													fdf_data->line_img, 0, 0);
+	}
+	return (0);
 }
 
-int			close_window_event(void *fdf_data)
+int				close_window_event(void *fdf_data)
 {
 	(void)fdf_data;
 	ft_printf("Request to exit.\n");
-	exit(0);
+	close_window();
+	return (0);
 }

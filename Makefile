@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2020/08/23 12:29:02 by jkauppi          ###   ########.fr        #
+#    Updated: 2020/08/23 13:40:57 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,14 +20,15 @@ SRC_FOLDER				=	src
 OBJ_FOLDER				=	obj
 INCLUDES				=	-I $(SRC_FOLDER) -I $(LIB_FOLDER)
 SRCS					=	draw_line.c event_handler.c image_line.c read_opt.c
+HEADERS					=	$(SRC_FOLDER)/fdf.h
 OBJS					=	$(addprefix $(OBJ_FOLDER)/, $(patsubst %.c, %.o, $(SRCS)))
 
 all: $(NAME)
 
-$(NAME): $(SRC_FOLDER)/$(NAME).c $(OBJS) | library $(OBJ_FOLDER)
+$(NAME): $(SRC_FOLDER)/$(NAME).c $(HEADERS) $(OBJS) | library $(OBJ_FOLDER)
 	$(CC) $(FLAGS) $(INCLUDES) -o $(NAME) $(SRC_FOLDER)/$(NAME).c $(OBJS) -L $(LIB_FOLDER) $(LIBS) $(FRAMEWORKS)
 
-$(OBJS): $(OBJ_FOLDER)/%.o: $(SRC_FOLDER)/%.c
+$(OBJS): $(OBJ_FOLDER)/%.o: $(SRC_FOLDER)/%.c $(HEADERS)
 	$(CC) $(FLAGS) $(INCLUDES) -c -o $@ $<
 
 $(OBJ_FOLDER):

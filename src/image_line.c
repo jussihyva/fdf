@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 14:34:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 17:31:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/23 14:10:37 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void		fatal_error(void)
 {
-	ft_printf("Fatal error: Unexpected rseult from the \
-									validation of mlx parammeters function!\n");
+	ft_printf("Fatal error: Unexpected rseult from the");
+	ft_printf(" validation of mlx parammeters function!\n");
 	exit(0);
 }
 
@@ -38,7 +38,7 @@ static char		*validate_mlx_parameters(void *image_line, int *line_bytes,
 	return (char_buffer);
 }
 
-static void		initialize_line(t_line *line)
+static void		initialize_line(t_line *line, int x, int y)
 {
 	line->color = 0 << 16;
 	line->color += 250 << 8;
@@ -46,21 +46,21 @@ static void		initialize_line(t_line *line)
 	line->start_pos.x = 0;
 	line->start_pos.y = 0;
 	line->start_pos.z = 0;
-	line->end_pos.x = 509;
-	line->end_pos.y = 509;
+	line->end_pos.x = x;
+	line->end_pos.y = y;
 	line->end_pos.z = 0;
 	return ;
 }
 
-static void		draw_line(void *image_line)
+static void		draw_line(void *line_img, int x, int y)
 {
 	char			*char_buffer;
 	int				*int_buffer;
 	int				line_bytes;
 	t_line			line;
 
-	initialize_line(&line);
-	char_buffer = validate_mlx_parameters(image_line, &line_bytes,
+	initialize_line(&line, x, y);
+	char_buffer = validate_mlx_parameters(line_img, &line_bytes,
 										line.end_pos.x - line.start_pos.x + 1);
 	int_buffer = (int *)char_buffer;
 	line.current_pos.x = line.start_pos.x;
@@ -76,11 +76,11 @@ static void		draw_line(void *image_line)
 	return ;
 }
 
-void			*create_line_image(void *mlx_ptr)
+void			*create_line_image(t_fdf_data *fdf_data, int x, int y)
 {
-	void			*image_line;
+	void			*line_img;
 
-	image_line = mlx_new_image(mlx_ptr, 510, 510);
-	draw_line(image_line);
-	return (image_line);
+	line_img = mlx_new_image(fdf_data->mlx_ptr, x + 1, y + 1);
+	draw_line(line_img, x, y);
+	return (line_img);
 }
