@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2020/08/23 12:18:13 by jkauppi          ###   ########.fr        #
+#    Updated: 2020/08/23 12:29:02 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,9 @@ LIB_FOLDER				=	lib
 SRC_FOLDER				=	src
 OBJ_FOLDER				=	obj
 INCLUDES				=	-I $(SRC_FOLDER) -I $(LIB_FOLDER)
-SRCS					=	draw_line.c event_handler.c image_line.c
+SRCS					=	draw_line.c event_handler.c image_line.c read_opt.c
 OBJS					=	$(addprefix $(OBJ_FOLDER)/, $(patsubst %.c, %.o, $(SRCS)))
-LIBRARY					=	
+
 all: $(NAME)
 
 $(NAME): $(SRC_FOLDER)/$(NAME).c $(OBJS) | library $(OBJ_FOLDER)

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 17:24:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/23 12:38:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 # include "mlx.h"
 # include "libft.h"
 # include "ft_printf.h"
+
+/* *************** */
+/* KEYBOARD EVENTS */
+/* *************** */
+
+# define ESC		53
 
 typedef struct		s_fdf_data
 {
@@ -53,5 +59,6 @@ int					mouse_key_event(int button, int x, int y, void *fdf_data);
 int					mouse_wheel_event(int x, int y, void *fdf_data);
 int					close_window_event(void *fdf_data);
 void				*create_line_image(void *mlx_ptr);
+void				read_opt(t_input *input, int *argc, char ***argv);
 
 #endif

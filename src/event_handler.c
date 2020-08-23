@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 20:10:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/22 17:22:49 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/23 12:36:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,13 @@
 int			keyboard_event(int key, void *fdf_data)
 {
 	(void)fdf_data;
-	ft_printf("%d\n", key);
+	if (key == ESC)
+	{
+		ft_printf("Request (ESC key pressed) to exit.\n");
+		exit(0);
+	}
+	else
+		ft_printf("%d\n", key);
 	return (1);
 }
 
