@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/24 18:40:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/24 21:33:00 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void		draw_line_low(t_fdf_data *fdf_data, int integers_in_line, t_vec3 st
 	int		y;
 	int		step;
 
-	delta_x = ft_abs(end_pos.x - start_pos.x) + 1;
-	delta_y = ft_abs(end_pos.y - start_pos.y) + 1;
+	delta_x = ft_abs(end_pos.x - start_pos.x);
+	delta_y = ft_abs(end_pos.y - start_pos.y);
 	difference = 2 * delta_y - delta_x;
 	if (end_pos.y < start_pos.y)
 		step = -1;
@@ -55,9 +55,9 @@ static void		draw_line_high(t_fdf_data *fdf_data, int integers_in_line, t_vec3 s
 	int		y;
 	int		step;
 
-	delta_x = ft_abs(end_pos.x - start_pos.x) + 1;
-	delta_y = ft_abs(end_pos.y - start_pos.y) + 1;
-	difference = 2 * delta_y - delta_x;
+	delta_x = ft_abs(end_pos.x - start_pos.x);
+	delta_y = ft_abs(end_pos.y - start_pos.y);
+	difference = 2 * delta_x - delta_y;
 	if (end_pos.x < start_pos.x)
 		step = -1;
 	else

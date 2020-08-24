@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 14:34:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/24 18:35:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/24 21:33:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void		initialize_line(t_line *line, int x, int y)
 	line->color = 0 << 16;
 	line->color += 250 << 8;
 	line->color += 0;
-	line->start_pos.x = 0;
+	line->start_pos.x = 300;
 	line->start_pos.y = 300;
 	line->start_pos.z = 0;
 	line->end_pos.x = x;
@@ -58,5 +58,7 @@ void			create_line_image(t_fdf_data *fdf_data, int x, int y)
 								fdf_data->window.width, fdf_data->window.hight);
 	initialize_line(&fdf_data->line, x, y);
 	bresenham_draw_line(fdf_data);
+	mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr,
+													fdf_data->line_img, 0, 0);
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 20:10:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/24 14:07:26 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/24 21:33:26 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,31 @@ int				keyboard_event(int key, void *param)
 		ft_printf("Request (ESC key pressed) to exit.\n");
 		close_window();
 	}
-	if (key == 123 || key == 124)
+	else if (key == 123 && fdf_data->line.end_pos.x)
 	{
 		fdf_data->line.end_pos.x--;
 		create_line_image(fdf_data, fdf_data->line.end_pos.x,
-													fdf_data->line.end_pos.y);
-		mlx_clear_window(fdf_data->mlx_ptr, fdf_data->win_ptr);
-		mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr,
-													fdf_data->line_img, 0, 0);
+												fdf_data->line.end_pos.y);
+	}
+	else if (key == 124 && fdf_data->line.end_pos.x <
+													fdf_data->window.width - 1)
+	{
+		fdf_data->line.end_pos.x++;
+		create_line_image(fdf_data, fdf_data->line.end_pos.x,
+												fdf_data->line.end_pos.y);
+	}
+	else if (key == 126 && fdf_data->line.end_pos.y)
+	{
+		fdf_data->line.end_pos.y--;
+		create_line_image(fdf_data, fdf_data->line.end_pos.x,
+												fdf_data->line.end_pos.y);
+	}
+	else if (key == 125 && fdf_data->line.end_pos.y <
+													fdf_data->window.hight - 1)
+	{
+		fdf_data->line.end_pos.y++;
+		create_line_image(fdf_data, fdf_data->line.end_pos.x,
+												fdf_data->line.end_pos.y);
 	}
 	else
 		ft_printf("%d\n", key);
