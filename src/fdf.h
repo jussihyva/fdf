@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/24 14:05:44 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/24 18:23:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct		s_line
 	t_vec3			start_pos;
 	t_vec3			end_pos;
 	unsigned int	color;
-	t_vec3			current_pos;
 }					t_line;
 
 typedef struct		s_window
@@ -50,6 +49,7 @@ typedef struct		s_fdf_data
 	t_window		window;
 	void			*win_ptr;
 	t_line			line;
+	int				*int_buffer;
 	void			*line_img;
 }					t_fdf_data;
 
@@ -69,7 +69,8 @@ int					mouse_wheel_event(int x, int y, void *fdf_data);
 int					close_window_event(void *fdf_data);
 void				create_line_image(t_fdf_data *fdf_data, int x, int y);
 void				read_opt(t_input *input, int *argc, char ***argv);
-void				bresenham_draw_line_1(int *buffer, t_line *line,
-															int line_length);
+void				bresenham_draw_line(t_fdf_data *fdf_data);
+char				*validate_mlx_parameters(void *image_line, int *line_bytes,
+															int image_width);
 
 #endif

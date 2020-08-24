@@ -6,13 +6,13 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/24 13:01:52 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/24 18:40:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void		draw_line_low(int *buffer, t_line *line, int line_length)
+static void		draw_line_low(t_fdf_data *fdf_data, int integers_in_line, t_vec3 start_pos, t_vec3 end_pos)
 {
 	int		delta_x;
 	int		delta_y;
@@ -21,19 +21,19 @@ static void		draw_line_low(int *buffer, t_line *line, int line_length)
 	int		y;
 	int		step;
 
-	delta_x = ft_abs(line->end_pos.x - line->start_pos.x);
-	delta_y = ft_abs(line->end_pos.y - line->start_pos.y);
+	delta_x = ft_abs(end_pos.x - start_pos.x) + 1;
+	delta_y = ft_abs(end_pos.y - start_pos.y) + 1;
 	difference = 2 * delta_y - delta_x;
-	if (line->end_pos.y < line->start_pos.y)
+	if (end_pos.y < start_pos.y)
 		step = -1;
 	else
 		step = 1;
 	ft_printf("dx:%d dy:%d diff:%d step:%d\n", delta_x, delta_y, difference, step);
-	y = line->start_pos.y;
-	x = line->start_pos.x;
-	while (x <= line->end_pos.x)
+	y = start_pos.y;
+	x = start_pos.x;
+	while (x <= end_pos.x)
 	{
-		buffer[(y * line_length) + x] = line->color;
+		fdf_data->int_buffer[(y * integers_in_line) + x] = fdf_data->line.color;
 		ft_printf("    x:%d y:%d\n", x, y);
 		if (difference > 0)
 		{
@@ -46,7 +46,7 @@ static void		draw_line_low(int *buffer, t_line *line, int line_length)
 	return ;
 }
 
-static void		draw_line_high(int *buffer, t_line *line, int line_length)
+static void		draw_line_high(t_fdf_data *fdf_data, int integers_in_line, t_vec3 start_pos, t_vec3 end_pos)
 {
 	int		delta_x;
 	int		delta_y;
@@ -55,20 +55,20 @@ static void		draw_line_high(int *buffer, t_line *line, int line_length)
 	int		y;
 	int		step;
 
-	delta_x = ft_abs(line->end_pos.x - line->start_pos.x);
-	delta_y = ft_abs(line->end_pos.y - line->start_pos.y);
+	delta_x = ft_abs(end_pos.x - start_pos.x) + 1;
+	delta_y = ft_abs(end_pos.y - start_pos.y) + 1;
 	difference = 2 * delta_y - delta_x;
-	if (line->end_pos.x < line->start_pos.x)
+	if (end_pos.x < start_pos.x)
 		step = -1;
 	else
 		step = 1;
 	ft_printf("dx:%d dy:%d diff:%d step:%d\n", delta_x, delta_y, difference, step);
-	y = line->start_pos.y;
-	x = line->start_pos.x;
-	while (y <= line->end_pos.y)
+	y = start_pos.y;
+	x = start_pos.x;
+	while (y <= end_pos.y)
 	{
-		buffer[(y * line_length) + x] = line->color;
-		ft_printf("    x:%d y:%d len:%d\n", x, y, line_length);
+		fdf_data->int_buffer[(y * integers_in_line) + x] = fdf_data->line.color;
+		ft_printf("    x:%d y:%d\n", x, y);
 		if (difference > 0)
 		{
 			x += step;
@@ -80,39 +80,40 @@ static void		draw_line_high(int *buffer, t_line *line, int line_length)
 	return ;
 }
 
-void		bresenham_draw_line_1(int *buffer, t_line *line, int line_length)
+void		bresenham_draw_line(t_fdf_data *fdf_data)
 {
 	int		delta_x;
 	int		delta_y;
-	t_vec3	tmp;
+	int		line_bytes;
 
-	delta_x = ft_abs(line->end_pos.x - line->start_pos.x);
-	delta_y = ft_abs(line->end_pos.y - line->start_pos.y);
+	fdf_data->int_buffer = (int *)validate_mlx_parameters(fdf_data->line_img, &line_bytes, fdf_data->window.width);
+	delta_x = ft_abs(fdf_data->line.end_pos.x - fdf_data->line.start_pos.x);
+	delta_y = ft_abs(fdf_data->line.end_pos.y - fdf_data->line.start_pos.y);
 	if (delta_y < delta_x)
 	{
-		if (line->start_pos.x > line->end_pos.x)
+		if (fdf_data->line.start_pos.x > fdf_data->line.end_pos.x)
 		{
 			ft_printf("Low neg\n");
-			tmp = line->start_pos;
-			line->start_pos = line->end_pos;
-			line->end_pos = tmp;
+			draw_line_low(fdf_data, line_bytes / 4, fdf_data->line.end_pos, fdf_data->line.start_pos);
 		}
 		else
+		{
 			ft_printf("Low pos\n");
-		draw_line_low(buffer, line, line_length);
+			draw_line_low(fdf_data, line_bytes / 4, fdf_data->line.start_pos, fdf_data->line.end_pos);
+		}
 	}
 	else
 	{
-		if (line->start_pos.y > line->end_pos.y)
+		if (fdf_data->line.start_pos.y > fdf_data->line.end_pos.y)
 		{
 			ft_printf("High neg\n");
-			tmp = line->start_pos;
-			line->start_pos = line->end_pos;
-			line->end_pos = tmp;
+			draw_line_high(fdf_data, line_bytes / 4, fdf_data->line.end_pos, fdf_data->line.start_pos);
 		}
 		else
+		{
 			ft_printf("High pos\n");
-		draw_line_high(buffer, line, line_length);
+			draw_line_high(fdf_data, line_bytes / 4, fdf_data->line.start_pos, fdf_data->line.end_pos);
+		}
 	}
 	return ;
 }
