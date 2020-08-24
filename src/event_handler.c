@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 20:10:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/23 17:15:17 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/24 14:07:26 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,24 @@ static void		close_window(void)
 	exit(0);
 }
 
-int				keyboard_event(int key, void *fdf_data)
+int				keyboard_event(int key, void *param)
 {
-	(void)fdf_data;
+	t_fdf_data		*fdf_data;
+
+	fdf_data = (t_fdf_data *)param;
 	if (key == ESC)
 	{
 		ft_printf("Request (ESC key pressed) to exit.\n");
 		close_window();
+	}
+	if (key == 123 || key == 124)
+	{
+		fdf_data->line.end_pos.x--;
+		create_line_image(fdf_data, fdf_data->line.end_pos.x,
+													fdf_data->line.end_pos.y);
+		mlx_clear_window(fdf_data->mlx_ptr, fdf_data->win_ptr);
+		mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr,
+													fdf_data->line_img, 0, 0);
 	}
 	else
 		ft_printf("%d\n", key);
@@ -52,17 +63,19 @@ int				mouse_wheel_event(int x, int y, void *param)
 		mlx_destroy_image(fdf_data->mlx_ptr, fdf_data->line_img);
 		fdf_data->line_img = NULL;
 	}
-	mlx_clear_window(fdf_data->mlx_ptr, fdf_data->win_ptr);
 	if (x >= 0 && y >= 0 && x < fdf_data->window.width &&
 													y < fdf_data->window.hight)
 	{
 		ft_printf("x:%d y:%d\n", fdf_data->window.width,
 														fdf_data->window.hight);
 		ft_printf("x:%d y:%d\n", x, y);
-		fdf_data->line_img = create_line_image(fdf_data, x, y);
+		create_line_image(fdf_data, x, y);
+		mlx_clear_window(fdf_data->mlx_ptr, fdf_data->win_ptr);
 		mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr,
 													fdf_data->line_img, 0, 0);
 	}
+	else
+		mlx_clear_window(fdf_data->mlx_ptr, fdf_data->win_ptr);
 	return (0);
 }
 
