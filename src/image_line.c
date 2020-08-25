@@ -6,39 +6,39 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 14:34:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/24 21:33:12 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/25 13:35:55 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void		fatal_error(void)
+static void			fatal_error(void)
 {
 	ft_printf("Fatal error: Unexpected rseult from the");
 	ft_printf(" validation of mlx parammeters function!\n");
 	exit(0);
 }
 
-char			*validate_mlx_parameters(void *image_line, int *line_bytes,
-																int image_width)
+static void			validate_mlx_parameters(t_mlx_image_data *line_img_data)
 {
-	char		*char_buffer;
-	int			pixel_bits;
-	int			endian;
-
-	char_buffer = mlx_get_data_addr(image_line, &pixel_bits, line_bytes,
-																	&endian);
-	if (!(pixel_bits == 32 && endian == 0 && *line_bytes == 4 * image_width))
+	line_img_data->img_buffer = (int *)mlx_get_data_addr(line_img_data->img_ptr,
+						&line_img_data->pixel_bits, &line_img_data->line_bytes,
+														&line_img_data->endian);
+	if (!(line_img_data->pixel_bits == 32 && line_img_data->endian == 0 &&
+						line_img_data->line_bytes == line_img_data->width *
+												line_img_data->pixel_bits / 8))
 	{
 		ft_printf("image_line: %d, line_bytes: %d(%d), endian: %d\n",
-							pixel_bits, *line_bytes, 4 * image_width , endian);
-		char_buffer = NULL;
+						line_img_data->pixel_bits, line_img_data->line_bytes,
+							4 * line_img_data->width, line_img_data->endian);
 		fatal_error();
 	}
-	return (char_buffer);
+	line_img_data->img_buffer_size = line_img_data->hight *
+						line_img_data->width * line_img_data->pixel_bits / 8;
+	return ;
 }
 
-static void		initialize_line(t_line *line, int x, int y)
+static void			initialize_line(t_line *line, int x, int y)
 {
 	line->color = 0 << 16;
 	line->color += 250 << 8;
@@ -52,13 +52,23 @@ static void		initialize_line(t_line *line, int x, int y)
 	return ;
 }
 
-void			create_line_image(t_fdf_data *fdf_data, int x, int y)
+void				update_line_image(t_mlx_image_data *line_img_data, void *mlx_ptr, void *win_ptr)
 {
-	fdf_data->line_img = mlx_new_image(fdf_data->mlx_ptr,
-								fdf_data->window.width, fdf_data->window.hight);
-	initialize_line(&fdf_data->line, x, y);
-	bresenham_draw_line(fdf_data);
-	mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr,
-													fdf_data->line_img, 0, 0);
+	ft_bzero(line_img_data->img_buffer, line_img_data->img_buffer_size);
+	bresenham_draw_line(line_img_data);
+	mlx_put_image_to_window(mlx_ptr, win_ptr, line_img_data->img_ptr, 0, 0);
 	return ;
+}
+
+t_mlx_image_data	*create_line_image(int width, int hight, void *mlx_ptr)
+{
+	t_mlx_image_data	*img_data;
+
+	img_data = (t_mlx_image_data *)ft_memalloc(sizeof(*img_data));
+	img_data->width = width;
+	img_data->hight = hight;
+	img_data->img_ptr = mlx_new_image(mlx_ptr, width, hight);
+	validate_mlx_parameters(img_data);
+	initialize_line(&img_data->line, width, hight);
+	return (img_data);
 }

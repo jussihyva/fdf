@@ -6,114 +6,94 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/24 21:33:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/25 13:37:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void		draw_line_low(t_fdf_data *fdf_data, int integers_in_line, t_vec3 start_pos, t_vec3 end_pos)
+static void		draw_low(t_mlx_image_data *line_img_data, t_vec3 start_pos,
+										t_vec3 end_pos, int integers_in_line)
 {
-	int		delta_x;
-	int		delta_y;
+	t_vec2	delta;
 	int		difference;
-	int		x;
-	int		y;
+	t_vec2	plot_pos;
 	int		step;
 
-	delta_x = ft_abs(end_pos.x - start_pos.x);
-	delta_y = ft_abs(end_pos.y - start_pos.y);
-	difference = 2 * delta_y - delta_x;
-	if (end_pos.y < start_pos.y)
-		step = -1;
-	else
-		step = 1;
-	ft_printf("dx:%d dy:%d diff:%d step:%d\n", delta_x, delta_y, difference, step);
-	y = start_pos.y;
-	x = start_pos.x;
-	while (x <= end_pos.x)
+	delta.x = ft_abs(end_pos.x - start_pos.x);
+	delta.y = ft_abs(end_pos.y - start_pos.y);
+	difference = 2 * delta.y - delta.x;
+	step = (end_pos.y < start_pos.y) ? -1 : 1;
+	plot_pos.y = start_pos.y;
+	plot_pos.x = start_pos.x;
+	while (plot_pos.x <= end_pos.x)
 	{
-		fdf_data->int_buffer[(y * integers_in_line) + x] = fdf_data->line.color;
-		ft_printf("    x:%d y:%d\n", x, y);
+		line_img_data->img_buffer[(plot_pos.y * integers_in_line) +
+										plot_pos.x] = line_img_data->line.color;
 		if (difference > 0)
 		{
-			y += step;
-			difference -= (2 * delta_x);
+			plot_pos.y += step;
+			difference -= (2 * delta.x);
 		}
-		difference += (2 * delta_y);
-		x++;
+		difference += (2 * delta.y);
+		plot_pos.x++;
 	}
 	return ;
 }
 
-static void		draw_line_high(t_fdf_data *fdf_data, int integers_in_line, t_vec3 start_pos, t_vec3 end_pos)
+static void		draw_high(t_mlx_image_data *line_img_data, t_vec3 start_pos,
+										t_vec3 end_pos, int integers_in_line)
 {
-	int		delta_x;
-	int		delta_y;
+	t_vec2	delta;
 	int		difference;
-	int		x;
-	int		y;
+	t_vec2	plot_pos;
 	int		step;
 
-	delta_x = ft_abs(end_pos.x - start_pos.x);
-	delta_y = ft_abs(end_pos.y - start_pos.y);
-	difference = 2 * delta_x - delta_y;
-	if (end_pos.x < start_pos.x)
-		step = -1;
-	else
-		step = 1;
-	ft_printf("dx:%d dy:%d diff:%d step:%d\n", delta_x, delta_y, difference, step);
-	y = start_pos.y;
-	x = start_pos.x;
-	while (y <= end_pos.y)
+	delta.x = ft_abs(end_pos.x - start_pos.x);
+	delta.y = ft_abs(end_pos.y - start_pos.y);
+	difference = 2 * delta.x - delta.y;
+	step = (end_pos.x < start_pos.x) ? -1 : 1;
+	plot_pos.y = start_pos.y;
+	plot_pos.x = start_pos.x;
+	while (plot_pos.y <= end_pos.y)
 	{
-		fdf_data->int_buffer[(y * integers_in_line) + x] = fdf_data->line.color;
-		ft_printf("    x:%d y:%d\n", x, y);
+		line_img_data->img_buffer[(plot_pos.y * integers_in_line) +
+										plot_pos.x] = line_img_data->line.color;
 		if (difference > 0)
 		{
-			x += step;
-			difference -= (2 * delta_y);
+			plot_pos.x += step;
+			difference -= (2 * delta.y);
 		}
-		difference += (2 * delta_x);
-		y++;
+		difference += (2 * delta.x);
+		plot_pos.y++;
 	}
 	return ;
 }
 
-void		bresenham_draw_line(t_fdf_data *fdf_data)
+void			bresenham_draw_line(t_mlx_image_data *line_img_data)
 {
 	int		delta_x;
 	int		delta_y;
-	int		line_bytes;
+	t_line	line;
+	int		integers_in_line;
 
-	fdf_data->int_buffer = (int *)validate_mlx_parameters(fdf_data->line_img, &line_bytes, fdf_data->window.width);
-	delta_x = ft_abs(fdf_data->line.end_pos.x - fdf_data->line.start_pos.x);
-	delta_y = ft_abs(fdf_data->line.end_pos.y - fdf_data->line.start_pos.y);
+	line = line_img_data->line;
+	integers_in_line = line_img_data->line_bytes / 4;
+	delta_x = ft_abs(line.end_pos.x - line.start_pos.x);
+	delta_y = ft_abs(line.end_pos.y - line.start_pos.y);
 	if (delta_y < delta_x)
 	{
-		if (fdf_data->line.start_pos.x > fdf_data->line.end_pos.x)
-		{
-			ft_printf("Low neg\n");
-			draw_line_low(fdf_data, line_bytes / 4, fdf_data->line.end_pos, fdf_data->line.start_pos);
-		}
+		if (line.start_pos.x > line.end_pos.x)
+			draw_low(line_img_data, line.end_pos, line.start_pos, integers_in_line);
 		else
-		{
-			ft_printf("Low pos\n");
-			draw_line_low(fdf_data, line_bytes / 4, fdf_data->line.start_pos, fdf_data->line.end_pos);
-		}
+			draw_low(line_img_data, line.start_pos, line.end_pos, integers_in_line);
 	}
 	else
 	{
-		if (fdf_data->line.start_pos.y > fdf_data->line.end_pos.y)
-		{
-			ft_printf("High neg\n");
-			draw_line_high(fdf_data, line_bytes / 4, fdf_data->line.end_pos, fdf_data->line.start_pos);
-		}
+		if (line.start_pos.y > line.end_pos.y)
+			draw_high(line_img_data, line.end_pos, line.start_pos, integers_in_line);
 		else
-		{
-			ft_printf("High pos\n");
-			draw_line_high(fdf_data, line_bytes / 4, fdf_data->line.start_pos, fdf_data->line.end_pos);
-		}
+			draw_high(line_img_data, line.start_pos, line.end_pos, integers_in_line);
 	}
 	return ;
 }

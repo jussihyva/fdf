@@ -6,60 +6,55 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 20:10:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/24 21:33:26 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/25 13:40:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void		close_window(void)
+static t_event_order	validate_order_type(int key, t_fdf_data *fdf_data)
 {
-	system("leaks fdf");
-	exit(0);
-}
+	t_event_order	event_order;
 
-int				keyboard_event(int key, void *param)
-{
-	t_fdf_data		*fdf_data;
-
-	fdf_data = (t_fdf_data *)param;
+	event_order = e_update_line_img;
 	if (key == ESC)
 	{
 		ft_printf("Request (ESC key pressed) to exit.\n");
-		close_window();
+		event_order = e_close_window;
 	}
-	else if (key == 123 && fdf_data->line.end_pos.x)
-	{
-		fdf_data->line.end_pos.x--;
-		create_line_image(fdf_data, fdf_data->line.end_pos.x,
-												fdf_data->line.end_pos.y);
-	}
-	else if (key == 124 && fdf_data->line.end_pos.x <
+	else if (key == 123 && fdf_data->line_img_data->line.end_pos.x)
+		fdf_data->line_img_data->line.end_pos.x--;
+	else if (key == 124 && fdf_data->line_img_data->line.end_pos.x <
 													fdf_data->window.width - 1)
-	{
-		fdf_data->line.end_pos.x++;
-		create_line_image(fdf_data, fdf_data->line.end_pos.x,
-												fdf_data->line.end_pos.y);
-	}
-	else if (key == 126 && fdf_data->line.end_pos.y)
-	{
-		fdf_data->line.end_pos.y--;
-		create_line_image(fdf_data, fdf_data->line.end_pos.x,
-												fdf_data->line.end_pos.y);
-	}
-	else if (key == 125 && fdf_data->line.end_pos.y <
+		fdf_data->line_img_data->line.end_pos.x++;
+	else if (key == 126 && fdf_data->line_img_data->line.end_pos.y)
+		fdf_data->line_img_data->line.end_pos.y--;
+	else if (key == 125 && fdf_data->line_img_data->line.end_pos.y <
 													fdf_data->window.hight - 1)
-	{
-		fdf_data->line.end_pos.y++;
-		create_line_image(fdf_data, fdf_data->line.end_pos.x,
-												fdf_data->line.end_pos.y);
-	}
+		fdf_data->line_img_data->line.end_pos.y++;
+	else
+		event_order = e_none;
+	return (event_order);
+}
+
+int						keyboard_event(int key, void *param)
+{
+	t_fdf_data		*fdf_data;
+	t_event_order	event_order;
+
+	fdf_data = (t_fdf_data *)param;
+	event_order = validate_order_type(key, fdf_data);
+	if (event_order == e_close_window)
+		close_window_event(fdf_data);
+	else if (event_order == e_update_line_img)
+		update_line_image(fdf_data->line_img_data, fdf_data->mlx_ptr,
+															fdf_data->win_ptr);
 	else
 		ft_printf("%d\n", key);
 	return (0);
 }
 
-int				mouse_key_event(int button, int x, int y, void *param)
+int						mouse_key_event(int button, int x, int y, void *param)
 {
 	t_fdf_data		*fdf_data;
 
@@ -70,36 +65,31 @@ int				mouse_key_event(int button, int x, int y, void *param)
 	return (0);
 }
 
-int				mouse_wheel_event(int x, int y, void *param)
+int						mouse_wheel_event(int x, int y, void *param)
 {
 	t_fdf_data		*fdf_data;
 
 	fdf_data = (t_fdf_data *)param;
-	if (fdf_data->line_img)
-	{
-		mlx_destroy_image(fdf_data->mlx_ptr, fdf_data->line_img);
-		fdf_data->line_img = NULL;
-	}
 	if (x >= 0 && y >= 0 && x < fdf_data->window.width &&
 													y < fdf_data->window.hight)
 	{
-		ft_printf("x:%d y:%d\n", fdf_data->window.width,
-														fdf_data->window.hight);
-		ft_printf("x:%d y:%d\n", x, y);
-		create_line_image(fdf_data, x, y);
-		mlx_clear_window(fdf_data->mlx_ptr, fdf_data->win_ptr);
-		mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr,
-													fdf_data->line_img, 0, 0);
+		fdf_data->line_img_data->line.end_pos.x = x;
+		fdf_data->line_img_data->line.end_pos.y = y;
+		update_line_image(fdf_data->line_img_data, fdf_data->mlx_ptr,
+															fdf_data->win_ptr);
 	}
 	else
 		mlx_clear_window(fdf_data->mlx_ptr, fdf_data->win_ptr);
 	return (0);
 }
 
-int				close_window_event(void *fdf_data)
+int						close_window_event(void *param)
 {
-	(void)fdf_data;
+	t_fdf_data		*fdf_data;
+
+	fdf_data = (t_fdf_data *)param;
 	ft_printf("Request to exit.\n");
-	close_window();
-	return (0);
+	if (fdf_data->input->opt & e_leaks)
+		system("leaks fdf");
+	exit(0);
 }
