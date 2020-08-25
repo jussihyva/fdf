@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/25 13:37:49 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/25 20:32:55 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,25 +75,25 @@ void			bresenham_draw_line(t_mlx_image_data *line_img_data)
 	int		delta_x;
 	int		delta_y;
 	t_line	line;
-	int		integers_in_line;
+	int		int_lines;
 
 	line = line_img_data->line;
-	integers_in_line = line_img_data->line_bytes / 4;
+	int_lines = line_img_data->line_bytes / 4;
 	delta_x = ft_abs(line.end_pos.x - line.start_pos.x);
 	delta_y = ft_abs(line.end_pos.y - line.start_pos.y);
 	if (delta_y < delta_x)
 	{
 		if (line.start_pos.x > line.end_pos.x)
-			draw_low(line_img_data, line.end_pos, line.start_pos, integers_in_line);
+			draw_low(line_img_data, line.end_pos, line.start_pos, int_lines);
 		else
-			draw_low(line_img_data, line.start_pos, line.end_pos, integers_in_line);
+			draw_low(line_img_data, line.start_pos, line.end_pos, int_lines);
 	}
 	else
 	{
 		if (line.start_pos.y > line.end_pos.y)
-			draw_high(line_img_data, line.end_pos, line.start_pos, integers_in_line);
+			draw_high(line_img_data, line.end_pos, line.start_pos, int_lines);
 		else
-			draw_high(line_img_data, line.start_pos, line.end_pos, integers_in_line);
+			draw_high(line_img_data, line.start_pos, line.end_pos, int_lines);
 	}
 	return ;
 }

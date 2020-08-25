@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:32:32 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/25 15:22:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/25 19:34:17 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int			main(int argc, char **argv)
 	t_fdf_data		*fdf_data;
 
 	fdf_data = (t_fdf_data *)ft_memalloc(sizeof(*fdf_data));
+	ft_step_args(&argc, &argv);
 	fdf_data->input = read_input_data(argc, argv);
 	fdf_data->window.width = 900;
 	fdf_data->window.hight = 600;

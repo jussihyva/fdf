@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/25 18:16:52 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/25 19:57:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ typedef struct		s_vec3
 	int				z;
 }					t_vec3;
 
+typedef struct		s_point
+{
+	t_vec3			pos;
+	int				color;
+}					t_point;
+
 typedef struct		s_line
 {
 	t_vec3			start_pos;
@@ -97,6 +103,7 @@ typedef struct		s_input
 	char			*input_file_path;
 	char			**input_line_array;
 	int				input_array_size;
+	t_point			**point_array;
 }					t_input;
 
 typedef struct		s_fdf_data
@@ -119,5 +126,6 @@ void				read_opt(t_input *input, int *argc, char ***argv);
 void				bresenham_draw_line(t_mlx_image_data *line_img_data);
 t_input				*read_input_data(int argc, char **argv);
 void				save_input_file(t_input *input, int *argc, char ***argv);
+int					*intsplit(char const *s, char c, int *num_of_words);
 
 #endif

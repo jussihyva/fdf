@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/25 14:55:31 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/25 18:29:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/25 20:27:20 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,36 @@ static int	open_fd(t_input *input)
 	return (fd);
 }
 
+static void	read_file(int fd, t_input *input)
+{
+	int			ret;
+//	int			*array;
+	char		*line;
+//	int			array_size;
+
+	line = NULL;
+	while (MAX_NUM_OF_LINES > input->input_array_size &&
+										(ret = ft_get_next_line(fd, &line)) > 0)
+	{
+		input->input_line_array[input->input_array_size] = line;
+//		array = intsplit(line, ' ', &array_size);
+		// if (!input->input_array_size)
+		// 	input->point_array = initialize_point_array(array, array_size);
+//		input->point_array[input->input_array_size] = array;
+		input->input_array_size++;
+		ft_printf("%s\n", line);
+		ft_strdel(&line);
+	}
+	ft_strdel(&line);
+	ft_printf("Lines in the file (%s): %d\n",input->input_file_path,
+													input->input_array_size);
+	return ;
+}
+
+
 t_input		*read_input_data(int argc, char **argv)
 {
 	t_input		*input;
-	char		*line;
-	int			ret;
 	int			fd;
 
 	input = (t_input *)ft_memalloc(sizeof(*input));
@@ -51,22 +76,11 @@ t_input		*read_input_data(int argc, char **argv)
 	input->input_line_array =
 						(char **)ft_memalloc(sizeof(*input->input_line_array) *
 															MAX_NUM_OF_LINES);
-	ft_step_args(&argc, &argv);
 	read_opt(input, &argc, &argv);
 	fd = open_fd(input);
-	line = NULL;
 	if (fd < 0)
 		input->error = e_file_open_failure;
-	while (MAX_NUM_OF_LINES > input->input_array_size &&
-										(ret = ft_get_next_line(fd, &line)) > 0)
-	{
-		input->input_line_array[input->input_array_size] = line;
-		input->input_array_size++;
-		ft_printf("%s\n", line);
-		ft_strdel(&line);
-	}
-	ft_strdel(&line);
-	ft_printf("Lines in the file (%s): %d\n",input->input_file_path,
-													input->input_array_size);
+	else
+		read_file(fd, input);
 	return (input);
 }
