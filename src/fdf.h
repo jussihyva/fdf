@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/25 13:38:38 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/25 18:16:52 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,16 @@
 # define FDF_H
 
 # include "mlx.h"
+# include <fcntl.h>
 # include "libft.h"
 # include "ft_printf.h"
+
+/*
+** MAX VALUES FOR INPUT DATA
+*/
+
+# define NUM_OF_ERROR_STRINGS	10
+# define MAX_NUM_OF_LINES		1000
 
 /*
 ** KEYBOARD EVENTS
@@ -25,8 +33,15 @@
 
 typedef enum		e_opt
 {
-	e_leaks = 0x01
+	e_leaks = 0x01,
+	e_map_file = 0x02
 }					t_opt;
+
+typedef enum		e_error
+{
+	e_input_file_missing,
+	e_file_open_failure
+}					t_error;
 
 typedef enum		e_event_order
 {
@@ -77,6 +92,11 @@ typedef struct		s_mlx_image_data
 typedef struct		s_input
 {
 	t_opt			opt;
+	t_error			error;
+	char			**error_string;
+	char			*input_file_path;
+	char			**input_line_array;
+	int				input_array_size;
 }					t_input;
 
 typedef struct		s_fdf_data
@@ -97,5 +117,7 @@ void				update_line_image(t_mlx_image_data *line_img_data,
 												void *mlx_ptr, void *win_ptr);
 void				read_opt(t_input *input, int *argc, char ***argv);
 void				bresenham_draw_line(t_mlx_image_data *line_img_data);
+t_input				*read_input_data(int argc, char **argv);
+void				save_input_file(t_input *input, int *argc, char ***argv);
 
 #endif
