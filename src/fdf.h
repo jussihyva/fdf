@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/26 10:53:44 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/26 17:24:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@
 # include "ft_printf.h"
 
 /*
-** MAX VALUES FOR INPUT DATA
+** VALUES FOR INPUT DATA ANALYSIS
 */
 
-# define NUM_OF_ERROR_STRINGS	10
-# define MAX_NUM_OF_LINES		1000
+# define NUM_OF_ERROR_STRINGS		10
+# define MAX_NUM_OF_LINES			1000
+# define MAP_FILE_PARAM_DELIMITER	' '
 
 /*
 ** KEYBOARD EVENTS
@@ -39,7 +40,7 @@ typedef enum		e_opt
 
 typedef enum		e_error
 {
-	e_input_file_missing,
+	e_input_file_missing = 1,
 	e_file_open_failure,
 	e_input_file_parse_error
 }					t_error;
@@ -127,6 +128,7 @@ void				read_opt(t_input *input, int *argc, char ***argv);
 void				bresenham_draw_line(t_mlx_image_data *line_img_data);
 t_input				*read_input_data(int argc, char **argv);
 void				save_input_file(t_input *input, int *argc, char ***argv);
-t_point				*parse_map_line(char *line, int *array_size);
+t_point				*parse_map_line(char *line, int *array_size,
+																t_error *error);
 
 #endif

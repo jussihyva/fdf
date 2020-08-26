@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/25 14:55:31 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/26 11:12:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/26 17:18:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void		read_map_file(int fd, t_input *input)
 		ft_printf("%s\n", line);
 		input->input_line_array[input->input_array_size] = line;
 		input->point_array[input->input_array_size] =
-											parse_map_line(line, &array_size);
+							parse_map_line(line, &array_size, &input->error);
 		if (!array_size)
 			input->error = e_input_file_parse_error;
 		input->input_array_size++;
@@ -83,6 +83,10 @@ t_input			*read_input_data(int argc, char **argv)
 	if (fd < 0)
 		input->error = e_file_open_failure;
 	else
+	{
 		read_map_file(fd, input);
+		if (input->error)
+			ft_printf("ERROR: %d\n", input->error);
+	}
 	return (input);
 }
