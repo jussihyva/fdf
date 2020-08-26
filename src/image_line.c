@@ -6,20 +6,20 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 14:34:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/25 20:46:16 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/26 11:08:35 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void		fatal_error(void)
+static void			fatal_error(void)
 {
 	ft_printf("Fatal error: Unexpected rseult from the");
 	ft_printf(" validation of mlx parammeters function!\n");
 	exit(0);
 }
 
-static void		validate_mlx_parameters(t_mlx_image_data *line_img_data)
+static void			validate_mlx_parameters(t_mlx_image_data *line_img_data)
 {
 	line_img_data->img_buffer = (int *)mlx_get_data_addr(line_img_data->img_ptr,
 						&line_img_data->pixel_bits, &line_img_data->line_bytes,
@@ -38,7 +38,7 @@ static void		validate_mlx_parameters(t_mlx_image_data *line_img_data)
 	return ;
 }
 
-static void		initialize_line(t_line *line, int x, int y)
+static void			initialize_line(t_line *line, int x, int y)
 {
 	line->color = 0 << 16;
 	line->color += 250 << 8;
@@ -52,7 +52,8 @@ static void		initialize_line(t_line *line, int x, int y)
 	return ;
 }
 
-void			update_line_image(t_mlx_image_data *line_img_data, void *mlx_ptr, void *win_ptr)
+void				update_line_image(t_mlx_image_data *line_img_data,
+												void *mlx_ptr, void *win_ptr)
 {
 	ft_bzero(line_img_data->img_buffer, line_img_data->img_buffer_size);
 	bresenham_draw_line(line_img_data);

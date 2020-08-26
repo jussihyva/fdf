@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/25 19:57:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/26 10:53:44 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ typedef enum		e_opt
 typedef enum		e_error
 {
 	e_input_file_missing,
-	e_file_open_failure
+	e_file_open_failure,
+	e_input_file_parse_error
 }					t_error;
 
 typedef enum		e_event_order
@@ -126,6 +127,6 @@ void				read_opt(t_input *input, int *argc, char ***argv);
 void				bresenham_draw_line(t_mlx_image_data *line_img_data);
 t_input				*read_input_data(int argc, char **argv);
 void				save_input_file(t_input *input, int *argc, char ***argv);
-int					*intsplit(char const *s, char c, int *num_of_words);
+t_point				*parse_map_line(char *line, int *array_size);
 
 #endif
