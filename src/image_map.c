@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/27 11:28:10 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 13:59:16 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 14:39:48 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,31 @@ void		add_point_to_image(t_mlx_image_data *img_data, t_point *point_array,
 {
 	int			int_lines;
 	int			factor;
-	t_point		point;
-	int			dots;
+	t_line 		line;
 
 	factor = 30;
 	int_lines = img_data->line_bytes / 4;
 	while (array_size--)
 	{
-		point = point_array[array_size];
-		dots = 7;
-		while (dots--)
+		if (array_size)
 		{
-			img_data->img_buffer[(factor * (line_cnt + dots) * int_lines) +
-										array_size * factor] = point.color;
-			img_data->img_buffer[(factor * (line_cnt + dots) * int_lines) +
-										array_size * factor + 1] = point.color;
-			img_data->img_buffer[(factor * (line_cnt + dots) * int_lines) +
-										array_size * factor + 2] = point.color;
-			img_data->img_buffer[(factor * (line_cnt + dots) * int_lines) +
-										array_size * factor + 3] = point.color;
-			img_data->img_buffer[(factor * (line_cnt + dots) * int_lines) +
-										array_size * factor + 4] = point.color;
-			img_data->img_buffer[(factor * (line_cnt + dots) * int_lines) +
-										array_size * factor + 5] = point.color;
-			img_data->img_buffer[(factor * (line_cnt + dots) * int_lines) +
-										array_size * factor + 6] = point.color;
+			line.color = point_array[array_size].color;
+			line.start_pos.x = array_size * factor;
+			line.start_pos.y = line_cnt * factor;
+			line.end_pos.x = (array_size - 1) * factor;
+			line.end_pos.y = line_cnt * factor;
+			img_data->line = line;
+			bresenham_draw_line(img_data, line);
+		}
+		if (line_cnt)
+		{
+			line.color = point_array[array_size].color;
+			line.start_pos.x = array_size * factor;
+			line.start_pos.y = line_cnt * factor;
+			line.end_pos.x = array_size * factor;
+			line.end_pos.y = (line_cnt - 1) * factor;
+			img_data->line = line;
+			bresenham_draw_line(img_data, line);
 		}
 	}
 	return ;

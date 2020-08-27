@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/25 20:32:55 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 14:18:22 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,12 @@ static void		draw_high(t_mlx_image_data *line_img_data, t_vec3 start_pos,
 	return ;
 }
 
-void			bresenham_draw_line(t_mlx_image_data *line_img_data)
+void			bresenham_draw_line(t_mlx_image_data *line_img_data, t_line line)
 {
 	int		delta_x;
 	int		delta_y;
-	t_line	line;
 	int		int_lines;
 
-	line = line_img_data->line;
 	int_lines = line_img_data->line_bytes / 4;
 	delta_x = ft_abs(line.end_pos.x - line.start_pos.x);
 	delta_y = ft_abs(line.end_pos.y - line.start_pos.y);

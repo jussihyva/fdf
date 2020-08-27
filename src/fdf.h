@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 13:15:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 15:01:37 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,15 @@ typedef struct		s_fdf_data
 	t_mlx_image_data	*line_img_data;
 }					t_fdf_data;
 
+typedef struct		s_drawing_data
+{
+	t_vec2				start_pos;
+	t_vec2				end_pos;
+	unsigned int		color;
+	int					step;
+	int					ints_in_image_line;
+}					t_drawing_data;
+
 int					keyboard_event(int key, void *fdf_data);
 int					mouse_key_event(int button, int x, int y, void *fdf_data);
 int					mouse_wheel_event(int x, int y, void *fdf_data);
@@ -126,7 +135,7 @@ t_mlx_image_data	*create_line_image(int width, int hight, void *mlx_ptr);
 void				update_line_image(t_mlx_image_data *line_img_data,
 												void *mlx_ptr, void *win_ptr);
 void				read_opt(t_input *input, int *argc, char ***argv);
-void				bresenham_draw_line(t_mlx_image_data *line_img_data);
+void				bresenham_draw_line(t_mlx_image_data *line_img_data, t_line line);
 t_input				*read_command_attributes(int argc, char **argv);
 void				save_input_file(t_input *input, int *argc, char ***argv);
 t_point				*parse_map_line(char *line, int *array_size,
