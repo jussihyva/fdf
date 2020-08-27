@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 20:10:51 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/25 13:40:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 17:12:57 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,13 @@ static t_event_order	validate_order_type(int key, t_fdf_data *fdf_data)
 {
 	t_event_order	event_order;
 
-	event_order = e_update_line_img;
 	if (key == ESC)
 	{
 		ft_printf("Request (ESC key pressed) to exit.\n");
 		event_order = e_close_window;
 	}
-	else if (key == 123 && fdf_data->line_img_data->line.end_pos.x)
-		fdf_data->line_img_data->line.end_pos.x--;
-	else if (key == 124 && fdf_data->line_img_data->line.end_pos.x <
-													fdf_data->window.width - 1)
-		fdf_data->line_img_data->line.end_pos.x++;
-	else if (key == 126 && fdf_data->line_img_data->line.end_pos.y)
-		fdf_data->line_img_data->line.end_pos.y--;
-	else if (key == 125 && fdf_data->line_img_data->line.end_pos.y <
-													fdf_data->window.hight - 1)
-		fdf_data->line_img_data->line.end_pos.y++;
+	else if (fdf_data->input->opt & e_test)
+		event_order = validate_test_orders(key, fdf_data);
 	else
 		event_order = e_none;
 	return (event_order);

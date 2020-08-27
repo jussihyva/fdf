@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 16:18:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 17:13:20 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # define NUM_OF_ERROR_STRINGS		10
 # define MAX_NUM_OF_LINES			1000
 # define MAP_FILE_PARAM_DELIMITER	' '
+# define WINDOW_WIDTH				900
+# define WINDOW_HIGHT				600
 
 /*
 ** KEYBOARD EVENTS
@@ -105,6 +107,8 @@ typedef struct		s_input
 	char			**error_string;
 	char			*input_file_path;
 	int				input_array_size;
+	int				width;
+	int				hight;
 	t_point			**point_array;
 }					t_input;
 
@@ -144,5 +148,6 @@ t_point				*parse_map_line(char *line, int *array_size,
 void				read_map_file(t_input *input, void *img_data);
 void				add_line_to_image(t_mlx_image_data *img_data,
 							t_point *point_array, int line_cnt, int array_size);
+t_event_order		validate_test_orders(int key, t_fdf_data *fdf_data);
 
 #endif

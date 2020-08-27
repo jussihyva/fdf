@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/25 14:55:31 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 16:01:31 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 16:36:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ t_input			*read_command_attributes(int argc, char **argv)
 	input->point_array =
 						(t_point **)ft_memalloc(sizeof(*input->point_array) *
 															MAX_NUM_OF_LINES);
+	input->width = WINDOW_WIDTH;
+	input->hight = WINDOW_HIGHT;
 	read_opt(input, &argc, &argv);
 	return (input);
 }
