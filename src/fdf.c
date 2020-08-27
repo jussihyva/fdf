@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:32:32 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 13:22:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 16:17:45 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static void		activate_mlx_events(t_fdf_data *fdf_data)
 
 static void		move_line_with_mouse(t_fdf_data *fdf_data)
 {
-	fdf_data->line_img_data = create_line_image(fdf_data->window.width,
-									fdf_data->window.hight, fdf_data->mlx_ptr);
+	fdf_data->line_img_data = create_line_image(fdf_data->window,
+															fdf_data->mlx_ptr);
 	activate_mlx_events(fdf_data);
 	return ;
 }
@@ -32,25 +32,23 @@ int				main(int argc, char **argv)
 {
 	t_fdf_data			*fdf_data;
 	t_mlx_image_data	*img_data;
-	t_window			window;
 
 	fdf_data = (t_fdf_data *)ft_memalloc(sizeof(*fdf_data));
 	fdf_data->mlx_ptr = mlx_init();
-	window.width = 900;
-	window.hight = 600;
-	img_data = create_empty_image(window.width, window.hight,
-															fdf_data->mlx_ptr);
+	fdf_data->window.width = 900;
+	fdf_data->window.hight = 600;
+	img_data = create_empty_image(fdf_data->window, fdf_data->mlx_ptr);
 	fdf_data->input = read_command_attributes(argc, argv);
 	read_map_file(fdf_data->input, img_data);
 	ft_printf("Lines in the file (%s): %d\n", fdf_data->input->input_file_path,
 											fdf_data->input->input_array_size);
-	fdf_data->window = window;
 	fdf_data->win_ptr = mlx_new_window(fdf_data->mlx_ptr,
 						fdf_data->window.width, fdf_data->window.hight, "FdF!");
 	if (fdf_data->input->opt & e_test)
 		move_line_with_mouse(fdf_data);
 	else
-		mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr, img_data->img_ptr, 0, 0);
+		mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr,
+													img_data->img_ptr, 0, 0);
 	mlx_hook(fdf_data->win_ptr, 17, 0, &close_window_event, fdf_data);
 	mlx_loop(fdf_data->mlx_ptr);
 	free(fdf_data->line_img_data);

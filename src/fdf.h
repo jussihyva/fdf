@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 15:01:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 16:18:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ typedef struct		s_point
 
 typedef struct		s_line
 {
-	t_vec3			start_pos;
-	t_vec3			end_pos;
+	t_vec2			start_pos;
+	t_vec2			end_pos;
 	unsigned int	color;
 }					t_line;
 
@@ -130,18 +130,19 @@ int					keyboard_event(int key, void *fdf_data);
 int					mouse_key_event(int button, int x, int y, void *fdf_data);
 int					mouse_wheel_event(int x, int y, void *fdf_data);
 int					close_window_event(void *fdf_data);
-t_mlx_image_data	*create_empty_image(int width, int hight, void *mlx_ptr);
-t_mlx_image_data	*create_line_image(int width, int hight, void *mlx_ptr);
+t_mlx_image_data	*create_empty_image(t_window window, void *mlx_ptr);
+t_mlx_image_data	*create_line_image(t_window window, void *mlx_ptr);
 void				update_line_image(t_mlx_image_data *line_img_data,
 												void *mlx_ptr, void *win_ptr);
 void				read_opt(t_input *input, int *argc, char ***argv);
-void				bresenham_draw_line(t_mlx_image_data *line_img_data, t_line line);
+void				bresenham_draw_line(t_mlx_image_data *line_img_data,
+																t_line line);
 t_input				*read_command_attributes(int argc, char **argv);
 void				save_input_file(t_input *input, int *argc, char ***argv);
 t_point				*parse_map_line(char *line, int *array_size,
 																t_error *error);
 void				read_map_file(t_input *input, void *img_data);
-void				add_point_to_image(t_mlx_image_data *img_data, t_point *point_array,
-												int line_cnt, int array_size);
+void				add_line_to_image(t_mlx_image_data *img_data,
+							t_point *point_array, int line_cnt, int array_size);
 
 #endif

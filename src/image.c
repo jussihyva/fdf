@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/27 10:57:33 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 13:33:52 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 16:10:55 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ static void			validate_mlx_parameters(t_mlx_image_data *img_data)
 	return ;
 }
 
-t_mlx_image_data	*create_empty_image(int width, int hight, void *mlx_ptr)
+t_mlx_image_data	*create_empty_image(t_window window, void *mlx_ptr)
 {
 	t_mlx_image_data	*img_data;
 
 	img_data = (t_mlx_image_data *)ft_memalloc(sizeof(*img_data));
-	img_data->width = width;
-	img_data->hight = hight;
-	img_data->img_ptr = mlx_new_image(mlx_ptr, width, hight);
+	img_data->width = window.width;
+	img_data->hight = window.hight;
+	img_data->img_ptr = mlx_new_image(mlx_ptr, window.width, window.hight);
 	validate_mlx_parameters(img_data);
 	return (img_data);
 }

@@ -6,23 +6,21 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 14:34:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 14:19:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 16:20:45 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void			initialize_line(t_line *line, int x, int y)
+static void			initialize_line(t_line *line, t_window window)
 {
 	line->color = 0 << 16;
 	line->color += 250 << 8;
 	line->color += 0;
 	line->start_pos.x = 300;
 	line->start_pos.y = 300;
-	line->start_pos.z = 0;
-	line->end_pos.x = x;
-	line->end_pos.y = y;
-	line->end_pos.z = 0;
+	line->end_pos.x = window.width;
+	line->end_pos.y = window.hight;
 	return ;
 }
 
@@ -35,11 +33,11 @@ void				update_line_image(t_mlx_image_data *line_img_data,
 	return ;
 }
 
-t_mlx_image_data	*create_line_image(int width, int hight, void *mlx_ptr)
+t_mlx_image_data	*create_line_image(t_window window, void *mlx_ptr)
 {
 	t_mlx_image_data	*img_data;
 
-	img_data = create_empty_image(width, hight, mlx_ptr);
-	initialize_line(&img_data->line, width, hight);
+	img_data = create_empty_image(window, mlx_ptr);
+	initialize_line(&img_data->line, window);
 	return (img_data);
 }

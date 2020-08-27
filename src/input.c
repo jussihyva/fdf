@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/25 14:55:31 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 11:41:38 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 16:01:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void			read_map_file(t_input *input, void *img_data)
 		{
 			input->point_array[line_cnt] =
 					parse_map_line(line, &array_size, &input->error);
-			add_point_to_image(img_data, input->point_array[line_cnt], line_cnt,
+			add_line_to_image(img_data, input->point_array[line_cnt], line_cnt,
 																	array_size);
 			line_cnt++;
 			ft_strdel(&line);
