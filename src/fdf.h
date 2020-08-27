@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 11:38:39 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 13:15:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@
 typedef enum		e_opt
 {
 	e_leaks = 0x01,
-	e_map_file = 0x02
+	e_map_file = 0x02,
+	e_test = 0x04
 }					t_opt;
 
 typedef enum		e_error
@@ -131,7 +132,7 @@ void				save_input_file(t_input *input, int *argc, char ***argv);
 t_point				*parse_map_line(char *line, int *array_size,
 																t_error *error);
 void				read_map_file(t_input *input, void *img_data);
-void				add_point_to_image(void *img_data, t_point *point_array,
+void				add_point_to_image(t_mlx_image_data *img_data, t_point *point_array,
 												int line_cnt, int array_size);
 
 #endif

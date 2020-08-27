@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/27 10:57:33 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 10:58:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 13:33:52 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,23 @@ static void			fatal_error(void)
 	exit(0);
 }
 
-static void			validate_mlx_parameters(t_mlx_image_data *line_img_data)
+static void			validate_mlx_parameters(t_mlx_image_data *img_data)
 {
-	line_img_data->img_buffer = (int *)mlx_get_data_addr(line_img_data->img_ptr,
-						&line_img_data->pixel_bits, &line_img_data->line_bytes,
-														&line_img_data->endian);
-	if (!(line_img_data->pixel_bits == 32 && line_img_data->endian == 0 &&
-						line_img_data->line_bytes == line_img_data->width *
-												line_img_data->pixel_bits / 8))
+	img_data->img_buffer = (int *)mlx_get_data_addr(img_data->img_ptr,
+						&img_data->pixel_bits, &img_data->line_bytes,
+														&img_data->endian);
+	if (!(img_data->pixel_bits == 32 && img_data->endian == 0 &&
+						img_data->line_bytes == img_data->width *
+												img_data->pixel_bits / 8))
 	{
 		ft_printf("image_line: %d, line_bytes: %d(%d), endian: %d\n",
-						line_img_data->pixel_bits, line_img_data->line_bytes,
-							4 * line_img_data->width, line_img_data->endian);
+						img_data->pixel_bits, img_data->line_bytes,
+							4 * img_data->width, img_data->endian);
 		fatal_error();
 	}
-	line_img_data->img_buffer_size = line_img_data->hight *
-						line_img_data->width * line_img_data->pixel_bits / 8;
+	img_data->img_buffer_size = img_data->hight *
+						img_data->width * img_data->pixel_bits / 8;
+	ft_bzero(img_data->img_buffer, img_data->img_buffer_size);
 	return ;
 }
 
