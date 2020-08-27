@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2020/08/26 10:05:28 by jkauppi          ###   ########.fr        #
+#    Updated: 2020/08/27 11:30:44 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRC_FOLDER				=	src
 OBJ_FOLDER				=	obj
 INCLUDES				=	-I $(SRC_FOLDER) -I $(LIB_FOLDER)
 SRCS					=	bresenham_line.c event_handler.c image_line.c \
-							read_opt.c input.c input_map.c
+							read_opt.c input.c input_map.c image.c image_map.c
 HEADERS					=	$(SRC_FOLDER)/fdf.h
 OBJS					=	$(addprefix $(OBJ_FOLDER)/, \
 											$(patsubst %.c, %.o, $(SRCS)))

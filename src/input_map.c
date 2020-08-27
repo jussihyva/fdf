@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 17:55:33 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/26 17:25:31 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/27 11:31:23 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,18 @@
 static void		validata_array_size(t_point *point_array, int *array_size,
 										int current_array_size, t_error *error)
 {
-	if (!*array_size)
-		*array_size = current_array_size;
-	if (*array_size != current_array_size)
-	{
-		free(point_array);
-		point_array = NULL;
+	if (!current_array_size)
 		*error = e_input_file_parse_error;
+	else
+	{
+		if (!*array_size)
+			*array_size = current_array_size;
+		if (*array_size != current_array_size)
+		{
+			free(point_array);
+			point_array = NULL;
+			*error = e_input_file_parse_error;
+		}
 	}
 	return ;
 }
@@ -33,10 +38,11 @@ static t_point	create_point(char *s, char *end_ptr, t_error *error)
 
 	bzero(&point, sizeof(point));
 	strtoi_end_ptr = NULL;
-	point.pos.z = ft_strtoi(s, &strtoi_end_ptr, 10);
+	point.altitude = ft_strtoi(s, &strtoi_end_ptr, 10);
+	point.color = 0xffffff;
 	if (end_ptr != strtoi_end_ptr)
 	{
-		point.pos.z = 0;
+		point.altitude = 0;
 		*error = e_input_file_parse_error;
 	}
 	return (point);
@@ -49,6 +55,7 @@ t_point			*parse_map_line(char *line, int *array_size, t_error *error)
 	char			*end_ptr;
 	int				current_array_size;
 
+	ft_printf("%s\n", line);
 	point_array = (t_point *)ft_memalloc(sizeof(*point_array) * 1000);
 	start_ptr = line;
 	end_ptr = start_ptr;
