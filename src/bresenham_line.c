@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 15:59:53 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/28 11:07:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void		draw_high(t_mlx_image_data *img_data,
 	while (plot_pos.y <= drawing_data.end_pos.y)
 	{
 		img_data->img_buffer[(plot_pos.y * drawing_data.ints_in_image_line) +
-											plot_pos.x] = img_data->line.color;
+											plot_pos.x] = drawing_data.color;
 		if (difference > 0)
 		{
 			plot_pos.x += step;

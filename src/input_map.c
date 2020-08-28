@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 17:55:33 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 13:55:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/28 13:41:26 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,6 @@ static t_point	create_point(char *s, char *end_ptr, t_error *error)
 	bzero(&point, sizeof(point));
 	strtoi_end_ptr = NULL;
 	point.altitude = ft_strtoi(s, &strtoi_end_ptr, 10);
-	if (point.altitude)
-		point.color = 0xff00ff;
-	else
-		point.color = 0xffffff;
 	if (end_ptr != strtoi_end_ptr)
 	{
 		point.altitude = 0;

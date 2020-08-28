@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 17:13:20 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/28 13:00:17 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@
 typedef enum		e_opt
 {
 	e_leaks = 0x01,
-	e_map_file = 0x02,
-	e_test = 0x04
+	e_map_file = 0x02
 }					t_opt;
 
 typedef enum		e_error
@@ -47,6 +46,13 @@ typedef enum		e_error
 	e_file_open_failure,
 	e_input_file_parse_error
 }					t_error;
+
+typedef enum		e_projection_plane
+{
+	e_test = 0,
+	e_orthographic_top_view_line,
+	e_orthographic_top_view_tile
+}					t_projection_plane;
 
 typedef enum		e_event_order
 {
@@ -73,6 +79,13 @@ typedef struct		s_point
 	int				altitude;
 	int				color;
 }					t_point;
+
+typedef struct		s_tile
+{
+	t_vec2			pos;
+	int				size;
+	int				color;
+}					t_tile;
 
 typedef struct		s_line
 {
@@ -102,14 +115,15 @@ typedef struct		s_mlx_image_data
 
 typedef struct		s_input
 {
-	t_opt			opt;
-	t_error			error;
-	char			**error_string;
-	char			*input_file_path;
-	int				input_array_size;
-	int				width;
-	int				hight;
-	t_point			**point_array;
+	t_opt				opt;
+	t_error				error;
+	t_projection_plane	projection_plane;
+	char				**error_string;
+	char				*input_file_path;
+	int					input_array_size;
+	int					width;
+	int					hight;
+	t_point				**point_array;
 }					t_input;
 
 typedef struct		s_fdf_data
@@ -149,5 +163,7 @@ void				read_map_file(t_input *input, void *img_data);
 void				add_line_to_image(t_mlx_image_data *img_data,
 							t_point *point_array, int line_cnt, int array_size);
 t_event_order		validate_test_orders(int key, t_fdf_data *fdf_data);
+void				add_tile_to_image(t_mlx_image_data *img_data,
+							t_point *point_array, int line_cnt, int array_size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/25 14:55:31 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 16:36:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/28 12:42:22 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,11 @@ void			read_map_file(t_input *input, void *img_data)
 		{
 			input->point_array[line_cnt] =
 					parse_map_line(line, &array_size, &input->error);
-			add_line_to_image(img_data, input->point_array[line_cnt], line_cnt,
+			if (input->projection_plane == e_orthographic_top_view_line)
+				add_line_to_image(img_data, input->point_array[line_cnt], line_cnt,
+																	array_size);
+			else
+				add_tile_to_image(img_data, input->point_array[line_cnt], line_cnt,
 																	array_size);
 			line_cnt++;
 			ft_strdel(&line);
@@ -78,6 +82,7 @@ t_input			*read_command_attributes(int argc, char **argv)
 
 	ft_step_args(&argc, &argv);
 	input = (t_input *)ft_memalloc(sizeof(*input));
+	input->projection_plane = e_orthographic_top_view_line;
 	input->error_string =
 					(char **)ft_memalloc(sizeof(*input->error_string) * 11);
 	input->point_array =

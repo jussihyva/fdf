@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:32:32 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 17:11:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/28 10:16:35 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int				main(int argc, char **argv)
 											fdf_data->input->input_array_size);
 	fdf_data->win_ptr = mlx_new_window(fdf_data->mlx_ptr,
 						fdf_data->window.width, fdf_data->window.hight, "FdF!");
-	if (fdf_data->input->opt & e_test)
+	if (fdf_data->input->projection_plane == e_test)
 		move_line_with_mouse(fdf_data);
 	else
 		mlx_put_image_to_window(fdf_data->mlx_ptr, fdf_data->win_ptr,
