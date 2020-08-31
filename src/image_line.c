@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 14:34:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/31 11:15:49 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 16:35:10 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void			initialize_line(t_line *line, t_window window)
 	return ;
 }
 
-void				update_line_image(t_mlx_image_data *line_img_data,
+void				update_line_image(t_mlx_img_data *line_img_data,
 												void *mlx_ptr, void *win_ptr)
 {
 	ft_bzero(line_img_data->img_buffer, line_img_data->img_buffer_size);
@@ -34,9 +34,9 @@ void				update_line_image(t_mlx_image_data *line_img_data,
 	return ;
 }
 
-t_mlx_image_data	*create_line_image(t_window window, void *mlx_ptr)
+t_mlx_img_data		*create_line_image(t_window window, void *mlx_ptr)
 {
-	t_mlx_image_data	*img_data;
+	t_mlx_img_data	*img_data;
 
 	img_data = create_empty_image(window, mlx_ptr);
 	initialize_line(&img_data->line, window);

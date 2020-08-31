@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/25 14:55:31 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/31 12:45:16 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 14:20:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int		open_fd(t_input *input)
 	return (fd);
 }
 
-void			read_map_file(t_input *input, void *img_data)
+void			read_map_file(t_input *input)
 {
 	int			ret;
 	char		*line;
@@ -59,19 +59,14 @@ void			read_map_file(t_input *input, void *img_data)
 		while (!input->error && MAX_NUM_OF_LINES > line_cnt &&
 										(ret = ft_get_next_line(fd, &line)) > 0)
 		{
-			input->point_array[line_cnt] =
+			input->point_map[line_cnt] =
 					parse_map_line(line, &array_size, &input->error);
-			if (input->projection_plane == e_orthographic_top_view_line)
-				add_line_to_image(img_data, input->point_array[line_cnt], line_cnt,
-																	array_size);
-			else
-				add_tile_to_image(img_data, input->point_array[line_cnt], line_cnt,
-																	array_size, input->angle);
 			line_cnt++;
 			ft_strdel(&line);
 		}
 		ft_strdel(&line);
-		input->input_array_size = line_cnt;
+		input->map_size.x = array_size;
+		input->map_size.y = line_cnt;
 	}
 	return ;
 }
@@ -84,9 +79,8 @@ t_input			*read_command_attributes(int argc, char **argv)
 	input = (t_input *)ft_memalloc(sizeof(*input));
 	input->projection_plane = e_orthographic_top_view_line;
 	input->error_string =
-					(char **)ft_memalloc(sizeof(*input->error_string) * 11);
-	input->point_array =
-						(t_point **)ft_memalloc(sizeof(*input->point_array) *
+						(char **)ft_memalloc(sizeof(*input->error_string) * 11);
+	input->point_map = (t_point **)ft_memalloc(sizeof(*input->point_map) *
 															MAX_NUM_OF_LINES);
 	input->width = WINDOW_WIDTH;
 	input->hight = WINDOW_HIGHT;

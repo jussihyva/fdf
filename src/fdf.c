@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:32:32 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/28 10:16:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 16:09:27 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void		move_line_with_mouse(t_fdf_data *fdf_data)
 int				main(int argc, char **argv)
 {
 	t_fdf_data			*fdf_data;
-	t_mlx_image_data	*img_data;
+	t_mlx_img_data		*img_data;
 
 	fdf_data = (t_fdf_data *)ft_memalloc(sizeof(*fdf_data));
 	fdf_data->input = read_command_attributes(argc, argv);
@@ -46,9 +46,10 @@ int				main(int argc, char **argv)
 	fdf_data->window.width = fdf_data->input->width;
 	fdf_data->window.hight = fdf_data->input->hight;
 	img_data = create_empty_image(fdf_data->window, fdf_data->mlx_ptr);
-	read_map_file(fdf_data->input, img_data);
+	read_map_file(fdf_data->input);
+	create_picture(fdf_data->input, img_data);
 	ft_printf("Lines in the file (%s): %d\n", fdf_data->input->input_file_path,
-											fdf_data->input->input_array_size);
+												fdf_data->input->map_size.y);
 	fdf_data->win_ptr = mlx_new_window(fdf_data->mlx_ptr,
 						fdf_data->window.width, fdf_data->window.hight, "FdF!");
 	if (fdf_data->input->projection_plane == e_test)

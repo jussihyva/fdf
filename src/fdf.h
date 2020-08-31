@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/31 12:44:56 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 16:29:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
 # define MAX_NUM_OF_LINES			1000
 # define MAP_FILE_PARAM_DELIMITER	' '
 # define WINDOW_WIDTH				900
-# define WINDOW_HIGHT				600
+# define WINDOW_HIGHT				700
+# define PI							4.0 * atan(1.0)
 
 /*
 ** KEYBOARD EVENTS
@@ -101,7 +102,7 @@ typedef struct		s_window
 	int				hight;
 }					t_window;
 
-typedef struct		s_mlx_image_data
+typedef struct		s_mlx_img_data
 {
 	int				width;
 	int				hight;
@@ -112,7 +113,7 @@ typedef struct		s_mlx_image_data
 	int				line_bytes;
 	int				endian;
 	t_line			line;
-}					t_mlx_image_data;
+}					t_mlx_img_data;
 
 typedef struct		s_input
 {
@@ -121,11 +122,11 @@ typedef struct		s_input
 	t_projection_plane	projection_plane;
 	char				**error_string;
 	char				*input_file_path;
-	int					input_array_size;
+	t_vec2				map_size;
 	int					width;
 	int					hight;
 	int					angle;
-	t_point				**point_array;
+	t_point				**point_map;
 }					t_input;
 
 typedef struct		s_fdf_data
@@ -134,13 +135,16 @@ typedef struct		s_fdf_data
 	void				*mlx_ptr;
 	t_window			window;
 	void				*win_ptr;
-	t_mlx_image_data	*line_img_data;
+	t_mlx_img_data		*line_img_data;
 }					t_fdf_data;
 
 typedef struct		s_drawing_data
 {
 	t_vec2				start_pos;
 	t_vec2				end_pos;
+	int					tile_size;
+	double				angle_radian;
+	t_vec2				offset;
 	unsigned int		color;
 	int					step;
 	int					ints_in_image_line;
@@ -150,9 +154,9 @@ int					keyboard_event(int key, void *fdf_data);
 int					mouse_key_event(int button, int x, int y, void *fdf_data);
 int					mouse_wheel_event(int x, int y, void *fdf_data);
 int					close_window_event(void *fdf_data);
-t_mlx_image_data	*create_empty_image(t_window window, void *mlx_ptr);
-t_mlx_image_data	*create_line_image(t_window window, void *mlx_ptr);
-void				update_line_image(t_mlx_image_data *line_img_data,
+t_mlx_img_data		*create_empty_image(t_window window, void *mlx_ptr);
+t_mlx_img_data		*create_line_image(t_window window, void *mlx_ptr);
+void				update_line_image(t_mlx_img_data *line_img_data,
 												void *mlx_ptr, void *win_ptr);
 void				read_opt(t_input *input, int *argc, char ***argv);
 void				bresenham_draw_line(int *img_buffer, t_line line,
@@ -161,11 +165,12 @@ t_input				*read_command_attributes(int argc, char **argv);
 void				save_input_file(t_input *input, int *argc, char ***argv);
 t_point				*parse_map_line(char *line, int *array_size,
 																t_error *error);
-void				read_map_file(t_input *input, void *img_data);
-void				add_line_to_image(t_mlx_image_data *img_data,
-							t_point *point_array, int line_cnt, int array_size);
+void				read_map_file(t_input *input);
+void				add_line_to_image(t_input *input, t_mlx_img_data *img_data,
+									int line_cnt, t_drawing_data drawing_data);
 t_event_order		validate_test_orders(int key, t_fdf_data *fdf_data);
-void				add_tile_to_image(t_mlx_image_data *img_data,
-							t_point *point_array, int line_cnt, int array_size, int angle);
+void				add_tile_to_image(t_input *input, t_mlx_img_data *img_data,
+									t_drawing_data drawing_data, int line_cnt);
+void				create_picture(t_input *input, t_mlx_img_data *img_data);
 
 #endif

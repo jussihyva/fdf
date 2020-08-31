@@ -6,41 +6,36 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/27 11:28:10 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/31 12:46:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 16:37:47 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void			add_line_to_image(t_mlx_image_data *img_data,
-							t_point *point_array, int line_cnt, int array_size)
+void			add_line_to_image(t_input *input, t_mlx_img_data *img_data,
+					int line_cnt, t_drawing_data drawing_data)
 {
-	int			factor;
-	t_line		line;
+	int			tile_cnt;
 
-	factor = 30;
-	while (array_size--)
+	tile_cnt = -1;
+	while (++tile_cnt < input->map_size.x)
 	{
-		if (point_array[array_size].altitude)
-			line.color = 0xff00ff;
-		else
-			line.color = 0xffffff;
-		line.start_pos.x = array_size * factor;
-		line.start_pos.y = line_cnt * factor;
-		if (array_size)
+		img_data->line.color = (input->point_map[line_cnt][tile_cnt].altitude) ?
+															0xff00ff : 0xffffff;
+		img_data->line.start_pos.x = tile_cnt * drawing_data.tile_size;
+		img_data->line.start_pos.y = line_cnt * drawing_data.tile_size;
+		if (tile_cnt)
 		{
-			line.end_pos.x = (array_size - 1) * factor;
-			line.end_pos.y = line_cnt * factor;
-			img_data->line = line;
-			bresenham_draw_line(img_data->img_buffer, line,
+			img_data->line.end_pos.x = (tile_cnt - 1) * drawing_data.tile_size;
+			img_data->line.end_pos.y = line_cnt * drawing_data.tile_size;
+			bresenham_draw_line(img_data->img_buffer, img_data->line,
 													img_data->line_bytes / 4);
 		}
 		if (line_cnt)
 		{
-			line.end_pos.x = array_size * factor;
-			line.end_pos.y = (line_cnt - 1) * factor;
-			img_data->line = line;
-			bresenham_draw_line(img_data->img_buffer, line,
+			img_data->line.end_pos.x = tile_cnt * drawing_data.tile_size;
+			img_data->line.end_pos.y = (line_cnt - 1) * drawing_data.tile_size;
+			bresenham_draw_line(img_data->img_buffer, img_data->line,
 													img_data->line_bytes / 4);
 		}
 	}
@@ -48,51 +43,49 @@ void			add_line_to_image(t_mlx_image_data *img_data,
 }
 
 static void		set_tile_to_image(int *img_buffer, t_tile tile,
-														int ints_in_image_line, int angle)
+													t_drawing_data drawing_data)
 {
 	t_vec2		pixel_cnt;
 	t_line		line;
+	double		angle_radian;
+	int			ints_in_image_line;
 
+	angle_radian = drawing_data.angle_radian;
+	ints_in_image_line = drawing_data.ints_in_image_line;
 	pixel_cnt.y = tile.size;
 	line.color = tile.color;
 	while (pixel_cnt.y--)
 	{
-		line.start_pos.x = tile.pos.x * cos(angle) - (tile.pos.y + pixel_cnt.y) * sin(angle);
-		line.start_pos.y = tile.pos.x * sin(angle) + (tile.pos.y + pixel_cnt.y) * cos(angle);
-		line.end_pos.x = (tile.pos.x + tile.size) * cos(angle) - (tile.pos.y + pixel_cnt.y) * sin(angle);
-		line.end_pos.y = (tile.pos.x + tile.size) * sin(angle) + (tile.pos.y + pixel_cnt.y) * cos(angle);
-		// line.start_pos.x = tile.pos.x;
-		// line.start_pos.y = tile.pos.y + pixel_cnt.y;
-		// line.end_pos.x = tile.pos.x + tile.size;
-		// line.end_pos.y = tile.pos.y + pixel_cnt.y;
+		line.start_pos.x = tile.pos.x * cos(angle_radian) - (tile.pos.y +
+					pixel_cnt.y) * sin(angle_radian) + drawing_data.offset.x;
+		line.start_pos.y = tile.pos.x * sin(angle_radian) + (tile.pos.y +
+											pixel_cnt.y) * cos(angle_radian);
+		line.end_pos.x = (tile.pos.x + tile.size) * cos(angle_radian) -
+		(tile.pos.y + pixel_cnt.y) * sin(angle_radian) + drawing_data.offset.x;
+		line.end_pos.y = (tile.pos.x + tile.size) * sin(angle_radian) +
+								(tile.pos.y + pixel_cnt.y) * cos(angle_radian);
 		bresenham_draw_line(img_buffer, line, ints_in_image_line);
 	}
 	return ;
 }
 
-void			add_tile_to_image(t_mlx_image_data *img_data,
-							t_point *point_array, int line_cnt, int array_size, int angle)
+void			add_tile_to_image(t_input *input, t_mlx_img_data *img_data,
+									t_drawing_data drawing_data, int line_cnt)
 {
-	int				tile_size;
-	t_vec2			cur_pos;
-	t_drawing_data	drawing_data;
 	t_tile			tile;
+	int				tile_cnt;
 
-	drawing_data.ints_in_image_line = img_data->line_bytes / 4;
-	tile_size = 30;
-	while (array_size--)
+	tile.size = drawing_data.tile_size;
+	tile.pos.y = line_cnt * drawing_data.tile_size;
+	tile_cnt = -1;
+	while (++tile_cnt < input->map_size.x)
 	{
-		if (point_array[array_size].altitude)
-			drawing_data.color = 0xff00ff;
+		if (input->point_map[line_cnt][tile_cnt].altitude)
+			tile.color = 0xff00ff;
 		else
-			drawing_data.color = 0x000000;
-		cur_pos.y = line_cnt * tile_size;
-		cur_pos.x = array_size * tile_size;
-		tile.color = drawing_data.color;
-		tile.pos = cur_pos;
-		tile.size = tile_size;
-		set_tile_to_image(img_data->img_buffer, tile,
-											drawing_data.ints_in_image_line, angle);
+			tile.color = 0x000000;
+		tile.pos.x = tile_cnt * drawing_data.tile_size;
+		set_tile_to_image(img_data->img_buffer, tile, drawing_data);
 	}
 	return ;
 }
