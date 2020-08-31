@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 14:34:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/27 16:20:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 11:15:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void				update_line_image(t_mlx_image_data *line_img_data,
 												void *mlx_ptr, void *win_ptr)
 {
 	ft_bzero(line_img_data->img_buffer, line_img_data->img_buffer_size);
-	bresenham_draw_line(line_img_data, line_img_data->line);
+	bresenham_draw_line(line_img_data->img_buffer, line_img_data->line,
+												line_img_data->line_bytes / 4);
 	mlx_put_image_to_window(mlx_ptr, win_ptr, line_img_data->img_ptr, 0, 0);
 	return ;
 }

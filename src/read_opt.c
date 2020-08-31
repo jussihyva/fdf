@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 14:14:32 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/28 10:15:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 12:44:24 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void						read_opt(t_input *input, int *argc, char ***argv)
 			input->width = set_window_size(argc, argv);
 		else if (ft_strequ((*argv)[0], "-h"))
 			input->hight = set_window_size(argc, argv);
+		else if (ft_strequ((*argv)[0], "-A"))
+			input->angle = set_window_size(argc, argv);
 		else if (ft_strequ((*argv)[0], "-f"))
 			save_input_file(input, argc, argv);
 		else

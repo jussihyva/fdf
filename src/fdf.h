@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/28 13:00:17 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 12:44:56 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FDF_H
 
 # include "mlx.h"
+# include "math.h"
 # include <fcntl.h>
 # include "libft.h"
 # include "ft_printf.h"
@@ -123,6 +124,7 @@ typedef struct		s_input
 	int					input_array_size;
 	int					width;
 	int					hight;
+	int					angle;
 	t_point				**point_array;
 }					t_input;
 
@@ -153,8 +155,8 @@ t_mlx_image_data	*create_line_image(t_window window, void *mlx_ptr);
 void				update_line_image(t_mlx_image_data *line_img_data,
 												void *mlx_ptr, void *win_ptr);
 void				read_opt(t_input *input, int *argc, char ***argv);
-void				bresenham_draw_line(t_mlx_image_data *line_img_data,
-																t_line line);
+void				bresenham_draw_line(int *img_buffer, t_line line,
+														int ints_in_image_line);
 t_input				*read_command_attributes(int argc, char **argv);
 void				save_input_file(t_input *input, int *argc, char ***argv);
 t_point				*parse_map_line(char *line, int *array_size,
@@ -164,6 +166,6 @@ void				add_line_to_image(t_mlx_image_data *img_data,
 							t_point *point_array, int line_cnt, int array_size);
 t_event_order		validate_test_orders(int key, t_fdf_data *fdf_data);
 void				add_tile_to_image(t_mlx_image_data *img_data,
-							t_point *point_array, int line_cnt, int array_size);
+							t_point *point_array, int line_cnt, int array_size, int angle);
 
 #endif

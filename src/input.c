@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/25 14:55:31 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/28 12:42:22 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 12:45:16 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void			read_map_file(t_input *input, void *img_data)
 																	array_size);
 			else
 				add_tile_to_image(img_data, input->point_array[line_cnt], line_cnt,
-																	array_size);
+																	array_size, input->angle);
 			line_cnt++;
 			ft_strdel(&line);
 		}

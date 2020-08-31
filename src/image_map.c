@@ -6,14 +6,14 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/27 11:28:10 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/28 14:42:01 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 12:46:35 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void			add_line_to_image(t_mlx_image_data *img_data, t_point *point_array,
-												int line_cnt, int array_size)
+void			add_line_to_image(t_mlx_image_data *img_data,
+							t_point *point_array, int line_cnt, int array_size)
 {
 	int			factor;
 	t_line		line;
@@ -32,43 +32,46 @@ void			add_line_to_image(t_mlx_image_data *img_data, t_point *point_array,
 			line.end_pos.x = (array_size - 1) * factor;
 			line.end_pos.y = line_cnt * factor;
 			img_data->line = line;
-			bresenham_draw_line(img_data, line);
+			bresenham_draw_line(img_data->img_buffer, line,
+													img_data->line_bytes / 4);
 		}
 		if (line_cnt)
 		{
 			line.end_pos.x = array_size * factor;
 			line.end_pos.y = (line_cnt - 1) * factor;
 			img_data->line = line;
-			bresenham_draw_line(img_data, line);
+			bresenham_draw_line(img_data->img_buffer, line,
+													img_data->line_bytes / 4);
 		}
 	}
 	return ;
 }
 
 static void		set_tile_to_image(int *img_buffer, t_tile tile,
-														int ints_in_image_line)
+														int ints_in_image_line, int angle)
 {
-	int			plot_y_start_index;
-	int			plot_index;
 	t_vec2		pixel_cnt;
+	t_line		line;
 
-	plot_y_start_index = tile.pos.y * ints_in_image_line;
 	pixel_cnt.y = tile.size;
+	line.color = tile.color;
 	while (pixel_cnt.y--)
 	{
-		pixel_cnt.x = tile.size;
-		while (pixel_cnt.x--)
-		{
-			plot_index = plot_y_start_index + tile.pos.x + pixel_cnt.x;
-			img_buffer[plot_index] = tile.color;
-		}
-		plot_y_start_index += ints_in_image_line;
+		line.start_pos.x = tile.pos.x * cos(angle) - (tile.pos.y + pixel_cnt.y) * sin(angle);
+		line.start_pos.y = tile.pos.x * sin(angle) + (tile.pos.y + pixel_cnt.y) * cos(angle);
+		line.end_pos.x = (tile.pos.x + tile.size) * cos(angle) - (tile.pos.y + pixel_cnt.y) * sin(angle);
+		line.end_pos.y = (tile.pos.x + tile.size) * sin(angle) + (tile.pos.y + pixel_cnt.y) * cos(angle);
+		// line.start_pos.x = tile.pos.x;
+		// line.start_pos.y = tile.pos.y + pixel_cnt.y;
+		// line.end_pos.x = tile.pos.x + tile.size;
+		// line.end_pos.y = tile.pos.y + pixel_cnt.y;
+		bresenham_draw_line(img_buffer, line, ints_in_image_line);
 	}
 	return ;
 }
 
-void			add_tile_to_image(t_mlx_image_data *img_data, t_point *point_array,
-												int line_cnt, int array_size)
+void			add_tile_to_image(t_mlx_image_data *img_data,
+							t_point *point_array, int line_cnt, int array_size, int angle)
 {
 	int				tile_size;
 	t_vec2			cur_pos;
@@ -88,7 +91,8 @@ void			add_tile_to_image(t_mlx_image_data *img_data, t_point *point_array,
 		tile.color = drawing_data.color;
 		tile.pos = cur_pos;
 		tile.size = tile_size;
-		set_tile_to_image(img_data->img_buffer, tile, drawing_data.ints_in_image_line);
+		set_tile_to_image(img_data->img_buffer, tile,
+											drawing_data.ints_in_image_line, angle);
 	}
 	return ;
 }

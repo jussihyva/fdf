@@ -9,7 +9,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/fdf",
-			"args": ["-f", "${workspaceFolder}/maps/42.fdf"],
+			"args": ["-f", "${workspaceFolder}/maps/42.fdf", "-P", "2"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
