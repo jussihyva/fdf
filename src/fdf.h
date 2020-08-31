@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:33:08 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/31 16:29:14 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 19:18:56 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define MAP_FILE_PARAM_DELIMITER	' '
 # define WINDOW_WIDTH				900
 # define WINDOW_HIGHT				700
+# define PROJECTION_1				"Orthographic projection (top view)"
 # define PI							4.0 * atan(1.0)
 
 /*

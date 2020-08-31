@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 11:32:32 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/31 16:09:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 19:19:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int				main(int argc, char **argv)
 	ft_printf("Lines in the file (%s): %d\n", fdf_data->input->input_file_path,
 												fdf_data->input->map_size.y);
 	fdf_data->win_ptr = mlx_new_window(fdf_data->mlx_ptr,
-						fdf_data->window.width, fdf_data->window.hight, "FdF!");
+				fdf_data->window.width, fdf_data->window.hight, PROJECTION_1);
 	if (fdf_data->input->projection_plane == e_test)
 		move_line_with_mouse(fdf_data);
 	else

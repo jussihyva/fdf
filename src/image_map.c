@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/27 11:28:10 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/31 16:37:47 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 19:27:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,29 +42,31 @@ void			add_line_to_image(t_input *input, t_mlx_img_data *img_data,
 	return ;
 }
 
-static void		set_tile_to_image(int *img_buffer, t_tile tile,
+static void		set_tile_to_image(t_mlx_img_data *img_data, t_tile tile,
 													t_drawing_data drawing_data)
 {
 	t_vec2		pixel_cnt;
-	t_line		line;
+	t_line		*line;
 	double		angle_radian;
 	int			ints_in_image_line;
 
 	angle_radian = drawing_data.angle_radian;
 	ints_in_image_line = drawing_data.ints_in_image_line;
 	pixel_cnt.y = tile.size;
-	line.color = tile.color;
+	line = &img_data->line;
+	line->color = tile.color;
 	while (pixel_cnt.y--)
 	{
-		line.start_pos.x = tile.pos.x * cos(angle_radian) - (tile.pos.y +
+		line->start_pos.x = tile.pos.x * cos(angle_radian) - (tile.pos.y +
 					pixel_cnt.y) * sin(angle_radian) + drawing_data.offset.x;
-		line.start_pos.y = tile.pos.x * sin(angle_radian) + (tile.pos.y +
-											pixel_cnt.y) * cos(angle_radian);
-		line.end_pos.x = (tile.pos.x + tile.size) * cos(angle_radian) -
+		line->start_pos.y = tile.pos.x * sin(angle_radian) + (tile.pos.y +
+					pixel_cnt.y) * cos(angle_radian) + drawing_data.offset.y;
+		line->end_pos.x = (tile.pos.x + tile.size) * cos(angle_radian) -
 		(tile.pos.y + pixel_cnt.y) * sin(angle_radian) + drawing_data.offset.x;
-		line.end_pos.y = (tile.pos.x + tile.size) * sin(angle_radian) +
-								(tile.pos.y + pixel_cnt.y) * cos(angle_radian);
-		bresenham_draw_line(img_buffer, line, ints_in_image_line);
+		line->end_pos.y = (tile.pos.x + tile.size) * sin(angle_radian) +
+		(tile.pos.y + pixel_cnt.y) * cos(angle_radian) + drawing_data.offset.y;
+		bresenham_draw_line(img_data->img_buffer, img_data->line,
+															ints_in_image_line);
 	}
 	return ;
 }
@@ -85,7 +87,7 @@ void			add_tile_to_image(t_input *input, t_mlx_img_data *img_data,
 		else
 			tile.color = 0x000000;
 		tile.pos.x = tile_cnt * drawing_data.tile_size;
-		set_tile_to_image(img_data->img_buffer, tile, drawing_data);
+		set_tile_to_image(img_data, tile, drawing_data);
 	}
 	return ;
 }

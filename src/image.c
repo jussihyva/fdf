@@ -6,17 +6,58 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/27 10:57:33 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/31 16:16:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2020/08/31 18:45:24 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+// static int			ft_min(int i1, int i2)
+// {
+// 	if (i1 < i2)
+// 		return (i1);
+// 	else
+// 		return (i2);
+// }
+
+static int			ft_max(int i1, int i2)
+{
+	if (i1 > i2)
+		return (i1);
+	else
+		return (i2);
+}
 
 static void			fatal_error(void)
 {
 	ft_printf("Fatal error: Unexpected rseult from the");
 	ft_printf(" validation of mlx parammeters function!\n");
 	exit(0);
+}
+
+static t_vec2		count_offest(t_drawing_data drawing_data, t_vec2 map_size)
+{
+	t_vec2		offset;
+	double		cos_angle_radian;
+	double		sin_angle_radian;
+	int			tile_size;
+
+	cos_angle_radian = cos(drawing_data.angle_radian);
+	sin_angle_radian = sin(drawing_data.angle_radian);
+	tile_size = drawing_data.tile_size;
+	offset.x = ft_max(0, -(0 * cos_angle_radian - (tile_size * map_size.y) *
+															sin_angle_radian));
+	offset.x = ft_max(offset.x, -((tile_size * map_size.x) * cos_angle_radian -
+								(tile_size * map_size.y) * sin_angle_radian));
+	offset.x = ft_max(offset.x, -((tile_size * map_size.x) * cos_angle_radian -
+										(tile_size * 0) * sin_angle_radian));
+	offset.y = ft_max(0, -(0 * sin_angle_radian + (tile_size * map_size.y) *
+															cos_angle_radian));
+	offset.y = ft_max(offset.y, -((tile_size * map_size.x) * sin_angle_radian +
+								(tile_size * map_size.y) * cos_angle_radian));
+	offset.y = ft_max(offset.y, -((tile_size * map_size.x) * sin_angle_radian +
+								(tile_size * 0) * cos_angle_radian));
+	return (offset);
 }
 
 static void			validate_mlx_parameters(t_mlx_img_data *img_data)
@@ -59,11 +100,7 @@ void				create_picture(t_input *input, t_mlx_img_data *img_data)
 	drawing_data.tile_size = 30;
 	drawing_data.angle_radian = input->angle * PI / 180;
 	drawing_data.ints_in_image_line = img_data->line_bytes / 4;
-	drawing_data.offset.x = -((drawing_data.tile_size + 0) *
-												cos(drawing_data.angle_radian) -
-				(drawing_data.tile_size * (input->map_size.y + 1)) *
-												sin(drawing_data.angle_radian));
-	ft_printf("MIN: %d\n", drawing_data.offset.x);
+	drawing_data.offset = count_offest(drawing_data, input->map_size);
 	line_cnt = -1;
 	while (++line_cnt < input->map_size.y)
 	{
