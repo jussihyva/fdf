@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/11 11:45:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/11 20:12:26 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ typedef struct	s_log_event
 	const char		*fmt;
 	const char		*file;
 	struct timeval	tv;
-	void			*udata;
+	int				fd;
 	int				line;
 	int				level;
 }				t_log_event;
@@ -187,7 +187,7 @@ typedef void (*loging_lock_function)(int lock, void *udata);
 typedef struct	s_loging_extension
 {
 	loging_function		fn;
-	void				*udata;
+	int					fd;
 	int					level;
 }				t_loging_extension;
 
@@ -219,12 +219,11 @@ typedef enum	e_event_type
 # define ft_log_error(...) ft_login_event(LOG_ERROR, __FILE__, __LINE__, __VA_ARGS__)
 # define ft_log_fatal(...) ft_login_event(LOG_FATAL, __FILE__, __LINE__, __VA_ARGS__)
 
-const char		*log_level_string(int level);
-void			log_set_lock(loging_lock_function fn, void *udata);
+void			ft_log_set_lock(loging_lock_function fn, void *udata);
 void			ft_log_set_level(int level);
-void			log_set_quiet(int enable);
-int				log_add_callback(loging_function fn, void *udata, int level);
-int				log_add_fp(FILE *fp, int level);
+// void			log_set_quiet(int enable);
+// int				log_add_callback(loging_function fn, void *udata, int level);
+int				ft_log_add_fp(int fd, int level);
 void			ft_login_event(int level, const char *file, int line,
 														const char *fmt, ...);
 void			ft_log_set_params(const char **level_strings,

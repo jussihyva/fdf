@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:28:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/11 13:25:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/11 22:25:23 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static void		save_args(t_cmd_args *cmd_args, char *arg, char *arg_next,
 
 static int		unknown_parameter(const char *s)
 {
-	printf("Unknown optional parameter: %s\n", s);
+	ft_log_error("Unknown optional parameter: %s\n", s);
+	exit(42);
 	return (0);
 }
 

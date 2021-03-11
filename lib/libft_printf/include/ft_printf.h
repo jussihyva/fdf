@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ubuntu <ubuntu@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 11:23:34 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/06/19 08:47:07 by ubuntu           ###   ########.fr       */
+/*   Updated: 2021/03/11 20:26:03 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ typedef struct s_substring	t_substring;
 int			ft_printf(const char *format, ...);
 int			ft_dprintf(int fd, const char *format, ...);
 int			ft_sprintf(char *str, const char *format, ...);
+int			ft_vdprintf(int fd, const char *format, va_list ap);
 t_list		**split_string(char *input_string, t_list **converter_array);
 t_list		**create_formatters(void);
 t_list		**create_converters(void);

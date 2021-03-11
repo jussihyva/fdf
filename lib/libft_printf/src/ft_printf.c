@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ubuntu <ubuntu@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 10:55:34 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/06/10 08:57:18 by ubuntu           ###   ########.fr       */
+/*   Updated: 2021/03/11 22:41:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,17 @@ int				ft_dprintf(int fd, const char *format, ...)
 
 	va_start(ap, format);
 	attrs = create_output_string(&ap, format, fd, NULL);
+	va_end(ap);
+	return (attrs);
+}
+
+int				ft_vdprintf(int fd, const char *format, va_list ap)
+{
+	va_list			ap_save;
+	int				attrs;
+
+	va_copy(ap_save, ap);
+	attrs = create_output_string(&ap_save, format, fd, NULL);
 	va_end(ap);
 	return (attrs);
 }
