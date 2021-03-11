@@ -1,4 +1,4 @@
 fdf
-vscode
-fdf.dSYM
+.vscode
 *.o
+*.a
