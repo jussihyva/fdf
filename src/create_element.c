@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/11 13:02:50 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/12 16:48:45 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ t_element			*create_element(t_mlx_win *mlx_win,
 
 	element = (t_element *)ft_memalloc(sizeof(*element));
 	element->angle = (t_position *)ft_memalloc(sizeof(*element->angle));
-	element->start_position = (t_position *)ft_memalloc(sizeof(*element->start_position));
+	element->start_position =
+					(t_position *)ft_memalloc(sizeof(*element->start_position));
 	ft_memcpy(&element->elem_size, elem_size, sizeof(*elem_size));
 	ft_memcpy(element->angle, mlx_win->angle, sizeof(*mlx_win->angle));
 	element->current_positions =
@@ -62,6 +63,7 @@ t_element			*create_element(t_mlx_win *mlx_win,
 	elemental_rotation(element, element->angle, position_offset,
 																start_position);
 	element->elem_lines = set_elem_lines(element->current_positions);
-	ft_memcpy(element->start_position, start_position, sizeof(*element->start_position));
+	ft_memcpy(element->start_position, start_position,
+											sizeof(*element->start_position));
 	return (element);
 }

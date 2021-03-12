@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 12:12:11 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/12 16:40:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <fcntl.h>
 
 # define NUM_OF_ELEM_POSITIONS		8
+# define NUM_OF_OBJECT_POSITIONS	8
 
 double	**g_z_rotation_matrix[360];
 int		g_z_is_rotation_matrix[360];
@@ -43,18 +44,32 @@ typedef struct	s_cmd_args
 	int			angle_steps;
 }				t_cmd_args;
 
+typedef struct	s_xyz_values
+{
+	double		x;
+	double		y;
+	double		z;
+}				t_xyz_values;
+
 typedef struct	s_xy_values
+{
+	double		x;
+	double		y;
+}				t_xy_values;
+
+
+typedef struct	s_xy_values_old
 {
 	int			x;
 	int			y;
-}				t_xy_values;
+}				t_xy_values_old;
 
 typedef struct	s_map
 {
-	int				**elem_altitude;
-	int				max_altitude;
-	int				min_altitude;
-	t_xy_values		*map_size;
+	int					**elem_altitude;
+	int					max_altitude;
+	int					min_altitude;
+	t_xy_values_old		*map_size;
 
 }				t_map;
 
@@ -74,11 +89,12 @@ typedef struct	s_position_new
 
 typedef struct	s_input
 {
-	const char		**level_strings;
-	const char		**level_colors;
-	t_cmd_args		*cmd_args;
-	t_map			*map;
-	t_position		*angle;
+	const char			**level_strings;
+	const char			**level_colors;
+	t_cmd_args			*cmd_args;
+	t_map				*map;
+	t_position			*angle;
+	t_xy_values			object_xy_size;
 }				t_input;
 
 typedef enum	e_render_action
@@ -111,35 +127,45 @@ typedef struct	s_drawing_data
 	int				line_type;
 }				t_drawing_data;
 
+typedef struct	s_object_type
+{
+	t_xyz_values	size;
+	t_xyz_values	angle;
+	t_xyz_values	*start_positions;
+	t_xyz_values	*current_positions;
+}				t_object_type;
+
 typedef struct	s_element
 {
-	t_elem_size	elem_size;
-	t_position	*angle;
-	t_position	*current_positions;
-	t_position	*start_positions;
-	t_position	elem_position_offset;
-	t_elem_line	*elem_lines;
-	char		*addr;
-	int			bits_per_pixel;
-	int			line_length;
-	int			endian;
-	t_position	*start_position;
+	t_object_type	*object_type;
+	t_elem_size		elem_size;
+	t_position		*angle;
+	t_position		*current_positions;
+	t_position		*start_positions;
+	t_position		elem_position_offset;
+	t_elem_line		*elem_lines;
+	char			*addr;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
+	t_position		*start_position;
 }				t_element;
 
 typedef struct	s_mlx_win
 {
 	void				*mlx;
 	void				*win;
+	t_list				**object_type_lst;
 	t_element			***elem_table;
 	t_position			*first_elem_start_position;
 	t_element			***element_map;
-	t_xy_values			*element_map_size;
+	t_xy_values_old		*element_map_size;
 	t_position			*angle;
 	int					angle_step;
 	t_img				*img;
 	t_position			*img_start_position;
 	t_img				*empty_img;
-	t_xy_values			img_size;
+	t_xy_values_old		img_size;
 	t_render_action		render_action;
 }				t_mlx_win;
 
@@ -166,6 +192,8 @@ void			bresenham_draw_line(t_img *img, t_elem_line *line,
 void			release_input_data(t_input **input);
 t_cmd_args		*argp_parse(int argc, char **argv);
 void			print_start_position(t_position *elem_start_position);
+t_list			**create_object_types(t_map *map, t_position *angle,
+													t_xy_values object_xy_size);
 
 # include <time.h>
 # include <sys/time.h>

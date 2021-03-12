@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 12:16:40 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/12 16:16:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int				open_fd(char *map_file_path)
 	return (fd);
 }
 
-static void				validate_map_line(char *line, t_xy_values *map_size)
+static void				validate_map_line(char *line, t_xy_values_old *map_size)
 {
 	char			**char_array;
 	int				i;
@@ -109,7 +109,7 @@ static t_map			*validate_map(char *map_file)
 	{
 		ft_printf("Map file path: %s\n", map_file);
 		map->map_size =
-				(t_xy_values *)ft_memalloc(sizeof(*map->map_size));
+				(t_xy_values_old *)ft_memalloc(sizeof(*map->map_size));
 		while (ft_get_next_line(fd, &line) > 0)
 		{
 			ft_log_info("Line %3d: %s", map->map_size->y + 1, line);
@@ -228,6 +228,7 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 		else
 			input->angle = set_angle(input->cmd_args->x, input->cmd_args->y,
 															input->cmd_args->z);
+		// input-> calculate_object_xy_size(input->cmd_args);
 	}
 	else
 		release_input_data(&input);

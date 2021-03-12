@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 19:41:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 12:17:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/12 15:18:39 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,6 @@ static void		release_element(t_element **element)
 	return ;
 }
 
-static void		release_element_map(t_element ***element_map,
-												t_xy_values *element_map_size)
-{
-	int		i;
-	int		j;
-
-	i = -1;
-	while (++i < element_map_size->y)
-	{
-		j = -1;
-		while (++j < element_map_size->x)
-			release_element(&element_map[i][j]);
-		ft_memdel((void **)&element_map[i]);
-	}
-	ft_memdel((void **)&element_map);
-	return ;
-}
-
 void			release_mlx_win(t_mlx_win **mlx_win)
 {
 	int			i;
@@ -80,7 +62,6 @@ void			release_mlx_win(t_mlx_win **mlx_win)
 		ft_memdel((void **)&(*mlx_win)->elem_table[i]);
 	}
 	ft_memdel((void **)&(*mlx_win)->elem_table);
-	release_element_map((*mlx_win)->element_map, (*mlx_win)->element_map_size);
 	mlx_destroy_window((*mlx_win)->mlx, (*mlx_win)->win);
 	mlx_destroy_display((*mlx_win)->mlx);
 	ft_memdel((void **)&(*mlx_win)->mlx);
