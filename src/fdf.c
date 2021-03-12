@@ -6,38 +6,11 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/11 18:37:12 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/12 12:10:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-static void			set_loging_parameters(void)
-{
-	static const char *level_strings[6];
-	static const char *level_colors[6];
-
-	level_strings[LOG_TRACE] = "TRACE";
-	level_strings[LOG_DEBUG] = "DEBUG";
-	level_strings[LOG_INFO] = "INFO";
-	level_strings[LOG_WARN] = "WARN";
-	level_strings[LOG_ERROR] = "ERROR";
-	level_strings[LOG_FATAL] = "FATAL";
-	level_colors[LOG_TRACE] = "\x1b[94m";
-	level_colors[LOG_DEBUG] = "\x1b[36m";
-	level_colors[LOG_INFO] = "\x1b[32m";
-	level_colors[LOG_WARN] = "\x1b[33m";
-	level_colors[LOG_ERROR] = "\x1b[31m";
-	level_colors[LOG_FATAL] = "\x1b[35m";
-
-	ft_log_set_params(level_strings, level_colors);
-#ifdef LOGING_LEVEL
-	ft_log_set_level(LOGING_LEVEL);
-#else
-	ft_log_set_level(LOG_ERROR);
-#endif
-	return ;
-}
 
 static t_element	***create_element_map(t_mlx_win *mlx_win, t_map *map)
 {
@@ -86,7 +59,6 @@ int					main(int argc, char **argv)
 	int					j;
 	int					z;
 
-	set_loging_parameters();
 	if (!(input = read_cmd_arguments(argc, argv)))
 		return (42);
 	ft_log_info("Map file: %s", input->cmd_args->map_file);
@@ -126,7 +98,7 @@ int					main(int argc, char **argv)
 	}
 	set_position(&elem_start_position, 0, 0, 0);
 	ft_memcpy(mlx_win->img_start_position, &elem_start_position,
-											sizeof(*mlx_win->img_start_position));
+										sizeof(*mlx_win->img_start_position));
 	ft_printf("Map size x=%d\n", input->map->map_size->x);
 	ft_printf("Map size y=%d\n", input->map->map_size->y);
 	i = -1;

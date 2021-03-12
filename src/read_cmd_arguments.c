@@ -6,11 +6,50 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 11:21:41 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/12 12:16:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static void				set_level_strings(const char **level_strings)
+{
+	level_strings[LOG_TRACE] = "TRACE";
+	level_strings[LOG_DEBUG] = "DEBUG";
+	level_strings[LOG_INFO] = "INFO";
+	level_strings[LOG_WARN] = "WARN";
+	level_strings[LOG_ERROR] = "ERROR";
+	level_strings[LOG_FATAL] = "FATAL";
+	return ;
+}
+
+static void				set_loging_parameters(t_input *input)
+{
+	input->level_strings =
+				(const char **)ft_memalloc(sizeof(*input->level_strings) * 6);
+	input->level_colors =
+				(const char **)ft_memalloc(sizeof(*input->level_strings) * 6);
+	set_level_strings(input->level_strings);
+	input->level_colors[LOG_TRACE] = "\x1b[94m";
+	input->level_colors[LOG_DEBUG] = "\x1b[36m";
+	input->level_colors[LOG_INFO] = "\x1b[32m";
+	input->level_colors[LOG_WARN] = "\x1b[33m";
+	input->level_colors[LOG_ERROR] = "\x1b[31m";
+	input->level_colors[LOG_FATAL] = "\x1b[35m";
+	ft_log_set_params(input->level_strings, input->level_colors);
+
+#ifdef LOGING_LEVEL
+
+	ft_log_set_level(LOGING_LEVEL);
+
+#else
+
+	ft_log_set_level(LOG_ERROR);
+
+#endif
+
+	return ;
+}
 
 static int				open_fd(char *map_file_path)
 {
@@ -172,6 +211,7 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 	t_input		*input;
 
 	input = (t_input *)ft_memalloc(sizeof(*input));
+	set_loging_parameters(input);
 	if ((input->cmd_args = argp_parse(argc, argv)))
 	{
 		if (input->cmd_args->map_file)

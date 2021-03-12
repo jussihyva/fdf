@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 19:41:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/11 13:05:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/12 12:17:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ void			release_input_data(t_input **input)
 	}
 	ft_memdel((void **)&(*input)->cmd_args);
 	ft_memdel((void **)&(*input)->angle);
+	ft_memdel((void **)&(*input)->level_strings);
+	ft_memdel((void **)&(*input)->level_colors);
 	ft_memdel((void **)input);
 	return ;
 }

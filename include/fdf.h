@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/11 20:12:26 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/12 12:12:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ typedef struct	s_position_new
 
 typedef struct	s_input
 {
+	const char		**level_strings;
+	const char		**level_colors;
 	t_cmd_args		*cmd_args;
 	t_map			*map;
 	t_position		*angle;
