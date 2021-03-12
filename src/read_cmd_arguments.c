@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/11 13:39:40 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/12 11:21:41 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int				open_fd(char *map_file_path)
 
 	if ((fd = open(map_file_path, O_RDONLY)) == -1)
 	{
-		ft_log_error("%s (%s) failed! errno=%d. %s: %s", 
+		ft_log_error("%s (%s) failed! errno=%d. %s: %s",
 					"Opening of a file", map_file_path, errno, "Detail info",
 					strerror(errno));
 		ft_log_error("A map is mandatory input for fdf!");
@@ -63,6 +63,8 @@ static t_map			*validate_map(char *map_file)
 	char			*line;
 
 	map = (t_map *)ft_memalloc(sizeof(*map));
+	map->max_altitude = INT_MIN;
+	map->min_altitude = INT_MAX;
 	line = NULL;
 	if ((fd = open_fd(map_file)) >= 0)
 	{
@@ -71,14 +73,12 @@ static t_map			*validate_map(char *map_file)
 				(t_xy_values *)ft_memalloc(sizeof(*map->map_size));
 		while (ft_get_next_line(fd, &line) > 0)
 		{
-			ft_printf("Line %3d: %s\n", map->map_size->y, line);
+			ft_log_info("Line %3d: %s", map->map_size->y + 1, line);
 			validate_map_line(line, map->map_size);
 			map->map_size->y++;
 			ft_strdel(&line);
 		}
 		ft_strdel(&line);
-		ft_printf("Map size: X=%d Y=%d\n", map->map_size->x,
-													map->map_size->y);
 		close(fd);
 	}
 	return (map);
@@ -103,38 +103,55 @@ static int				*read_map_values(char *line, int size)
 	return (array);
 }
 
+static void				set_min_max_altitude(int line_index, t_map *map)
+{
+	int				j;
+
+	j = -1;
+	while (++j < map->map_size->x)
+	{
+		map->min_altitude = ft_min_int(map->max_altitude,
+											map->elem_altitude[line_index][j]);
+		map->max_altitude = ft_max_int(map->max_altitude,
+											map->elem_altitude[line_index][j]);
+	}
+}
+
+static void				read_content_of_map_file(int fd, t_map *map)
+{
+	char			*line;
+	int				line_index;
+
+	line_index = -1;
+	while (ft_get_next_line(fd, &line) > 0)
+	{
+		line_index++;
+		map->elem_altitude[line_index] =
+										read_map_values(line, map->map_size->x);
+		set_min_max_altitude(line_index, map);
+		ft_strdel(&line);
+	}
+	ft_strdel(&line);
+}
+
 static t_map			*read_map_file(char *map_file)
 {
 	t_map			*map;
 	int				fd;
-	int				i;
-	int				j;
 	char			*line;
 
 	line = NULL;
 	map = validate_map(map_file);
-	map->max_altitude = INT_MIN;
-	map->min_altitude = INT_MAX;
+	ft_log_info("Map size: X=%d Y=%d\n", map->map_size->x, map->map_size->y);
 	fd = open_fd(map_file);
 	map->elem_altitude = (int **)ft_memalloc(sizeof(*map->elem_altitude) *
 												map->map_size->y);
-	i = -1;
-	while (ft_get_next_line(fd, &line) > 0)
+	read_content_of_map_file(fd, map);
+	if (!map->map_size->x)
 	{
-		i++;
-		map->elem_altitude[i] = read_map_values(line,
-												map->map_size->x);
-		j = -1;
-		while (++j < map->map_size->x)
-		{
-			map->min_altitude = ft_min_int(map->max_altitude,
-												map->elem_altitude[i][j]);
-			map->max_altitude = ft_max_int(map->max_altitude,
-												map->elem_altitude[i][j]);
-		}
-		ft_strdel(&line);
+		ft_log_error("Empty file: %s", map_file);
+		exit(42);
 	}
-	ft_strdel(&line);
 	close(fd);
 	return (map);
 }
@@ -157,12 +174,6 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 	input = (t_input *)ft_memalloc(sizeof(*input));
 	if ((input->cmd_args = argp_parse(argc, argv)))
 	{
-		if (!input->cmd_args->angle_steps)
-			input->cmd_args->angle_steps = 5;
-		if (!input->cmd_args->altitude_factor)
-			input->cmd_args->altitude_factor = 1;
-		if (!input->cmd_args->elem_side_len)
-			input->cmd_args->elem_side_len = 20;
 		if (input->cmd_args->map_file)
 			input->map = read_map_file(input->cmd_args->map_file);
 		if (input->cmd_args->projection_type)
