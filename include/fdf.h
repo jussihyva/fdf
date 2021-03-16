@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 16:40:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/16 08:27:28 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ typedef struct	s_xy_values
 	double		y;
 }				t_xy_values;
 
+typedef struct	s_xy_values_int
+{
+	int			x;
+	int			y;
+}				t_xy_values_int;
 
 typedef struct	s_xy_values_old
 {
@@ -64,13 +69,21 @@ typedef struct	s_xy_values_old
 	int			y;
 }				t_xy_values_old;
 
+typedef struct	s_object_type
+{
+	t_xyz_values	size;
+	t_xyz_values	angle;
+	t_xyz_values	*start_positions;
+	t_xyz_values	*current_positions;
+}				t_object_type;
+
 typedef struct	s_map
 {
 	int					**elem_altitude;
 	int					max_altitude;
 	int					min_altitude;
 	t_xy_values_old		*map_size;
-
+	t_object_type		*object_type;
 }				t_map;
 
 typedef struct	s_position
@@ -126,14 +139,6 @@ typedef struct	s_drawing_data
 	t_position		end;
 	int				line_type;
 }				t_drawing_data;
-
-typedef struct	s_object_type
-{
-	t_xyz_values	size;
-	t_xyz_values	angle;
-	t_xyz_values	*start_positions;
-	t_xyz_values	*current_positions;
-}				t_object_type;
 
 typedef struct	s_element
 {
@@ -192,8 +197,8 @@ void			bresenham_draw_line(t_img *img, t_elem_line *line,
 void			release_input_data(t_input **input);
 t_cmd_args		*argp_parse(int argc, char **argv);
 void			print_start_position(t_position *elem_start_position);
-t_list			**create_object_types(t_map *map, t_position *angle,
-													t_xy_values object_xy_size);
+void			create_object_types(t_list **object_type_lst,
+					t_map *map, t_position *angle, t_xy_values object_xy_size);
 
 # include <time.h>
 # include <sys/time.h>

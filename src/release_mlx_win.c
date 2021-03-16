@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 19:41:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 15:18:39 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/16 22:42:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,27 +46,48 @@ static void		release_element(t_element **element)
 	return ;
 }
 
-void			release_mlx_win(t_mlx_win **mlx_win)
+static void		delete_object_type(void *content, size_t size)
+{
+	t_object_type	*object_type;
+
+	(void)size;
+	object_type = *(t_object_type **)content;
+	ft_memdel((void **)&object_type->start_positions);
+	ft_memdel((void **)&object_type);
+	ft_memdel(&content);
+	return ;
+}
+
+static void		release_elements(t_xy_values_old *element_map_size,
+														t_element ***elem_table)
 {
 	int			i;
 	int			j;
 
-	mlx_destroy_image((*mlx_win)->mlx, (*mlx_win)->empty_img);
-	mlx_destroy_image((*mlx_win)->mlx, (*mlx_win)->img);
 	i = -1;
-	while (++i < (*mlx_win)->element_map_size->y)
+	while (++i < element_map_size->y)
 	{
 		j = -1;
-		while (++j < (*mlx_win)->element_map_size->x)
-			release_element(&(*mlx_win)->elem_table[i][j]);
-		ft_memdel((void **)&(*mlx_win)->elem_table[i]);
+		while (++j < element_map_size->x)
+			release_element(&elem_table[i][j]);
+		ft_memdel((void **)&elem_table[i]);
 	}
+	return ;
+}
+
+void			release_mlx_win(t_mlx_win **mlx_win)
+{
+	mlx_destroy_image((*mlx_win)->mlx, (*mlx_win)->empty_img);
+	mlx_destroy_image((*mlx_win)->mlx, (*mlx_win)->img);
+	release_elements((*mlx_win)->element_map_size, (*mlx_win)->elem_table);
 	ft_memdel((void **)&(*mlx_win)->elem_table);
 	mlx_destroy_window((*mlx_win)->mlx, (*mlx_win)->win);
 	mlx_destroy_display((*mlx_win)->mlx);
 	ft_memdel((void **)&(*mlx_win)->mlx);
 	ft_memdel((void **)&(*mlx_win)->img_start_position);
 	ft_memdel((void **)&(*mlx_win)->first_elem_start_position);
+	ft_lstdel((*mlx_win)->object_type_lst, delete_object_type);
+	ft_memdel((void **)&(*mlx_win)->object_type_lst);
 	ft_memdel((void **)mlx_win);
 	release_rotation_matrix(g_z_rotation_matrix, g_z_is_rotation_matrix);
 	release_rotation_matrix(g_y_rotation_matrix, g_y_is_rotation_matrix);

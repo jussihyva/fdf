@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 16:16:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/12 20:18:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static t_map			*validate_map(char *map_file)
 				(t_xy_values_old *)ft_memalloc(sizeof(*map->map_size));
 		while (ft_get_next_line(fd, &line) > 0)
 		{
-			ft_log_info("Line %3d: %s", map->map_size->y + 1, line);
+			ft_log_debug("Line %3d: %s", map->map_size->y + 1, line);
 			validate_map_line(line, map->map_size);
 			map->map_size->y++;
 			ft_strdel(&line);
@@ -161,6 +161,8 @@ static void				read_content_of_map_file(int fd, t_map *map)
 	char			*line;
 	int				line_index;
 
+	map->elem_altitude = (int **)ft_memalloc(sizeof(*map->elem_altitude) *
+												map->map_size->y);
 	line_index = -1;
 	while (ft_get_next_line(fd, &line) > 0)
 	{
@@ -183,8 +185,6 @@ static t_map			*read_map_file(char *map_file)
 	map = validate_map(map_file);
 	ft_log_info("Map size: X=%d Y=%d\n", map->map_size->x, map->map_size->y);
 	fd = open_fd(map_file);
-	map->elem_altitude = (int **)ft_memalloc(sizeof(*map->elem_altitude) *
-												map->map_size->y);
 	read_content_of_map_file(fd, map);
 	if (!map->map_size->x)
 	{
@@ -204,6 +204,14 @@ static t_position		*set_angle(int x, int y, int z)
 	angle->y = ft_mod_int(y, 360);
 	angle->z = ft_mod_int(z, 360);
 	return (angle);
+}
+
+static void				calculate_object_xy_size(t_xy_values *object_xy_size,
+														t_cmd_args *cmd_args)
+{
+	object_xy_size->x = (double)cmd_args->elem_side_len;
+	object_xy_size->y = (double)cmd_args->elem_side_len;
+	return ;
 }
 
 t_input					*read_cmd_arguments(int argc, char **argv)
@@ -228,7 +236,7 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 		else
 			input->angle = set_angle(input->cmd_args->x, input->cmd_args->y,
 															input->cmd_args->z);
-		// input-> calculate_object_xy_size(input->cmd_args);
+		calculate_object_xy_size(&input->object_xy_size, input->cmd_args);
 	}
 	else
 		release_input_data(&input);
