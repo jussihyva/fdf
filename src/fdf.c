@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 19:08:44 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 00:04:02 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ int					main(int argc, char **argv)
 {
 	t_mlx_win			*mlx_win;
 	t_position			elem_start_position;
-	t_position			elem_size;
 	t_position			*position_offset;
 	t_input				*input;
 	int					**elem_altitude;
 	int					i;
 	int					j;
-	int					z;
 
 	if (!(input = read_cmd_arguments(argc, argv)))
 		return (42);
@@ -37,8 +35,7 @@ int					main(int argc, char **argv)
 	mlx_win->render_action = e_no_action;
 	mlx_win->object_type_lst =
 					(t_list **)ft_memalloc(sizeof(*mlx_win->object_type_lst));
-	create_object_types(mlx_win->object_type_lst, input->map, input->angle,
-														input->object_xy_size);
+	create_object_types(mlx_win->object_type_lst, input->map, input);
 	mlx_win->angle = input->angle;
 	ft_log_info("Start angle: x=%d, y=%d z=%d\n", mlx_win->angle->x,
 										mlx_win->angle->y, mlx_win->angle->z);
@@ -79,12 +76,9 @@ int					main(int argc, char **argv)
 		j = -1;
 		while (++j < input->map->map_size->x)
 		{
-			z = input->map->elem_altitude[i][j] *
-											input->cmd_args->altitude_factor;
-			set_position(&elem_size, input->cmd_args->elem_side_len,
-											input->cmd_args->elem_side_len, z);
 			mlx_win->elem_table[i][j] = create_element(mlx_win,
-							&elem_start_position, position_offset, &elem_size);
+										&elem_start_position, position_offset,
+												input->map->object_type[i][j]);
 			ft_memcpy(&elem_start_position,
 									mlx_win->elem_table[i][j]->start_position,
 												sizeof(elem_start_position));

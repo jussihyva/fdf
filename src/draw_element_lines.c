@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 23:12:39 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/11 13:15:26 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 00:08:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void			draw_lines(t_img *img, t_element *element)
 	{
 		if (i == 1 || i == 5 || i == 6)
 			elem_lines[i].line_type = 1;
-		if (element->elem_size.z)
+		if (element->object_type->size.z)
 			elem_lines[i].color = 0x00FF0000;
 		else
 			elem_lines[i].color = 0x000000FF;

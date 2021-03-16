@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 16:48:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 00:12:26 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,20 @@ static t_elem_line	*set_elem_lines(t_position *elem_positions)
 
 t_element			*create_element(t_mlx_win *mlx_win,
 						t_position *start_position, t_position *position_offset,
-						t_position *elem_size)
+						t_object_type *object_type)
 {
 	t_element	*element;
 
 	element = (t_element *)ft_memalloc(sizeof(*element));
 	element->angle = (t_position *)ft_memalloc(sizeof(*element->angle));
+	element->object_type = object_type;
 	element->start_position =
 					(t_position *)ft_memalloc(sizeof(*element->start_position));
-	ft_memcpy(&element->elem_size, elem_size, sizeof(*elem_size));
 	ft_memcpy(element->angle, mlx_win->angle, sizeof(*mlx_win->angle));
 	element->current_positions =
 			(t_position *)ft_memalloc(sizeof(*element->current_positions) *
 														NUM_OF_ELEM_POSITIONS);
-	element->start_positions = set_elem_positions(&element->elem_size);
+	element->start_positions = set_elem_positions(&object_type->size);
 	elemental_rotation(element, element->angle, position_offset,
 																start_position);
 	element->elem_lines = set_elem_lines(element->current_positions);

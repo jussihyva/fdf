@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/16 08:27:28 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 00:14:33 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct	s_map
 	int					max_altitude;
 	int					min_altitude;
 	t_xy_values_old		*map_size;
-	t_object_type		*object_type;
+	t_object_type		***object_type;
 }				t_map;
 
 typedef struct	s_position
@@ -143,7 +143,6 @@ typedef struct	s_drawing_data
 typedef struct	s_element
 {
 	t_object_type	*object_type;
-	t_elem_size		elem_size;
 	t_position		*angle;
 	t_position		*current_positions;
 	t_position		*start_positions;
@@ -183,10 +182,10 @@ int				leave_notify(t_mlx_win *mlx_win);
 void			release_mlx_win(t_mlx_win **mlx_win);
 int				render_frame(t_mlx_win *mlx_win);
 t_element		*create_element(t_mlx_win *mlx_win, t_position *start_position,
-							t_position *position_offset, t_position *elem_size);
+					t_position *position_offset, t_object_type *object_type);
 void			mlx_image_pixel_put(t_img *img, int x, int y, int color);
 void			initialize_window(t_mlx_win *mlx_win, char *window_name);
-t_position		*set_elem_positions(t_elem_size *elem_size);
+t_position		*set_elem_positions(t_xyz_values *elem_size);
 void			elemental_rotation(t_element *element, t_position *angle,
 					t_position *position_offset, t_position *start_position);
 void			draw_lines(t_img *img, t_element *element);
@@ -197,8 +196,7 @@ void			bresenham_draw_line(t_img *img, t_elem_line *line,
 void			release_input_data(t_input **input);
 t_cmd_args		*argp_parse(int argc, char **argv);
 void			print_start_position(t_position *elem_start_position);
-void			create_object_types(t_list **object_type_lst,
-					t_map *map, t_position *angle, t_xy_values object_xy_size);
+void			create_object_types(t_list **object_type_lst, t_map *map, t_input *input);
 
 # include <time.h>
 # include <sys/time.h>

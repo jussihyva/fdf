@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 19:41:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/16 22:42:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/16 23:30:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,10 @@ void			release_input_data(t_input **input)
 	{
 		while (++i < (*input)->map->map_size->y)
 		{
+			ft_memdel((void **)&(*input)->map->object_type[i]);
 			ft_memdel((void **)&(*input)->map->elem_altitude[i]);
 		}
+		ft_memdel((void **)&(*input)->map->object_type);
 		ft_memdel((void **)&(*input)->map->elem_altitude);
 		ft_memdel((void **)&(*input)->map->map_size);
 		ft_memdel((void **)&(*input)->map);

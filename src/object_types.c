@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 15:26:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/16 22:45:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 00:03:32 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ static t_xyz_values		*set_object_positions(t_xyz_values *object_size)
 }
 
 static t_object_type	*create_new_object_type(double altitude,
-		t_position *angle, t_xy_values object_xy_size, t_list **object_type_lst)
+									t_input *input, t_list **object_type_lst)
 {
 	t_list			*object_elem;
 	t_object_type	*object_type;
 
 	object_type = (t_object_type *)ft_memalloc(sizeof(*object_type));
-	set_xyz_values(&object_type->angle, (double)angle->x,
-											(double)angle->y, (double)angle->z);
-	set_xyz_values(&object_type->size, object_xy_size.x,
-													object_xy_size.y, altitude);
+	set_xyz_values(&object_type->angle, (double)input->angle->x,
+							(double)input->angle->y, (double)input->angle->z);
+	set_xyz_values(&object_type->size, input->object_xy_size.x,
+											input->object_xy_size.y, altitude);
 	object_type->start_positions = set_object_positions(&object_type->size);
 	object_elem = ft_lstnew(&object_type, sizeof(object_type));
 	ft_lstadd(object_type_lst, object_elem);
@@ -76,26 +76,43 @@ static t_object_type	*is_object_type_added(t_list **object_type_lst,
 	return (object_type);
 }
 
-void					create_object_types(t_list **object_type_lst,
-					t_map *map, t_position *angle, t_xy_values object_xy_size)
+static t_object_type	***initialize_objet_type(t_map *map)
 {
-	t_xy_values_int		index;
+	t_object_type		***object_type;
+	int					i;
+
+	object_type = (t_object_type ***)ft_memalloc(sizeof(*object_type) *
+															map->map_size->y);
+	i = -1;
+	while (++i < map->map_size->y)
+		object_type[i] = (t_object_type **)ft_memalloc(sizeof(*object_type[i]) *
+															map->map_size->x);
+	return (object_type);
+}
+
+void					create_object_types(t_list **object_type_lst,
+													t_map *map, t_input *input)
+{
 	size_t				obj_counter;
 	double				altitude;
+	int					i;
+	int					j;
 
+	map->object_type = initialize_objet_type(map);
 	obj_counter = 0;
-	index.x = -1;
-	while (++index.x < map->map_size->y)
+	i = -1;
+	while (++i < map->map_size->y)
 	{
-		index.y = -1;
-		while (++index.y < map->map_size->x)
+		j = -1;
+		while (++j < map->map_size->x)
 		{
-			altitude = (double)map->elem_altitude[index.x][index.y];
-			if (!(map->object_type = is_object_type_added(object_type_lst,
+			altitude = (double)map->elem_altitude[i][j] *
+											input->cmd_args->altitude_factor;
+			if (!(map->object_type[i][j] = is_object_type_added(object_type_lst,
 																	altitude)))
 			{
-				map->object_type = create_new_object_type(altitude, angle,
-											object_xy_size, object_type_lst);
+				map->object_type[i][j] = create_new_object_type(altitude, input,
+															object_type_lst);
 				obj_counter++;
 			}
 		}
