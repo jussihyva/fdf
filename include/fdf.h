@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 00:14:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 07:59:02 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct	s_map
 	int					**elem_altitude;
 	int					max_altitude;
 	int					min_altitude;
+	size_t				obj_counter;
 	t_xy_values_old		*map_size;
 	t_object_type		***object_type;
 }				t_map;
@@ -186,8 +187,9 @@ t_element		*create_element(t_mlx_win *mlx_win, t_position *start_position,
 void			mlx_image_pixel_put(t_img *img, int x, int y, int color);
 void			initialize_window(t_mlx_win *mlx_win, char *window_name);
 t_position		*set_elem_positions(t_xyz_values *elem_size);
-void			elemental_rotation(t_element *element, t_position *angle,
-					t_position *position_offset, t_position *start_position);
+void			elemental_rotation(t_position *current_positions,
+								t_position *angle, t_position *position_offset,
+													t_position *start_position);
 void			draw_lines(t_img *img, t_element *element);
 void			set_position(t_position *position, int x, int y, int z);
 t_input			*read_cmd_arguments(int argc, char **argv);

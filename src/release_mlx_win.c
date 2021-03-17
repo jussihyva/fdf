@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 19:41:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/16 23:30:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 07:29:46 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static void		delete_object_type(void *content, size_t size)
 	(void)size;
 	object_type = *(t_object_type **)content;
 	ft_memdel((void **)&object_type->start_positions);
+	ft_memdel((void **)&object_type->current_positions);
 	ft_memdel((void **)&object_type);
 	ft_memdel(&content);
 	return ;

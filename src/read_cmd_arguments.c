@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 20:18:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 07:22:26 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ static t_map			*read_map_file(char *map_file)
 
 	line = NULL;
 	map = validate_map(map_file);
-	ft_log_info("Map size: X=%d Y=%d\n", map->map_size->x, map->map_size->y);
+	ft_log_info("Map size: X=%d Y=%d", map->map_size->x, map->map_size->y);
 	fd = open_fd(map_file);
 	read_content_of_map_file(fd, map);
 	if (!map->map_size->x)

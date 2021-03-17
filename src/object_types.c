@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 15:26:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 00:03:32 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 07:40:09 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,17 @@ static t_object_type	*create_new_object_type(double altitude,
 	set_xyz_values(&object_type->size, input->object_xy_size.x,
 											input->object_xy_size.y, altitude);
 	object_type->start_positions = set_object_positions(&object_type->size);
+	object_type->current_positions =
+		(t_xyz_values *)ft_memalloc(sizeof(*object_type->current_positions) *
+													NUM_OF_OBJECT_POSITIONS);
+	ft_memcpy(object_type->current_positions, object_type->start_positions,
+			sizeof(&object_type->current_positions) * NUM_OF_OBJECT_POSITIONS);
 	object_elem = ft_lstnew(&object_type, sizeof(object_type));
 	ft_lstadd(object_type_lst, object_elem);
 	return (object_type);
 }
 
-static t_object_type	*is_object_type_added(t_list **object_type_lst,
+static t_object_type	*get_object_type(t_list **object_type_lst,
 																double altitude)
 {
 	t_list			*object_elem;
@@ -93,13 +98,12 @@ static t_object_type	***initialize_objet_type(t_map *map)
 void					create_object_types(t_list **object_type_lst,
 													t_map *map, t_input *input)
 {
-	size_t				obj_counter;
 	double				altitude;
+	t_object_type		*object_type;
 	int					i;
 	int					j;
 
 	map->object_type = initialize_objet_type(map);
-	obj_counter = 0;
 	i = -1;
 	while (++i < map->map_size->y)
 	{
@@ -108,15 +112,15 @@ void					create_object_types(t_list **object_type_lst,
 		{
 			altitude = (double)map->elem_altitude[i][j] *
 											input->cmd_args->altitude_factor;
-			if (!(map->object_type[i][j] = is_object_type_added(object_type_lst,
-																	altitude)))
+			if (!(object_type = get_object_type(object_type_lst, altitude)))
 			{
-				map->object_type[i][j] = create_new_object_type(altitude, input,
+				object_type = create_new_object_type(altitude, input,
 															object_type_lst);
-				obj_counter++;
+				map->obj_counter++;
 			}
+			map->object_type[i][j] = object_type;
 		}
 	}
-	ft_log_info("Number of object types: %u", obj_counter);
+	ft_log_info("Number of object types: %u", map->obj_counter);
 	return ;
 }

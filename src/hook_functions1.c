@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 12:47:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/11 13:07:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 07:57:11 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int				key_press(int keycode, t_mlx_win *mlx_win)
 {
 	t_position		*position_offset;
 	t_position		elem_start_position;
+	t_element		*element;
 	int				i;
 	int				j;
 
@@ -63,10 +64,13 @@ int				key_press(int keycode, t_mlx_win *mlx_win)
 			j = -1;
 			while (++j < mlx_win->element_map_size->x)
 			{
+				element = mlx_win->elem_table[i][j];
 				ft_memcpy(mlx_win->elem_table[i][j]->start_position,
 														&elem_start_position,
 								sizeof(mlx_win->elem_table[i][j]->start_position));
-				elemental_rotation(mlx_win->elem_table[i][j], mlx_win->angle,
+				ft_memcpy(element->current_positions, element->start_positions,
+						sizeof(*element->start_positions) * NUM_OF_ELEM_POSITIONS);
+				elemental_rotation(element->current_positions, mlx_win->angle,
 								position_offset, mlx_win->elem_table[i][j]->start_position);
 				ft_memcpy(&elem_start_position, mlx_win->elem_table[i][j]->start_position, sizeof(elem_start_position));
 				elem_start_position.x += mlx_win->elem_table[i][j]->current_positions[1].x;

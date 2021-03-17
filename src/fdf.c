@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 00:04:02 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 07:22:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ int					main(int argc, char **argv)
 	set_position(&elem_start_position, 0, 0, 0);
 	ft_memcpy(mlx_win->img_start_position, &elem_start_position,
 										sizeof(*mlx_win->img_start_position));
-	ft_printf("Map size x=%d\n", input->map->map_size->x);
-	ft_printf("Map size y=%d\n", input->map->map_size->y);
 	i = -1;
 	while (++i < input->map->map_size->y)
 	{

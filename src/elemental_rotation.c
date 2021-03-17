@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 20:46:08 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/11 13:14:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 07:56:46 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,30 +148,25 @@ static size_t	line_len(t_position *elem_position1, t_position *elem_position2)
 	return ((size_t)len);
 }
 
-static void		print_element_data(t_element *element, t_position *angle)
+static void		print_element_data(t_position *positions, t_position *angle)
 {
-	t_position	*positions;
 	size_t		size54;
 	size_t		size57;
 	size_t		size51;
 
 	(void)angle;
-	positions = element->current_positions;
 	size54 = line_len(&positions[5], &positions[4]);
 	size57 = line_len(&positions[7], &positions[5]);
 	size51 = line_len(&positions[1], &positions[5]);
 	return ;
 }
 
-void			elemental_rotation(t_element *element, t_position *angle,
-						t_position *position_offset, t_position *start_position)
+void			elemental_rotation(t_position *current_positions,
+								t_position *angle, t_position *position_offset,
+													t_position *start_position)
 {
 	size_t		i;
-	t_position	*current_positions;
 
-	ft_memcpy(element->current_positions, element->start_positions,
-				sizeof(*element->start_positions) * NUM_OF_ELEM_POSITIONS);
-	current_positions = element->current_positions;
 	i = -1;
 	while (++i < NUM_OF_ELEM_POSITIONS)
 	{
@@ -186,6 +181,6 @@ void			elemental_rotation(t_element *element, t_position *angle,
 													-(current_positions[i].z +
 														start_position->z));
 	}
-	print_element_data(element, angle);
+	print_element_data(current_positions, angle);
 	return ;
 }
