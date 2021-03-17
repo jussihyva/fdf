@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 20:46:08 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/17 12:48:44 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 18:54:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,11 @@ static double	**get_z_rotation_matrix(double angle)
 	double			radian_angle;
 
 	radian_angle = ft_radian(angle);
-	if ((angle == (double)((int)angle)) && (!g_z_is_rotation_matrix[(int)angle]))
+	if ((angle == (double)((int)angle)) &&
+										(!g_z_is_rotation_matrix[(int)angle]))
 	{
-		g_z_rotation_matrix[(int)angle] = initialize_rotation_matrix(radian_angle,
-														fn_z_rotation_matrix);
+		g_z_rotation_matrix[(int)angle] =
+				initialize_rotation_matrix(radian_angle, fn_z_rotation_matrix);
 		g_z_is_rotation_matrix[(int)angle] = 1;
 	}
 	rotation_matrix = g_z_rotation_matrix[(int)angle];
@@ -81,11 +82,12 @@ static double	**get_y_rotation_matrix(double angle)
 	double			**rotation_matrix;
 	double			radian_angle;
 
-	if ((angle == (double)((int)angle)) && (!g_y_is_rotation_matrix[(int)angle]))
+	if ((angle == (double)((int)angle)) &&
+										(!g_y_is_rotation_matrix[(int)angle]))
 	{
 		radian_angle = ft_radian(angle);
-		g_y_rotation_matrix[(int)angle] = initialize_rotation_matrix(radian_angle,
-														fn_y_rotation_matrix);
+		g_y_rotation_matrix[(int)angle] =
+				initialize_rotation_matrix(radian_angle, fn_y_rotation_matrix);
 		g_y_is_rotation_matrix[(int)angle] = 1;
 	}
 	rotation_matrix = g_y_rotation_matrix[(int)angle];
@@ -101,11 +103,12 @@ static double	**get_x_rotation_matrix(double angle)
 	double			**rotation_matrix;
 	double			radian_angle;
 
-	if ((angle == (double)((int)angle)) && (!g_x_is_rotation_matrix[(int)angle]))
+	if ((angle == (double)((int)angle)) &&
+										(!g_x_is_rotation_matrix[(int)angle]))
 	{
 		radian_angle = ft_radian(angle);
-		g_x_rotation_matrix[(int)angle] = initialize_rotation_matrix(radian_angle,
-														fn_x_rotation_matrix);
+		g_x_rotation_matrix[(int)angle] =
+				initialize_rotation_matrix(radian_angle, fn_x_rotation_matrix);
 		g_x_is_rotation_matrix[(int)angle] = 1;
 	}
 	rotation_matrix = g_x_rotation_matrix[(int)angle];
@@ -163,7 +166,7 @@ static void		print_element_data(t_xyz_values *positions, t_xyz_values *angle)
 }
 
 void			elemental_rotation(t_xyz_values *current_positions,
-							t_xyz_values *angle, t_position *position_offset,
+							t_xyz_values *angle, t_xyz_values *position_offset,
 												t_xyz_values *start_position)
 {
 	size_t		i;
@@ -171,17 +174,37 @@ void			elemental_rotation(t_xyz_values *current_positions,
 	i = -1;
 	while (++i < NUM_OF_ELEM_POSITIONS)
 	{
-		rotate(&(current_positions[i]), angle);
-		position_offset->x = ft_max_int(position_offset->x,
+		position_offset->x = ft_max_double(position_offset->x,
 													-(current_positions[i].x +
 														start_position->x));
-		position_offset->y = ft_max_int(position_offset->y,
+		position_offset->y = ft_max_double(position_offset->y,
 													-(current_positions[i].y +
 														start_position->y));
-		position_offset->z = ft_max_int(position_offset->z,
+		position_offset->z = ft_max_double(position_offset->z,
 													-(current_positions[i].z +
 														start_position->z));
 	}
 	print_element_data(current_positions, angle);
+	return ;
+}
+
+void			rotate_objects(t_list **object_type_lst, t_xyz_values *angle)
+{
+	t_list			*elem;
+	t_object_type	*object_type;
+	size_t			i;
+
+	elem = *object_type_lst;
+	while (elem)
+	{
+		object_type = *(t_object_type **)elem->content;
+		ft_memcpy(&object_type->angle, angle, sizeof(object_type->angle));
+		ft_memcpy(object_type->current_positions, object_type->start_positions,
+			sizeof(*object_type->current_positions) * NUM_OF_OBJECT_POSITIONS);
+		i = -1;
+		while (++i < NUM_OF_ELEM_POSITIONS)
+			rotate(&(object_type->current_positions[i]), &object_type->angle);
+		elem = elem->next;
+	}
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 12:32:34 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 18:30:09 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static void		draw_low(unsigned int *img_buffer, t_drawing_data *drawing_data)
 	int				step;
 	int				plot_index;
 
-	delta.x = ft_abs(drawing_data->end->x - drawing_data->start->x);
-	delta.y = ft_abs(drawing_data->end->y - drawing_data->start->y);
+	delta.x = ft_abs(drawing_data->end.x - drawing_data->start.x);
+	delta.y = ft_abs(drawing_data->end.y - drawing_data->start.y);
 	difference = 2 * delta.y - delta.x;
-	step = (drawing_data->end->y < drawing_data->start->y) ? -1 : 1;
-	plot_pos.y = drawing_data->start->y;
-	plot_pos.x = drawing_data->start->x;
-	while (plot_pos.x <= drawing_data->end->x)
+	step = (drawing_data->end.y < drawing_data->start.y) ? -1 : 1;
+	plot_pos.y = drawing_data->start.y;
+	plot_pos.x = drawing_data->start.x;
+	while (plot_pos.x <= drawing_data->end.x)
 	{
 		plot_index = (plot_pos.y * drawing_data->size_line) + plot_pos.x;
 		if (img_buffer[plot_index] < drawing_data->color)
@@ -47,7 +47,8 @@ static void		draw_low(unsigned int *img_buffer, t_drawing_data *drawing_data)
 	return ;
 }
 
-static void		draw_high(unsigned int *img_buffer, t_drawing_data *drawing_data)
+static void		draw_high(unsigned int *img_buffer,
+												t_drawing_data *drawing_data)
 {
 	t_elem_size		delta;
 	int				difference;
@@ -55,13 +56,13 @@ static void		draw_high(unsigned int *img_buffer, t_drawing_data *drawing_data)
 	int				step;
 	int				plot_index;
 
-	delta.x = ft_abs(drawing_data->end->x - drawing_data->start->x);
-	delta.y = ft_abs(drawing_data->end->y - drawing_data->start->y);
+	delta.x = ft_abs(drawing_data->end.x - drawing_data->start.x);
+	delta.y = ft_abs(drawing_data->end.y - drawing_data->start.y);
 	difference = 2 * delta.x - delta.y;
-	step = (drawing_data->end->x < drawing_data->start->x) ? -1 : 1;
-	plot_pos.y = drawing_data->start->y;
-	plot_pos.x = drawing_data->start->x;
-	while (plot_pos.y <= drawing_data->end->y)
+	step = (drawing_data->end.x < drawing_data->start.x) ? -1 : 1;
+	plot_pos.y = drawing_data->start.y;
+	plot_pos.x = drawing_data->start.x;
+	while (plot_pos.y <= drawing_data->end.y)
 	{
 		plot_index = (plot_pos.y * drawing_data->size_line) + plot_pos.x;
 		if (img_buffer[plot_index] < drawing_data->color)
@@ -94,10 +95,10 @@ static void		initialize_drawing_data(t_drawing_data *drawing_data,
 static void		add_offset(t_drawing_data *drawing_data,
 											t_position *elem_position_offset)
 {
-	drawing_data->start->x += elem_position_offset->x;
-	drawing_data->start->y += elem_position_offset->y;
-	drawing_data->end->x += elem_position_offset->x;
-	drawing_data->end->y += elem_position_offset->y;
+	drawing_data->start.x += elem_position_offset->x;
+	drawing_data->start.y += elem_position_offset->y;
+	drawing_data->end.x += elem_position_offset->x;
+	drawing_data->end.y += elem_position_offset->y;
 	return ;
 }
 
@@ -109,18 +110,22 @@ void			bresenham_draw_line(t_img *img, t_elem_line *line,
 	t_drawing_data	drawing_data;
 
 	initialize_drawing_data(&drawing_data, img, line);
-	delta_x = ft_abs(line->end.x - line->start.x);
-	delta_y = ft_abs(line->end.y - line->start.y);
-	if ((delta_y < delta_x && line->start.x > line->end.x) ||
-		(delta_y > delta_x && line->start.y > line->end.y))
+	delta_x = ft_abs((int)line->end->x - (int)line->start->x);
+	delta_y = ft_abs((int)line->end->y - (int)line->start->y);
+	if ((delta_y < delta_x && line->start->x > line->end->x) ||
+		(delta_y > delta_x && line->start->y > line->end->y))
 	{
-		drawing_data.start = &line->end;
-		drawing_data.end = &line->start;
+		drawing_data.start.x = (int)line->end->x;
+		drawing_data.start.y = (int)line->end->y;
+		drawing_data.end.x = (int)line->start->x;
+		drawing_data.end.y = (int)line->start->y;
 	}
 	else
 	{
-		drawing_data.start = &line->start;
-		drawing_data.end = &line->end;
+		drawing_data.start.x = (int)line->start->x;
+		drawing_data.start.y = (int)line->start->y;
+		drawing_data.end.x = (int)line->end->x;
+		drawing_data.end.y = (int)line->end->y;
 	}
 	add_offset(&drawing_data, elem_position_offset);
 	if (delta_y < delta_x)

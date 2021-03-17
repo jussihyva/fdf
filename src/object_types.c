@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 15:26:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 07:40:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 14:17:28 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static t_object_type	*create_new_object_type(double altitude,
 		(t_xyz_values *)ft_memalloc(sizeof(*object_type->current_positions) *
 													NUM_OF_OBJECT_POSITIONS);
 	ft_memcpy(object_type->current_positions, object_type->start_positions,
-			sizeof(&object_type->current_positions) * NUM_OF_OBJECT_POSITIONS);
+			sizeof(*object_type->current_positions) * NUM_OF_OBJECT_POSITIONS);
 	object_elem = ft_lstnew(&object_type, sizeof(object_type));
 	ft_lstadd(object_type_lst, object_elem);
 	return (object_type);

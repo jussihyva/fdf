@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 12:40:22 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 18:20:53 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ typedef struct	s_elem_size
 
 typedef struct	s_elem_line
 {
-	t_xy_values_int		start;
-	t_xy_values_int		end;
+	t_xyz_values		*start;
+	t_xyz_values		*end;
 	int					color;
 	int					line_type;
 }				t_elem_line;
@@ -136,8 +136,8 @@ typedef struct	s_drawing_data
 {
 	unsigned int		color;
 	int					size_line;
-	t_xy_values_int		*start;
-	t_xy_values_int		*end;
+	t_xy_values_int		start;
+	t_xy_values_int		end;
 	int					line_type;
 }				t_drawing_data;
 
@@ -145,8 +145,6 @@ typedef struct	s_element
 {
 	t_object_type	*object_type;
 	t_xyz_values	*angle;
-	t_xyz_values	*current_positions;
-	t_xyz_values	*start_positions;
 	t_position		elem_position_offset;
 	t_elem_line		*elem_lines;
 	char			*addr;
@@ -183,13 +181,13 @@ int				leave_notify(t_mlx_win *mlx_win);
 void			release_mlx_win(t_mlx_win **mlx_win);
 int				render_frame(t_mlx_win *mlx_win);
 t_element		*create_element(t_mlx_win *mlx_win,
-					t_xyz_values *start_position, t_position *position_offset,
+					t_xyz_values *start_position, t_xyz_values *position_offset,
 													t_object_type *object_type);
 void			mlx_image_pixel_put(t_img *img, int x, int y, int color);
 void			initialize_window(t_mlx_win *mlx_win, char *window_name);
 t_xyz_values	*set_elem_positions(t_xyz_values *elem_size);
 void			elemental_rotation(t_xyz_values *current_positions,
-							t_xyz_values *angle, t_position *position_offset,
+							t_xyz_values *angle, t_xyz_values *position_offset,
 												t_xyz_values *start_position);
 void			draw_lines(t_img *img, t_element *element);
 void			set_position(t_xyz_values *position, double x, double y,
@@ -200,8 +198,10 @@ void			bresenham_draw_line(t_img *img, t_elem_line *line,
 void			release_input_data(t_input **input);
 t_cmd_args		*argp_parse(int argc, char **argv);
 void			print_start_position(t_position *elem_start_position);
-void			create_object_types(t_list **object_type_lst, t_map *map, t_input *input);
+void			create_object_types(t_list **object_type_lst, t_map *map,
+																t_input *input);
 void			rotate(t_xyz_values *elem_position, t_xyz_values *angle);
+void			rotate_objects(t_list **object_type_lst, t_xyz_values *angle);
 
 # include <time.h>
 # include <sys/time.h>

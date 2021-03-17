@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 12:47:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 11:49:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 18:55:52 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,14 @@ int				button_press(int keycode, int x, int y, t_mlx_win *mlx_win)
 
 int				key_press(int keycode, t_mlx_win *mlx_win)
 {
-	t_position		*position_offset;
-	t_position		elem_start_position;
+	t_xyz_values	*position_offset;
+	t_xyz_values	elem_start_position;
 	t_element		*element;
+	t_object_type	*object_type;
 	int				i;
 	int				j;
 
-	position_offset = (t_position *)ft_memalloc(sizeof(*position_offset));
+	position_offset = (t_xyz_values *)ft_memalloc(sizeof(*position_offset));
 	if (keycode == 65307)
 		close_win(mlx_win);
 	else if (mlx_win->render_action != e_no_action)
@@ -59,9 +60,13 @@ int				key_press(int keycode, t_mlx_win *mlx_win)
 	else if (ft_strchr("asdzxc", keycode))
 	{
 		change_angle(keycode, mlx_win->angle, mlx_win->angle_step);
-		ft_bzero(mlx_win->img->data, mlx_win->img_size.y * mlx_win->img->size_line / 4 +
-										mlx_win->img_size.x * (mlx_win->img->bpp / 8));
-		ft_memcpy(&elem_start_position, mlx_win->elem_table[0][0]->start_position, sizeof(elem_start_position));
+		ft_bzero(mlx_win->img->data,
+							mlx_win->img_size.y * mlx_win->img->size_line / 4 +
+								mlx_win->img_size.x * (mlx_win->img->bpp / 8));
+		ft_memcpy(&elem_start_position,
+									mlx_win->elem_table[0][0]->start_position,
+												sizeof(elem_start_position));
+		rotate_objects(mlx_win->object_type_lst, mlx_win->angle);
 		i = -1;
 		while (++i < mlx_win->element_map_size->y)
 		{
@@ -69,20 +74,20 @@ int				key_press(int keycode, t_mlx_win *mlx_win)
 			while (++j < mlx_win->element_map_size->x)
 			{
 				element = mlx_win->elem_table[i][j];
-				ft_memcpy(mlx_win->elem_table[i][j]->start_position,
-														&elem_start_position,
-								sizeof(mlx_win->elem_table[i][j]->start_position));
-				ft_memcpy(element->current_positions, element->start_positions,
-						sizeof(*element->start_positions) * NUM_OF_ELEM_POSITIONS);
-				ft_memcpy(element->object_type->current_positions, element->start_positions,
-						sizeof(*element->start_positions) * NUM_OF_ELEM_POSITIONS);
-				elemental_rotation(element->object_type->current_positions, mlx_win->angle,
-								position_offset, mlx_win->elem_table[i][j]->start_position);
-				ft_memcpy(&elem_start_position, mlx_win->elem_table[i][j]->start_position, sizeof(elem_start_position));
-				elem_start_position.x += mlx_win->elem_table[i][j]->current_positions[1].x;
-				elem_start_position.y += mlx_win->elem_table[i][j]->current_positions[1].y;
+				object_type = mlx_win->elem_table[i][j]->object_type;
+				ft_memcpy(element->start_position, &elem_start_position,
+											sizeof(*element->start_position));
+				elemental_rotation(object_type->current_positions,
+																mlx_win->angle,
+									position_offset, element->start_position);
+				ft_memcpy(&elem_start_position, element->start_position,
+												sizeof(elem_start_position));
+				elem_start_position.x += object_type->current_positions[1].x;
+				elem_start_position.y += object_type->current_positions[1].y;
 			}
-			ft_memcpy(&elem_start_position, &mlx_win->elem_table[i][0]->current_positions[2], sizeof(elem_start_position));
+			ft_memcpy(&elem_start_position,
+				&mlx_win->elem_table[i][0]->object_type->current_positions[2],
+												sizeof(elem_start_position));
 			elem_start_position.x *= (i + 1);
 			elem_start_position.y *= (i + 1);
 		}
@@ -94,9 +99,12 @@ int				key_press(int keycode, t_mlx_win *mlx_win)
 			j = -1;
 			while (++j < mlx_win->element_map_size->x)
 			{
-				mlx_win->elem_table[i][j]->elem_position_offset.x = position_offset->x + mlx_win->elem_table[i][j]->start_position->x;
-				mlx_win->elem_table[i][j]->elem_position_offset.y = position_offset->y + mlx_win->elem_table[i][j]->start_position->y;
-				draw_lines(mlx_win->img, mlx_win->elem_table[i][j]);
+				element = mlx_win->elem_table[i][j];
+				element->elem_position_offset.x = (int)(position_offset->x +
+											element->start_position->x + 0.5);
+				element->elem_position_offset.y = (int)(position_offset->y +
+											element->start_position->y + 0.5);
+				draw_lines(mlx_win->img, element);
 			}
 		}
 		mlx_win->render_action = e_put_image_to_window;
