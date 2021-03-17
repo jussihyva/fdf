@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 07:59:02 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 10:38:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ typedef struct	s_input
 	const char			**level_colors;
 	t_cmd_args			*cmd_args;
 	t_map				*map;
-	t_position			*angle;
+	t_xyz_values		*angle;
 	t_xy_values			object_xy_size;
 }				t_input;
 
@@ -144,7 +144,7 @@ typedef struct	s_drawing_data
 typedef struct	s_element
 {
 	t_object_type	*object_type;
-	t_position		*angle;
+	t_xyz_values	*angle;
 	t_position		*current_positions;
 	t_position		*start_positions;
 	t_position		elem_position_offset;
@@ -165,8 +165,8 @@ typedef struct	s_mlx_win
 	t_position			*first_elem_start_position;
 	t_element			***element_map;
 	t_xy_values_old		*element_map_size;
-	t_position			*angle;
-	int					angle_step;
+	t_xyz_values		*angle;
+	double				angle_step;
 	t_img				*img;
 	t_position			*img_start_position;
 	t_img				*empty_img;
@@ -188,7 +188,7 @@ void			mlx_image_pixel_put(t_img *img, int x, int y, int color);
 void			initialize_window(t_mlx_win *mlx_win, char *window_name);
 t_position		*set_elem_positions(t_xyz_values *elem_size);
 void			elemental_rotation(t_position *current_positions,
-								t_position *angle, t_position *position_offset,
+							t_xyz_values *angle, t_position *position_offset,
 													t_position *start_position);
 void			draw_lines(t_img *img, t_element *element);
 void			set_position(t_position *position, int x, int y, int z);
@@ -199,6 +199,7 @@ void			release_input_data(t_input **input);
 t_cmd_args		*argp_parse(int argc, char **argv);
 void			print_start_position(t_position *elem_start_position);
 void			create_object_types(t_list **object_type_lst, t_map *map, t_input *input);
+void			rotate(t_position *elem_position, t_xyz_values *angle);
 
 # include <time.h>
 # include <sys/time.h>

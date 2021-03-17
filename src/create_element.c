@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 07:58:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 10:27:36 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ t_element			*create_element(t_mlx_win *mlx_win,
 	t_element	*element;
 
 	element = (t_element *)ft_memalloc(sizeof(*element));
-	element->angle = (t_position *)ft_memalloc(sizeof(*element->angle));
+	element->angle = (t_xyz_values *)ft_memalloc(sizeof(*element->angle));
 	element->object_type = object_type;
 	element->start_position =
 					(t_position *)ft_memalloc(sizeof(*element->start_position));
-	ft_memcpy(element->angle, mlx_win->angle, sizeof(*mlx_win->angle));
+	ft_memcpy(element->angle, mlx_win->angle, sizeof(*element->angle));
 	element->current_positions =
 			(t_position *)ft_memalloc(sizeof(*element->current_positions) *
 														NUM_OF_ELEM_POSITIONS);
 	element->start_positions = set_elem_positions(&object_type->size);
 	ft_memcpy(element->current_positions, element->start_positions,
 				sizeof(*element->start_positions) * NUM_OF_ELEM_POSITIONS);
-	elemental_rotation(element->current_positions, element->angle,
+	elemental_rotation(element->current_positions, &element->object_type->angle,
 											position_offset, start_position);
 	element->elem_lines = set_elem_lines(element->current_positions);
 	ft_memcpy(element->start_position, start_position,

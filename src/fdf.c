@@ -6,11 +6,31 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 07:22:13 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 10:24:17 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static void			rotate_objects(t_list **object_type_lst)
+{
+	t_list			*elem;
+	t_object_type	*object_type;
+	size_t			i;
+
+	elem = *object_type_lst;
+	while (elem)
+	{
+		object_type = *(t_object_type **)elem->content;
+		ft_memcpy(object_type->current_positions, object_type->start_positions,
+									sizeof(*object_type->current_positions));
+		i = -1;
+		// while (++i < NUM_OF_ELEM_POSITIONS)
+		// 	rotation(&(object_type->current_positions[i]), object_type->angle);
+		elem = elem->next;
+	}
+	return ;
+}
 
 int					main(int argc, char **argv)
 {
@@ -37,7 +57,7 @@ int					main(int argc, char **argv)
 					(t_list **)ft_memalloc(sizeof(*mlx_win->object_type_lst));
 	create_object_types(mlx_win->object_type_lst, input->map, input);
 	mlx_win->angle = input->angle;
-	ft_log_info("Start angle: x=%d, y=%d z=%d\n", mlx_win->angle->x,
+	ft_log_info("Start angle: x=%.0f, y=%.0f z=%.0f\n", mlx_win->angle->x,
 										mlx_win->angle->y, mlx_win->angle->z);
 	mlx_win->angle_step = input->cmd_args->angle_steps;
 	elem_altitude = input->map->elem_altitude;
@@ -68,6 +88,7 @@ int					main(int argc, char **argv)
 	set_position(&elem_start_position, 0, 0, 0);
 	ft_memcpy(mlx_win->img_start_position, &elem_start_position,
 										sizeof(*mlx_win->img_start_position));
+	rotate_objects(mlx_win->object_type_lst);
 	i = -1;
 	while (++i < input->map->map_size->y)
 	{

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 07:22:26 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 10:22:09 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,14 +195,14 @@ static t_map			*read_map_file(char *map_file)
 	return (map);
 }
 
-static t_position		*set_angle(int x, int y, int z)
+static t_xyz_values		*set_angle(int x, int y, int z)
 {
-	t_position		*angle;
+	t_xyz_values		*angle;
 
-	angle = (t_position *)ft_memalloc(sizeof(*angle));
-	angle->x = ft_mod_int(x, 360);
-	angle->y = ft_mod_int(y, 360);
-	angle->z = ft_mod_int(z, 360);
+	angle = (t_xyz_values *)ft_memalloc(sizeof(*angle));
+	angle->x = (double)ft_mod_int(x, 360);
+	angle->y = (double)ft_mod_int(y, 360);
+	angle->z = (double)ft_mod_int(z, 360);
 	return (angle);
 }
 
