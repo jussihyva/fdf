@@ -6,22 +6,24 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 10:27:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 12:43:32 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void			set_elem_line(t_elem_line *elem_line, t_position *start,
-																t_position *end)
+static void			set_elem_line(t_elem_line *elem_line, t_xyz_values *start,
+															t_xyz_values *end)
 {
-	elem_line->start = start;
-	elem_line->end = end;
+	elem_line->start.x = (int)start->x;
+	elem_line->start.y = (int)start->y;
+	elem_line->end.x = end->x;
+	elem_line->end.y = end->y;
 	elem_line->line_type = 0;
 	return ;
 }
 
-static t_elem_line	*set_elem_lines(t_position *elem_positions)
+static t_elem_line	*set_elem_lines(t_xyz_values *elem_positions)
 {
 	t_elem_line		*elem_lines;
 	int				num_of_lines;
@@ -45,7 +47,7 @@ static t_elem_line	*set_elem_lines(t_position *elem_positions)
 }
 
 t_element			*create_element(t_mlx_win *mlx_win,
-						t_position *start_position, t_position *position_offset,
+					t_xyz_values *start_position, t_position *position_offset,
 						t_object_type *object_type)
 {
 	t_element	*element;
@@ -54,14 +56,14 @@ t_element			*create_element(t_mlx_win *mlx_win,
 	element->angle = (t_xyz_values *)ft_memalloc(sizeof(*element->angle));
 	element->object_type = object_type;
 	element->start_position =
-					(t_position *)ft_memalloc(sizeof(*element->start_position));
+				(t_xyz_values *)ft_memalloc(sizeof(*element->start_position));
 	ft_memcpy(element->angle, mlx_win->angle, sizeof(*element->angle));
 	element->current_positions =
-			(t_position *)ft_memalloc(sizeof(*element->current_positions) *
+			(t_xyz_values *)ft_memalloc(sizeof(*element->current_positions) *
 														NUM_OF_ELEM_POSITIONS);
 	element->start_positions = set_elem_positions(&object_type->size);
-	ft_memcpy(element->current_positions, element->start_positions,
-				sizeof(*element->start_positions) * NUM_OF_ELEM_POSITIONS);
+	ft_memcpy(element->current_positions, element->object_type->start_positions,
+		sizeof(*element->current_positions) * NUM_OF_ELEM_POSITIONS);
 	elemental_rotation(element->current_positions, &element->object_type->angle,
 											position_offset, start_position);
 	element->elem_lines = set_elem_lines(element->current_positions);

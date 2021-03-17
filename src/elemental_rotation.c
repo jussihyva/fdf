@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 20:46:08 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/17 10:40:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 12:48:44 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static double	**get_x_rotation_matrix(double angle)
 	return (rotation_matrix);
 }
 
-void		rotate(t_position *position, t_xyz_values *angle)
+void		rotate(t_xyz_values *position, t_xyz_values *angle)
 {
 	static size_t			vector_size = 3;
 	static t_matrix_size	matrix_size = {3, 3};
@@ -120,9 +120,9 @@ void		rotate(t_position *position, t_xyz_values *angle)
 	double					result_vector[vector_size];
 	double					**rotation_matrix;
 
-	vector[0] = (double)position->x;
-	vector[1] = (double)position->y;
-	vector[2] = (double)position->z;
+	vector[0] = position->x;
+	vector[1] = position->y;
+	vector[2] = position->z;
 	rotation_matrix = get_z_rotation_matrix(angle->z);
 	ft_matrix_x_vector_double(matrix_size, rotation_matrix, vector,
 													result_vector);
@@ -134,12 +134,13 @@ void		rotate(t_position *position, t_xyz_values *angle)
 	rotation_matrix = get_x_rotation_matrix(angle->x);
 	ft_matrix_x_vector_double(matrix_size, rotation_matrix, vector,
 													result_vector);
-	position->x = (int)(result_vector[0] + 0.5);
-	position->y = (int)(result_vector[1] + 0.5);
-	position->z = (int)(result_vector[2] + 0.5);
+	position->x = result_vector[0];
+	position->y = result_vector[1];
+	position->z = result_vector[2];
 }
 
-static size_t	line_len(t_position *elem_position1, t_position *elem_position2)
+static size_t	line_len(t_xyz_values *elem_position1,
+												t_xyz_values *elem_position2)
 {
 	double		len;
 
@@ -148,7 +149,7 @@ static size_t	line_len(t_position *elem_position1, t_position *elem_position2)
 	return ((size_t)len);
 }
 
-static void		print_element_data(t_position *positions, t_xyz_values *angle)
+static void		print_element_data(t_xyz_values *positions, t_xyz_values *angle)
 {
 	size_t		size54;
 	size_t		size57;
@@ -161,9 +162,9 @@ static void		print_element_data(t_position *positions, t_xyz_values *angle)
 	return ;
 }
 
-void			elemental_rotation(t_position *current_positions,
+void			elemental_rotation(t_xyz_values *current_positions,
 							t_xyz_values *angle, t_position *position_offset,
-													t_position *start_position)
+												t_xyz_values *start_position)
 {
 	size_t		i;
 

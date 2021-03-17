@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 12:47:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 10:31:32 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 11:49:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ int				key_press(int keycode, t_mlx_win *mlx_win)
 								sizeof(mlx_win->elem_table[i][j]->start_position));
 				ft_memcpy(element->current_positions, element->start_positions,
 						sizeof(*element->start_positions) * NUM_OF_ELEM_POSITIONS);
-				elemental_rotation(element->current_positions, mlx_win->angle,
+				ft_memcpy(element->object_type->current_positions, element->start_positions,
+						sizeof(*element->start_positions) * NUM_OF_ELEM_POSITIONS);
+				elemental_rotation(element->object_type->current_positions, mlx_win->angle,
 								position_offset, mlx_win->elem_table[i][j]->start_position);
 				ft_memcpy(&elem_start_position, mlx_win->elem_table[i][j]->start_position, sizeof(elem_start_position));
 				elem_start_position.x += mlx_win->elem_table[i][j]->current_positions[1].x;

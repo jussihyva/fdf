@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 10:24:17 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/17 12:35:38 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void			rotate_objects(t_list **object_type_lst)
 int					main(int argc, char **argv)
 {
 	t_mlx_win			*mlx_win;
-	t_position			elem_start_position;
+	t_xyz_values		elem_start_position;
 	t_position			*position_offset;
 	t_input				*input;
 	int					**elem_altitude;
