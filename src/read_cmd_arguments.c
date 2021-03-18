@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/18 09:47:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/18 14:06:00 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,23 +123,62 @@ static t_map			*validate_map(char *map_file)
 	return (map);
 }
 
-static int				*read_map_values(char *line, int size)
+static int				read_altitude(char *ptr)
 {
-	int				*array;
-	char			**char_array;
-	int				i;
-	char			*endptr;
+	int		altitude;
+	char	*remainings;
 
-	array = (int *)ft_memalloc(sizeof(*array) * size);
+	altitude = ft_strtoi(ptr, &remainings, 10);
+	if (*remainings)
+	{
+		ft_log_error("%s %s \"%s\"",
+							"A map file includes invalid parameter.",
+							"Type of a value should be INT but now it is",
+							ptr);
+		exit(42);
+	}
+	return (altitude);
+}
+
+static int				read_color(char *ptr)
+{
+	int		color;
+	char	*remainings;
+
+	color = ft_strtoi(ptr, &remainings, 16);
+	if (*remainings)
+	{
+		ft_log_error("%s %s \"%s\"",
+							"A map file includes invalid parameter.",
+							"Type of a value should be HEX but now it is",
+							ptr);
+		exit(42);
+	}
+	return (color);
+}
+
+static void				read_map_values(char *line, int size,
+										int **altitude_array, int **color_array)
+{
+	char			**input_array;
+	int				i;
+	char			*color_ptr;
+
+	*altitude_array = (int *)ft_memalloc(sizeof(**altitude_array) * size);
+	*color_array = (int *)ft_memalloc(sizeof(**color_array) * size);
 	i = -1;
-	char_array = ft_strsplit(line, ' ');
+	input_array = ft_strsplit(line, ' ');
 	while (++i < size)
 	{
-		array[i] = ft_strtoi(char_array[i], &endptr, 10);
-		ft_strdel(&char_array[i]);
+		if ((color_ptr = ft_strchr(input_array[i], ',')))
+			*color_ptr = '\0';
+		(*altitude_array)[i] = read_altitude(input_array[i]);
+		if (color_ptr)
+			(*color_array)[i] = read_color(color_ptr + 1);
+		ft_strdel(&input_array[i]);
 	}
-	ft_memdel((void **)&char_array);
-	return (array);
+	ft_memdel((void **)&input_array);
+	return ;
 }
 
 static void				set_min_max_altitude(int line_index, t_map *map)
@@ -160,19 +199,25 @@ static void				read_content_of_map_file(int fd, t_map *map)
 {
 	char			*line;
 	int				line_index;
+	int				**altitude_array;
+	int				**color_array;
 
 	map->elem_altitude = (int **)ft_memalloc(sizeof(*map->elem_altitude) *
+												map->map_size->y);
+	map->elem_color = (int **)ft_memalloc(sizeof(*map->elem_color) *
 												map->map_size->y);
 	line_index = -1;
 	while (ft_get_next_line(fd, &line) > 0)
 	{
 		line_index++;
-		map->elem_altitude[line_index] =
-										read_map_values(line, map->map_size->x);
+		altitude_array = &map->elem_altitude[line_index];
+		color_array = &map->elem_color[line_index];
+		read_map_values(line, map->map_size->x, altitude_array, color_array);
 		set_min_max_altitude(line_index, map);
 		ft_strdel(&line);
 	}
 	ft_strdel(&line);
+	return ;
 }
 
 static t_map			*read_map_file(char *map_file)

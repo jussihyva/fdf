@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/18 09:51:46 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/18 13:10:03 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct	s_object_type
 typedef struct	s_map
 {
 	int					**elem_altitude;
+	int					**elem_color;
 	int					max_altitude;
 	int					min_altitude;
 	size_t				obj_counter;
