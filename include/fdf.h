@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 18:20:53 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/18 09:51:46 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,12 +196,15 @@ t_input			*read_cmd_arguments(int argc, char **argv);
 void			bresenham_draw_line(t_img *img, t_elem_line *line,
 											t_position *elem_position_offset);
 void			release_input_data(t_input **input);
-t_cmd_args		*argp_parse(int argc, char **argv);
+t_cmd_args		*argp_parse(int argc, char **argv,
+											void (fn)(t_cmd_args *, char, char *));
 void			print_start_position(t_position *elem_start_position);
 void			create_object_types(t_list **object_type_lst, t_map *map,
 																t_input *input);
 void			rotate(t_xyz_values *elem_position, t_xyz_values *angle);
 void			rotate_objects(t_list **object_type_lst, t_xyz_values *angle);
+void			save_cmd_arguments(t_cmd_args *cmd_args, char opt,
+																char *next_arg);
 
 # include <time.h>
 # include <sys/time.h>

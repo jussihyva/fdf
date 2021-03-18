@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 10:22:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/18 09:47:48 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 
 	input = (t_input *)ft_memalloc(sizeof(*input));
 	set_loging_parameters(input);
-	if ((input->cmd_args = argp_parse(argc, argv)))
+	if ((input->cmd_args = argp_parse(argc, argv, save_cmd_arguments)))
 	{
 		if (input->cmd_args->map_file)
 			input->map = read_map_file(input->cmd_args->map_file);

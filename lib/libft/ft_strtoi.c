@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 12:05:30 by jkauppi           #+#    #+#             */
-/*   Updated: 2020/08/23 12:01:33 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/18 12:34:46 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,9 @@ static int		add_digit(long *nbr, char c)
 static void		set_endptr(char **endptr, const char *str)
 {
 	if (endptr)
-	{
 		*endptr = (char *)str;
-		if (*str)
-			errno = EINVAL;
-	}
+	if (*str)
+		errno = EINVAL;
 	return ;
 }
 
@@ -54,14 +52,16 @@ int				ft_strtoi(const char *str, char **endptr, int base)
 	start_ptr = str;
 	while (ft_isspace(*str))
 		str++;
-	errno = start_ptr != str ? EINVAL : errno;
 	neg = *str == '-' ? -1 : 1;
 	str += (*str == '-' || *str == '+') ? 1 : 0;
 	nbr = 0;
 	start_ptr = str;
 	while (add_digit(&nbr, *str))
 		str++;
-	errno = start_ptr == str ? EINVAL : errno;
+	while (ft_isspace(*str))
+		str++;
+	if (str == start_ptr)
+		errno = *str == '\0' ? ECANCELED : EINVAL;
 	if ((neg * nbr) > INT_MAX || (neg * nbr) < INT_MIN)
 	{
 		errno = ERANGE;
