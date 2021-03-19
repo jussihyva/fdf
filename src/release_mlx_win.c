@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 19:41:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/18 13:15:44 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:02:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void			release_mlx_win(t_mlx_win **mlx_win)
 	mlx_destroy_display((*mlx_win)->mlx);
 	ft_memdel((void **)&(*mlx_win)->mlx);
 	ft_memdel((void **)&(*mlx_win)->img_start_position);
+	ft_memdel((void **)&(*mlx_win)->img_position_offset);
 	ft_memdel((void **)&(*mlx_win)->first_elem_start_position);
 	ft_lstdel((*mlx_win)->object_type_lst, delete_object_type);
 	ft_memdel((void **)&(*mlx_win)->object_type_lst);

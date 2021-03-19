@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/18 09:47:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/19 15:34:16 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int					main(int argc, char **argv)
 {
 	t_mlx_win			*mlx_win;
 	t_xyz_values		elem_start_position;
-	t_xyz_values		*position_offset;
 	t_input				*input;
 	int					**elem_altitude;
 	int					i;
@@ -26,8 +25,9 @@ int					main(int argc, char **argv)
 		return (42);
 	ft_log_info("Map file: %s", input->cmd_args->map_file);
 	ft_log_info("Protection type: %d", input->cmd_args->projection_type);
-	position_offset = (t_xyz_values *)ft_memalloc(sizeof(*position_offset));
 	mlx_win = (t_mlx_win *)ft_memalloc(sizeof(*mlx_win));
+	mlx_win->img_position_offset =
+			(t_xyz_values *)ft_memalloc(sizeof(*mlx_win->img_position_offset));
 	mlx_win->img_size.x = 4000;
 	mlx_win->img_size.y = 4000;
 	mlx_win->img_start_position =
@@ -69,30 +69,7 @@ int					main(int argc, char **argv)
 	ft_memcpy(mlx_win->img_start_position, &elem_start_position,
 										sizeof(*mlx_win->img_start_position));
 	rotate_objects(mlx_win->object_type_lst, input->angle);
-	i = -1;
-	while (++i < input->map->map_size->y)
-	{
-		j = -1;
-		while (++j < input->map->map_size->x)
-		{
-			mlx_win->elem_table[i][j] = create_element(mlx_win,
-										&elem_start_position, position_offset,
-												input->map->object_type[i][j]);
-			ft_memcpy(&elem_start_position,
-									mlx_win->elem_table[i][j]->start_position,
-												sizeof(elem_start_position));
-			elem_start_position.x +=
-				mlx_win->elem_table[i][j]->object_type->current_positions[1].x;
-			elem_start_position.y +=
-				mlx_win->elem_table[i][j]->object_type->current_positions[1].y;
-		}
-		elem_start_position.x =
-				mlx_win->elem_table[i][0]->object_type->current_positions[2].x *
-																		(i + 1);
-		elem_start_position.y =
-				mlx_win->elem_table[i][0]->object_type->current_positions[2].y *
-																		(i + 1);
-	}
+	create_elements(input->map, mlx_win->elem_table, mlx_win);
 	i = -1;
 	while (++i < input->map->map_size->y)
 	{
@@ -100,10 +77,10 @@ int					main(int argc, char **argv)
 		while (++j < input->map->map_size->x)
 		{
 			mlx_win->elem_table[i][j]->elem_position_offset.x =
-								(int)(position_offset->x +
+								(int)(mlx_win->img_position_offset->x +
 							mlx_win->elem_table[i][j]->start_position->x + 0.5);
 			mlx_win->elem_table[i][j]->elem_position_offset.y =
-								(int)(position_offset->y +
+								(int)(mlx_win->img_position_offset->y +
 							mlx_win->elem_table[i][j]->start_position->y + 0.5);
 			draw_lines(mlx_win->img, mlx_win->elem_table[i][j]);
 		}
@@ -113,6 +90,5 @@ int					main(int argc, char **argv)
 	mlx_loop(mlx_win->mlx);
 	release_mlx_win(&mlx_win);
 	release_input_data(&input);
-	ft_memdel((void **)&position_offset);
 	return (0);
 }

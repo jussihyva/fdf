@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 18:20:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/19 15:17:10 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,44 @@ t_element			*create_element(t_mlx_win *mlx_win,
 	ft_memcpy(element->start_position, start_position,
 											sizeof(*element->start_position));
 	return (element);
+}
+
+static void			set_next_start_position(t_xyz_values *elem_start_position,
+							t_element *element, t_xyz_values *current_position)
+{
+	t_xyz_values	*start_position;
+
+	start_position = element->start_position;
+	elem_start_position->x = start_position->x + current_position->x;
+	elem_start_position->y = start_position->y + current_position->y;
+	return ;
+}
+
+void				create_elements(t_map *map, t_element ***elem_table,
+															t_mlx_win *mlx_win)
+{
+	int				i;
+	int				j;
+	t_xyz_values	next_start_position;
+	t_object_type	*object_type;
+
+	set_position(&next_start_position, 0, 0, 0);
+	i = -1;
+	while (++i < map->map_size->y)
+	{
+		j = -1;
+		while (++j < map->map_size->x)
+		{
+			object_type = map->object_type[i][j];
+			elem_table[i][j] = create_element(mlx_win, &next_start_position,
+									mlx_win->img_position_offset, object_type);
+			elem_table[i][j]->color = map->elem_color[i][j];
+			set_next_start_position(&next_start_position, elem_table[i][j],
+											&object_type->current_positions[1]);
+		}
+		object_type = map->object_type[i][0];
+		set_next_start_position(&next_start_position, elem_table[i][0],
+											&object_type->current_positions[2]);
+	}
+	return ;
 }

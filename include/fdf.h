@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/18 13:10:03 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:08:44 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ typedef struct	s_element
 {
 	t_object_type	*object_type;
 	t_xyz_values	*angle;
+	int				color;
 	t_position		elem_position_offset;
 	t_elem_line		*elem_lines;
 	char			*addr;
@@ -168,6 +169,7 @@ typedef struct	s_mlx_win
 	double				angle_step;
 	t_img				*img;
 	t_position			*img_start_position;
+	t_xyz_values		*img_position_offset;
 	t_img				*empty_img;
 	t_xy_values_old		img_size;
 	t_render_action		render_action;
@@ -206,6 +208,8 @@ void			rotate(t_xyz_values *elem_position, t_xyz_values *angle);
 void			rotate_objects(t_list **object_type_lst, t_xyz_values *angle);
 void			save_cmd_arguments(t_cmd_args *cmd_args, char opt,
 																char *next_arg);
+void			create_elements(t_map *map, t_element ***elem_table,
+															t_mlx_win *mlx_win);
 
 # include <time.h>
 # include <sys/time.h>

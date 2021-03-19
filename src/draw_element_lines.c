@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 23:12:39 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/17 15:27:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/19 15:19:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void			draw_lines(t_img *img, t_element *element)
 			elem_line.color = 0x00FF0000;
 		else
 			elem_line.color = 0x000000FF;
+		elem_line.color = element->color;
 		bresenham_draw_line(img, &elem_line, &element->elem_position_offset);
 	}
 	return ;
