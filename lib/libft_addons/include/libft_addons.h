@@ -6,13 +6,14 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 14:53:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 18:53:23 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/19 06:14:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_ADDONS_H
 # define LIBFT_ADDONS_H
-# include <sys/types.h>
+# include "libft.h"
+# include "ft_printf.h"
 
 # define PI							3.141592654
 
@@ -31,5 +32,7 @@ double 			ft_mod_double(double dividend, double divisor);
 int 			ft_mod_int(int dividend, int divisor);
 void			ft_matrix_x_vector_double(t_matrix_size matrix_size,
 						double **matrix, double *vector, double *new_vector);
+int				ft_isdigit_base(int c, int base);
+int				ft_strtoi(const char *str, char **endptr, int base);
 
 #endif

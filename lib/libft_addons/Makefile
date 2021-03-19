@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2021/03/17 18:50:22 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/03/19 06:47:30 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ OBJ				=	obj
 SRC				=	src
 INCLUDE			=	include
 FOLDERS			=	$(OBJ) $(SRC) $(INCLUDE)
-INCLUDES		=	-I $(INCLUDE)
+INCLUDES		=	-I $(INCLUDE) -I ../libft -I ../libft_printf/include
 
 # Compiler and linking parameters
 CC				=	clang
@@ -27,7 +27,8 @@ C_FLAGS			=	-std=gnu17 -g -Wall -Wextra -Werror $(INCLUDES)
 SRC_C_FILES		=	ft_radian.c ft_max_int.c ft_min_int.c \
 					ft_mod_int.c ft_mod_double.c \
 					ft_matrix_x_vector_double.c \
-					ft_max_double.c ft_min_double.c
+					ft_max_double.c ft_min_double.c ft_isdigit_base.c \
+					ft_strtoi.c
 SRC_H_FILES		=	libft_addons.h
 
 # Path folders for H, C, O and APP files
