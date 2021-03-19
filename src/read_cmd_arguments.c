@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/18 14:06:00 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/19 19:58:31 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,13 +157,15 @@ static int				read_color(char *ptr)
 	return (color);
 }
 
-static void				read_map_values(char *line, int size,
+static int				read_map_values(char *line, int size,
 										int **altitude_array, int **color_array)
 {
 	char			**input_array;
 	int				i;
 	char			*color_ptr;
+	int				is_colors_included;
 
+	is_colors_included = 0;
 	*altitude_array = (int *)ft_memalloc(sizeof(**altitude_array) * size);
 	*color_array = (int *)ft_memalloc(sizeof(**color_array) * size);
 	i = -1;
@@ -173,12 +175,16 @@ static void				read_map_values(char *line, int size,
 		if ((color_ptr = ft_strchr(input_array[i], ',')))
 			*color_ptr = '\0';
 		(*altitude_array)[i] = read_altitude(input_array[i]);
+		(*color_array)[i] = 0x0FFFFF;
 		if (color_ptr)
+		{
 			(*color_array)[i] = read_color(color_ptr + 1);
+			is_colors_included = 1;
+		}
 		ft_strdel(&input_array[i]);
 	}
 	ft_memdel((void **)&input_array);
-	return ;
+	return (is_colors_included);
 }
 
 static void				set_min_max_altitude(int line_index, t_map *map)
@@ -212,7 +218,8 @@ static void				read_content_of_map_file(int fd, t_map *map)
 		line_index++;
 		altitude_array = &map->elem_altitude[line_index];
 		color_array = &map->elem_color[line_index];
-		read_map_values(line, map->map_size->x, altitude_array, color_array);
+		map->colors_from_map_file |= read_map_values(line, map->map_size->x,
+												altitude_array, color_array);
 		set_min_max_altitude(line_index, map);
 		ft_strdel(&line);
 	}

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/19 15:17:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/19 19:31:13 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,15 @@ void				create_elements(t_map *map, t_element ***elem_table,
 			object_type = map->object_type[i][j];
 			elem_table[i][j] = create_element(mlx_win, &next_start_position,
 									mlx_win->img_position_offset, object_type);
-			elem_table[i][j]->color = map->elem_color[i][j];
+			if (map->colors_from_map_file)
+				elem_table[i][j]->color = map->elem_color[i][j];
+			else
+			{
+				if (elem_table[i][j]->object_type->size.z)
+					elem_table[i][j]->color = 0x00FF0000;
+				else
+					elem_table[i][j]->color = 0x000000FF;
+			}
 			set_next_start_position(&next_start_position, elem_table[i][j],
 											&object_type->current_positions[1]);
 		}
