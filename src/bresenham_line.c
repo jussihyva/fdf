@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/17 18:30:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 10:00:40 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ void			bresenham_draw_line(t_img *img, t_elem_line *line,
 		drawing_data.end.y = (int)line->end->y;
 	}
 	add_offset(&drawing_data, elem_position_offset);
+	ft_log_trace("%3d,%3d --> %3d,%3d", drawing_data.start.x,
+				drawing_data.start.y, drawing_data.end.x, drawing_data.end.y);
 	if (delta_y < delta_x)
 		draw_low((unsigned int *)img->data, &drawing_data);
 	else

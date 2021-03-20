@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 23:12:39 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/19 18:47:20 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 09:59:00 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void			draw_lines(t_img *img, t_element *element)
 
 	elem_lines = element->elem_lines;
 	i = -1;
+	ft_log_trace("Lines for element (start position): %3.2f,%3.2f",
+						element->start_position->x, element->start_position->y);
 	while (++i < 12)
 	{
 		elem_line = elem_lines[i];

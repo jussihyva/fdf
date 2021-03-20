@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/19 19:58:31 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 09:33:24 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,7 @@ static void				set_loging_parameters(t_input *input)
 	input->level_colors[LOG_ERROR] = "\x1b[31m";
 	input->level_colors[LOG_FATAL] = "\x1b[35m";
 	ft_log_set_params(input->level_strings, input->level_colors);
-
-#ifdef LOGING_LEVEL
-
-	ft_log_set_level(LOGING_LEVEL);
-
-#else
-
 	ft_log_set_level(LOG_ERROR);
-
-#endif
-
 	return ;
 }
 
@@ -175,7 +165,7 @@ static int				read_map_values(char *line, int size,
 		if ((color_ptr = ft_strchr(input_array[i], ',')))
 			*color_ptr = '\0';
 		(*altitude_array)[i] = read_altitude(input_array[i]);
-		(*color_array)[i] = 0x0FFFFF;
+		(*color_array)[i] = 0x8FFFFF;
 		if (color_ptr)
 		{
 			(*color_array)[i] = read_color(color_ptr + 1);
@@ -266,6 +256,24 @@ static void				calculate_object_xy_size(t_xy_values *object_xy_size,
 	return ;
 }
 
+static t_xyz_values		*prepare_projection_params(t_cmd_args *cmd_args)
+{
+	t_xyz_values		*angle;
+
+	if (cmd_args->projection_type)
+	{
+		if (cmd_args->projection_type == 2)
+			angle = set_angle(-30, -45, 0);
+		else if (cmd_args->projection_type == 3)
+			angle = set_angle(-35, -45, 0);
+		else
+			angle = set_angle(0, 0, 0);
+	}
+	else
+		angle = set_angle(cmd_args->x, cmd_args->y, cmd_args->z);
+	return (angle);
+}
+
 t_input					*read_cmd_arguments(int argc, char **argv)
 {
 	t_input		*input;
@@ -274,20 +282,10 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 	set_loging_parameters(input);
 	if ((input->cmd_args = argp_parse(argc, argv, save_cmd_arguments)))
 	{
+		ft_log_set_level(input->cmd_args->logging_level);
 		if (input->cmd_args->map_file)
 			input->map = read_map_file(input->cmd_args->map_file);
-		if (input->cmd_args->projection_type)
-		{
-			if (input->cmd_args->projection_type == 2)
-				input->angle = set_angle(-30, -45, 0);
-			else if (input->cmd_args->projection_type == 3)
-				input->angle = set_angle(-35, -45, 0);
-			else
-				input->angle = set_angle(0, 0, 0);
-		}
-		else
-			input->angle = set_angle(input->cmd_args->x, input->cmd_args->y,
-															input->cmd_args->z);
+		input->angle = prepare_projection_params(input->cmd_args);
 		calculate_object_xy_size(&input->object_xy_size, input->cmd_args);
 	}
 	else

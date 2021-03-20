@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/19 19:31:20 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 09:15:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,27 @@ int		g_y_is_rotation_matrix[360];
 double	**g_x_rotation_matrix[360];
 int		g_x_is_rotation_matrix[360];
 
+typedef enum	e_event_type
+{
+	LOG_TRACE = 0,
+	LOG_DEBUG = 1,
+	LOG_INFO = 2,
+	LOG_WARN = 3,
+	LOG_ERROR = 4,
+	LOG_FATAL = 5
+}				t_event_type;
+
 typedef struct	s_cmd_args
 {
-	char		*map_file;
-	size_t		projection_type;
-	int			x;
-	int			y;
-	int			z;
-	int			elem_side_len;
-	int			altitude_factor;
-	int			angle_steps;
+	char			*map_file;
+	size_t			projection_type;
+	int				x;
+	int				y;
+	int				z;
+	int				elem_side_len;
+	int				altitude_factor;
+	int				angle_steps;
+	t_event_type	logging_level;
 }				t_cmd_args;
 
 typedef struct	s_xyz_values
@@ -248,16 +259,6 @@ typedef struct	s_loging_params
 	const char				**level_colors;
 	t_loging_extension		*loging_extensions[MAX_LOGING_EXTENSIONS];
 }				t_loging_params;
-
-typedef enum	e_event_type
-{
-	LOG_TRACE = 0,
-	LOG_DEBUG = 1,
-	LOG_INFO = 2,
-	LOG_WARN = 3,
-	LOG_ERROR = 4,
-	LOG_FATAL = 5
-}				t_event_type;
 
 # define ft_log_trace(...) ft_login_event(LOG_TRACE, __FILE__, __LINE__, __VA_ARGS__)
 # define ft_log_debug(...) ft_login_event(LOG_DEBUG, __FILE__, __LINE__, __VA_ARGS__)
