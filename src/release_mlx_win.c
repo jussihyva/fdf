@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 19:41:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/19 12:02:40 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 01:12:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,17 @@ static void		delete_object_type(void *content, size_t size)
 	return ;
 }
 
+static void		delete_img_line(void *content, size_t size)
+{
+	t_elem_line	*elem_line;
+
+	(void)size;
+	elem_line = *(t_elem_line **)content;
+	ft_memdel((void **)&elem_line);
+	ft_memdel(&content);
+	return ;
+}
+
 static void		release_elements(t_xy_values_old *element_map_size,
 														t_element ***elem_table)
 {
@@ -88,6 +99,8 @@ void			release_mlx_win(t_mlx_win **mlx_win)
 	ft_memdel((void **)&(*mlx_win)->first_elem_start_position);
 	ft_lstdel((*mlx_win)->object_type_lst, delete_object_type);
 	ft_memdel((void **)&(*mlx_win)->object_type_lst);
+	ft_lstdel((*mlx_win)->img_line_lst, delete_img_line);
+	ft_memdel((void **)&(*mlx_win)->img_line_lst);
 	ft_memdel((void **)mlx_win);
 	release_rotation_matrix(g_z_rotation_matrix, g_z_is_rotation_matrix);
 	release_rotation_matrix(g_y_rotation_matrix, g_y_is_rotation_matrix);

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 23:12:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 23:38:26 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 00:37:20 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,3 @@ void			set_element_color(t_map *map, t_element *element,
 	}
 	return ;
 }
-

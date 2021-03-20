@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/19 15:34:16 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 01:07:06 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int					main(int argc, char **argv)
 	mlx_win->img_start_position =
 				(t_position *)ft_memalloc(sizeof(*mlx_win->img_start_position));
 	mlx_win->render_action = e_no_action;
+	mlx_win->img_line_lst =
+					(t_list **)ft_memalloc(sizeof(*mlx_win->img_line_lst));
 	mlx_win->object_type_lst =
 					(t_list **)ft_memalloc(sizeof(*mlx_win->object_type_lst));
 	create_object_types(mlx_win->object_type_lst, input->map, input);

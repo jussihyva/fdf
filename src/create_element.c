@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 23:12:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 00:59:41 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,33 @@ static void			set_next_start_position(t_xyz_values *elem_start_position,
 	return ;
 }
 
+static void			add_image_lines(t_list **img_line_lst,
+										t_element ***elem_table, int i, int j)
+{
+	t_elem_line		*elem_line;
+	t_list			*elem;
+
+	if (i)
+	{
+		elem_line = (t_elem_line *)ft_memalloc(sizeof(*elem_line));
+		elem_line->color = 0x00FF00;
+		elem_line->start = &elem_table[i][j]->object_type->start_positions[4];
+		elem_line->end = &elem_table[i - 1][j]->object_type->start_positions[4];
+		elem = ft_lstnew(&elem_line, sizeof(elem_line));
+		ft_lstadd(img_line_lst, elem);
+	}
+	if (j)
+	{
+		elem_line = (t_elem_line *)ft_memalloc(sizeof(*elem_line));
+		elem_line->color = 0x00FF00;
+		elem_line->start = &elem_table[i][j]->object_type->start_positions[4];
+		elem_line->end = &elem_table[i][j - 1]->object_type->start_positions[4];
+		elem = ft_lstnew(&elem_line, sizeof(elem_line));
+		ft_lstadd(img_line_lst, elem);
+	}
+	return ;
+}
+
 void				create_elements(t_map *map, t_element ***elem_table,
 															t_mlx_win *mlx_win)
 {
@@ -95,6 +122,7 @@ void				create_elements(t_map *map, t_element ***elem_table,
 			elem_table[i][j] = create_element(mlx_win, &next_start_position,
 									mlx_win->img_position_offset, object_type);
 			set_element_color(map, elem_table[i][j], map->elem_color[i][j]);
+			add_image_lines(mlx_win->img_line_lst, elem_table, i, j);
 			set_next_start_position(&next_start_position, elem_table[i][j],
 											&object_type->current_positions[1]);
 		}
