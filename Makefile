@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2021/03/20 22:54:01 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/03/20 23:11:46 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ SRC_C_FILES		=	read_cmd_arguments.c ft_login_event.c initialize_window.c \
 					render_frame.c release_mlx_win.c hook_functions1.c \
 					hook_functions2.c close_win.c elemental_rotation.c \
 					bresenham_line.c argp_parse.c object_types.c \
-					cmd_arguments.c
+					cmd_arguments.c color.c
 SRC_H_FILES		=	fdf.h
 
 # Path folders for H, C, O and APP files

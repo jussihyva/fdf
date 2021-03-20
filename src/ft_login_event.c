@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 10:22:34 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 13:09:39 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 00:36:03 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void			unlock(void)
 	}
 }
 
-void				ft_log_set_lock(loging_lock_function fn, void *udata)
+void				ft_log_set_lock(t_loging_lock_function fn, void *udata)
 {
 	g_loging_params.lock = fn;
 	g_loging_params.udata = udata;
@@ -90,7 +90,7 @@ void				ft_log_set_quiet(int enable)
 	g_loging_params.quiet = enable;
 }
 
-static int			log_add_callback(loging_function fn, int fd, int level)
+static int			log_add_callback(t_loging_function fn, int fd, int level)
 {
 	t_loging_extension		*loging_extension;
 	size_t					i;
@@ -161,6 +161,138 @@ void				ft_login_event(int level, const char *file, int line,
 	gettimeofday(&event.tv, NULL);
 	lock();
 	if (!g_loging_params.quiet && level >= g_loging_params.level)
+	{
+		event.fd = 2;
+		va_start(event.ap, fmt);
+		stdout_callback(&event);
+		va_end(event.ap);
+	}
+	execute_login_extensions(&event, fmt);
+	unlock();
+	return ;
+}
+
+void				ft_log_trace(const char *fmt, ...)
+{
+	t_log_event				event;
+
+	event.fmt = fmt;
+	event.file = __FILE__;
+	event.line = __LINE__;
+	event.level = LOG_TRACE;
+	gettimeofday(&event.tv, NULL);
+	lock();
+	if (!g_loging_params.quiet && event.level >= g_loging_params.level)
+	{
+		event.fd = 2;
+		va_start(event.ap, fmt);
+		stdout_callback(&event);
+		va_end(event.ap);
+	}
+	execute_login_extensions(&event, fmt);
+	unlock();
+	return ;
+}
+
+void				ft_log_debug(const char *fmt, ...)
+{
+	t_log_event				event;
+
+	event.fmt = fmt;
+	event.file = __FILE__;
+	event.line = __LINE__;
+	event.level = LOG_DEBUG;
+	gettimeofday(&event.tv, NULL);
+	lock();
+	if (!g_loging_params.quiet && event.level >= g_loging_params.level)
+	{
+		event.fd = 2;
+		va_start(event.ap, fmt);
+		stdout_callback(&event);
+		va_end(event.ap);
+	}
+	execute_login_extensions(&event, fmt);
+	unlock();
+	return ;
+}
+
+void				ft_log_info(const char *fmt, ...)
+{
+	t_log_event				event;
+
+	event.fmt = fmt;
+	event.file = __FILE__;
+	event.line = __LINE__;
+	event.level = LOG_INFO;
+	gettimeofday(&event.tv, NULL);
+	lock();
+	if (!g_loging_params.quiet && event.level >= g_loging_params.level)
+	{
+		event.fd = 2;
+		va_start(event.ap, fmt);
+		stdout_callback(&event);
+		va_end(event.ap);
+	}
+	execute_login_extensions(&event, fmt);
+	unlock();
+	return ;
+}
+
+void				ft_log_warn(const char *fmt, ...)
+{
+	t_log_event				event;
+
+	event.fmt = fmt;
+	event.file = __FILE__;
+	event.line = __LINE__;
+	event.level = LOG_WARN;
+	gettimeofday(&event.tv, NULL);
+	lock();
+	if (!g_loging_params.quiet && event.level >= g_loging_params.level)
+	{
+		event.fd = 2;
+		va_start(event.ap, fmt);
+		stdout_callback(&event);
+		va_end(event.ap);
+	}
+	execute_login_extensions(&event, fmt);
+	unlock();
+	return ;
+}
+
+void				ft_log_error(const char *fmt, ...)
+{
+	t_log_event				event;
+
+	event.fmt = fmt;
+	event.file = __FILE__;
+	event.line = __LINE__;
+	event.level = LOG_ERROR;
+	gettimeofday(&event.tv, NULL);
+	lock();
+	if (!g_loging_params.quiet && event.level >= g_loging_params.level)
+	{
+		event.fd = 2;
+		va_start(event.ap, fmt);
+		stdout_callback(&event);
+		va_end(event.ap);
+	}
+	execute_login_extensions(&event, fmt);
+	unlock();
+	return ;
+}
+
+void				ft_log_fatal(const char *fmt, ...)
+{
+	t_log_event				event;
+
+	event.fmt = fmt;
+	event.file = __FILE__;
+	event.line = __LINE__;
+	event.level = LOG_FATAL;
+	gettimeofday(&event.tv, NULL);
+	lock();
+	if (!g_loging_params.quiet && event.level >= g_loging_params.level)
 	{
 		event.fd = 2;
 		va_start(event.ap, fmt);

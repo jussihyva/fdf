@@ -6,9 +6,24 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 22:02:15 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 00:32:26 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+** # define ft_log_trace(...)
+**					ft_login_event(LOG_TRACE, __FILE__, __LINE__, __VA_ARGS__)
+** # define ft_log_debug(...)
+**					ft_login_event(LOG_DEBUG, __FILE__, __LINE__, __VA_ARGS__)
+** # define ft_log_info(...)
+**					ft_login_event(LOG_INFO,  __FILE__, __LINE__, __VA_ARGS__)
+** # define ft_log_warn(...)
+**					ft_login_event(LOG_WARN,  __FILE__, __LINE__, __VA_ARGS__)
+** # define ft_log_error(...)
+**					ft_login_event(LOG_ERROR, __FILE__, __LINE__, __VA_ARGS__)
+** # define ft_log_fatal(...)
+**					ft_login_event(LOG_FATAL, __FILE__, __LINE__, __VA_ARGS__)
+*/
 
 #ifndef FDF_H
 # define FDF_H
@@ -212,7 +227,7 @@ void			bresenham_draw_line(t_img *img, t_elem_line *line,
 											t_position *elem_position_offset);
 void			release_input_data(t_input **input);
 t_cmd_args		*argp_parse(int argc, char **argv,
-											void (fn)(t_cmd_args *, char, char *));
+										void (fn)(t_cmd_args *, char, char *));
 void			print_start_position(t_position *elem_start_position);
 void			create_object_types(t_list **object_type_lst, t_map *map,
 																t_input *input);
@@ -222,6 +237,8 @@ void			save_cmd_arguments(t_cmd_args *cmd_args, char opt,
 																char *next_arg);
 void			create_elements(t_map *map, t_element ***elem_table,
 															t_mlx_win *mlx_win);
+void			set_element_color(t_map *map, t_element *element,
+																int elem_color);
 
 # include <time.h>
 # include <sys/time.h>
@@ -239,12 +256,12 @@ typedef struct	s_log_event
 	int				level;
 }				t_log_event;
 
-typedef void (*loging_function)(t_log_event *event);
-typedef void (*loging_lock_function)(int lock, void *udata);
+typedef void	(*t_loging_function)(t_log_event *event);
+typedef void	(*t_loging_lock_function)(int lock, void *udata);
 
 typedef struct	s_loging_extension
 {
-	loging_function		fn;
+	t_loging_function	fn;
 	int					fd;
 	int					level;
 }				t_loging_extension;
@@ -252,7 +269,7 @@ typedef struct	s_loging_extension
 typedef struct	s_loging_params
 {
 	void					*udata;
-	loging_lock_function	lock;
+	t_loging_lock_function	lock;
 	int						level;
 	int						quiet;
 	const char				**level_strings;
@@ -260,17 +277,18 @@ typedef struct	s_loging_params
 	t_loging_extension		*loging_extensions[MAX_LOGING_EXTENSIONS];
 }				t_loging_params;
 
-# define ft_log_trace(...) ft_login_event(LOG_TRACE, __FILE__, __LINE__, __VA_ARGS__)
-# define ft_log_debug(...) ft_login_event(LOG_DEBUG, __FILE__, __LINE__, __VA_ARGS__)
-# define ft_log_info(...)  ft_login_event(LOG_INFO,  __FILE__, __LINE__, __VA_ARGS__)
-# define ft_log_warn(...)  ft_login_event(LOG_WARN,  __FILE__, __LINE__, __VA_ARGS__)
-# define ft_log_error(...) ft_login_event(LOG_ERROR, __FILE__, __LINE__, __VA_ARGS__)
-# define ft_log_fatal(...) ft_login_event(LOG_FATAL, __FILE__, __LINE__, __VA_ARGS__)
-
-void			ft_log_set_lock(loging_lock_function fn, void *udata);
+void			ft_log_trace(const char *fmt, ...);
+void			ft_log_debug(const char *fmt, ...);
+void			ft_log_info(const char *fmt, ...);
+void			ft_log_warn(const char *fmt, ...);
+void			ft_log_error(const char *fmt, ...);
+void			ft_log_fatal(const char *fmt, ...);
+void			ft_log_set_lock(t_loging_lock_function fn, void *udata);
 void			ft_log_set_level(int level);
-// void			log_set_quiet(int enable);
-// int				log_add_callback(loging_function fn, void *udata, int level);
+/*
+** void			log_set_quiet(int enable);
+** int			log_add_callback(loging_function fn, void *udata, int level);
+*/
 int				ft_log_add_fp(int fd, int level);
 void			ft_login_event(int level, const char *file, int line,
 														const char *fmt, ...);
