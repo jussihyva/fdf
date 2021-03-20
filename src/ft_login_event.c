@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 10:22:34 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/12 12:04:55 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 13:09:39 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,11 @@ static void			stdout_callback(t_log_event *event)
 	char		buf[16];
 
 	format_time_stamp(event->tv, buf, sizeof(buf), "%H:%M:%S");
-
-#ifdef LOG_USE_COLOR
-
 	ft_dprintf(
 		event->fd, "%s %s%-5s\x1b[0m \x1b[90m%s:%d:\x1b[0m ",
 								buf, g_loging_params.level_colors[event->level],
 									g_loging_params.level_strings[event->level],
 													event->file, event->line);
-
-#else
-
-	ft_dprintf(
-		event->fd, "%s %-5s %s:%d: ", buf,
-		g_loging_params.level_strings[event->level], event->file, event->line);
-
-#endif
-
 	ft_vdprintf(event->fd, event->fmt, event->ap);
 	ft_dprintf(event->fd, "\n");
 }

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:28:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 09:16:39 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 22:02:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static t_cmd_args	*initialize_cmd_args(void)
 	cmd_args->angle_steps = 5;
 	cmd_args->altitude_factor = 1;
 	cmd_args->elem_side_len = 20;
-	cmd_args->logging_level = LOG_ERROR;
+	cmd_args->loging_level = LOG_ERROR;
 	return (cmd_args);
 }
 

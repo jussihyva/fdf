@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 09:33:24 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 22:02:36 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,7 +282,7 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 	set_loging_parameters(input);
 	if ((input->cmd_args = argp_parse(argc, argv, save_cmd_arguments)))
 	{
-		ft_log_set_level(input->cmd_args->logging_level);
+		ft_log_set_level(input->cmd_args->loging_level);
 		if (input->cmd_args->map_file)
 			input->map = read_map_file(input->cmd_args->map_file);
 		input->angle = prepare_projection_params(input->cmd_args);

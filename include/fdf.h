@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 09:15:59 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 22:02:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct	s_cmd_args
 	int				elem_side_len;
 	int				altitude_factor;
 	int				angle_steps;
-	t_event_type	logging_level;
+	t_event_type	loging_level;
 }				t_cmd_args;
 
 typedef struct	s_xyz_values

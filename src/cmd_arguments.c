@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 09:34:40 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 09:20:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 22:02:27 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		save_cmd_arguments(t_cmd_args *cmd_args, char opt, char *next_arg)
 	if (opt == 'f')
 		cmd_args->map_file = next_arg;
 	else if (opt == 'L')
-		cmd_args->logging_level = conv_str_to_int(opt, next_arg);
+		cmd_args->loging_level = conv_str_to_int(opt, next_arg);
 	else if (opt == 'P')
 		cmd_args->projection_type = conv_str_to_int(opt, next_arg);
 	else if (opt == 'S')

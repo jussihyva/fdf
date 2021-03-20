@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2021/03/18 12:31:18 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/03/20 13:10:25 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,14 +16,6 @@ ifdef P
 	PROJECTION	=	$(P)
 else
 	PROJECTION	=	0
-endif
-ifdef L
-	LOGING_LEVEL	=	$(L)
-else
-	LOGING_LEVEL	=	4
-endif
-ifdef C
-	LOG_USE_COLOR	=	1
 endif
 
 # Application specific parameters
@@ -42,9 +34,7 @@ INCLUDES		=	-I $(INCLUDE) -I $(LIB)
 
 # Compiler and linking parameters
 CC				=	clang
-C_FLAGS			=	-g -Wall -Wextra -Werror $(INCLUDES) \
-											-D LOGING_LEVEL=$(LOGING_LEVEL) \
-											-D LOG_USE_COLOR=$(LOG_USE_COLOR)
+C_FLAGS			=	-g -Wall -Wextra -Werror $(INCLUDES)
 LD_FLAGS		=	-std=gnu17 \
 					-Llib \
 					-lft_addons -lftprintf -lft -lmlx_Linux -lGLEW -lGL -lm -lXext -lX11
