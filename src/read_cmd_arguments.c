@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 22:02:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 22:47:55 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,17 @@ static int				open_fd(char *map_file_path)
 {
 	int		fd;
 
-	if ((fd = open(map_file_path, O_RDONLY)) == -1)
+	fd = 0;
+	if (map_file_path)
 	{
-		ft_log_error("%s (%s) failed! errno=%d. %s: %s",
+		if ((fd = open(map_file_path, O_RDONLY)) == -1)
+		{
+			ft_log_error("%s (%s) failed! errno=%d. %s: %s",
 					"Opening of a file", map_file_path, errno, "Detail info",
-					strerror(errno));
-		ft_log_error("A map is mandatory input for fdf!");
-		exit(42);
+															strerror(errno));
+			ft_log_error("A map is mandatory input for fdf!");
+			exit(42);
+		}
 	}
 	return (fd);
 }
@@ -94,9 +98,9 @@ static t_map			*validate_map(char *map_file)
 	map = (t_map *)ft_memalloc(sizeof(*map));
 	map->max_altitude = INT_MIN;
 	map->min_altitude = INT_MAX;
-	line = NULL;
 	if ((fd = open_fd(map_file)) >= 0)
 	{
+		line = NULL;
 		ft_printf("Map file path: %s\n", map_file);
 		map->map_size =
 				(t_xy_values_old *)ft_memalloc(sizeof(*map->map_size));
@@ -203,6 +207,7 @@ static void				read_content_of_map_file(int fd, t_map *map)
 	map->elem_color = (int **)ft_memalloc(sizeof(*map->elem_color) *
 												map->map_size->y);
 	line_index = -1;
+	line = NULL;
 	while (ft_get_next_line(fd, &line) > 0)
 	{
 		line_index++;
@@ -226,7 +231,10 @@ static t_map			*read_map_file(char *map_file)
 	line = NULL;
 	map = validate_map(map_file);
 	ft_log_info("Map size: X=%d Y=%d", map->map_size->x, map->map_size->y);
-	fd = open_fd(map_file);
+	if (map_file)
+		fd = open_fd(map_file);
+	else
+		fd = 0;
 	read_content_of_map_file(fd, map);
 	if (!map->map_size->x)
 	{
@@ -283,8 +291,7 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 	if ((input->cmd_args = argp_parse(argc, argv, save_cmd_arguments)))
 	{
 		ft_log_set_level(input->cmd_args->loging_level);
-		if (input->cmd_args->map_file)
-			input->map = read_map_file(input->cmd_args->map_file);
+		input->map = read_map_file(input->cmd_args->map_file);
 		input->angle = prepare_projection_params(input->cmd_args);
 		calculate_object_xy_size(&input->object_xy_size, input->cmd_args);
 	}

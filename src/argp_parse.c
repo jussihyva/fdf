@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:28:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 22:02:21 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/20 22:50:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,8 @@ t_cmd_args			*argp_parse(int argc, char **argv,
 		}
 		else
 		{
-			ft_log_error("Unknown parameter: %c", argv[arg_index][0]);
-			ft_log_error("  Note: The first character must be -");
-			exit(42);
+			arg_index += save_args(fn, cmd_args, "f", argv[arg_index]);
+			break ;
 		}
 	}
 	return (cmd_args);

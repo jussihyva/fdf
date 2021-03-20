@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2021/03/20 13:10:25 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/03/20 22:54:01 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,6 +96,11 @@ libraries_norm:
 .PHONY: run
 run: all
 	valgrind -s --tool=memcheck --leak-check=full --show-leak-kinds=all ./$(NAME) -f $(DATA)/maps/42.fdf -P $(PROJECTION)
+
+.PHONY: test
+test: all
+	-./$(NAME) data/maps/Error/Invalid_param_01
+	-./$(NAME) data/maps/Error/Invalid_param_02
 
 .PHONY: clean
 clean:
