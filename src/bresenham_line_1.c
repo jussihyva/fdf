@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bresenham_line.c                                   :+:      :+:    :+:   */
+/*   bresenham_line_1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 12:59:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 08:35:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,47 +84,22 @@ static void		draw_high(unsigned int *img_buffer,
 	return ;
 }
 
-static int		set_drawing_data(t_drawing_data *drawing_data,
-										t_xyz_values *start, t_xyz_values *end,
-											t_position *elem_position_offset)
+void			bresenham_draw_line(t_img *img, t_elem_line *line)
 {
-	int			low;
-
-	drawing_data->start.x = (int)start->x + elem_position_offset->x;
-	drawing_data->start.y = (int)start->y + elem_position_offset->y;
-	drawing_data->end.x = (int)end->x + elem_position_offset->x;
-	drawing_data->end.y = (int)end->y + elem_position_offset->y;
-	if (drawing_data->start.x < drawing_data->end.x)
-		low = 1;
-	else
-		low = 0;
-	return (low);
-}
-
-void			bresenham_draw_line(t_img *img, t_elem_line *line,
-											t_position *elem_position_offset)
-{
-	int				delta_x;
-	int				delta_y;
+	t_delta			delta;
 	t_drawing_data	drawing_data;
 	int				low;
 
 	drawing_data.color = line->color;
 	drawing_data.line_type = line->line_type;
 	drawing_data.size_line = img->size_line / 4;
-	delta_x = ft_abs((int)line->end->x - (int)line->start->x);
-	delta_y = ft_abs((int)line->end->y - (int)line->start->y);
-	if ((delta_x >= delta_y && line->start->x > line->end->x) ||
-		(delta_y >= delta_x && line->start->y > line->end->y))
-		low = set_drawing_data(&drawing_data, line->end, line->start,
-														elem_position_offset);
-	else
-		low = set_drawing_data(&drawing_data, line->start, line->end,
-														elem_position_offset);
+	delta.x = ft_abs((int)line->end->x - (int)line->start->x);
+	delta.y = ft_abs((int)line->end->y - (int)line->start->y);
+	low = set_drawing_data(&drawing_data, line, &delta);
 	ft_log_trace("%3d,%3d --> %3d,%3d (delta_y:%d < delta_x:%d",
 				drawing_data.start.x, drawing_data.start.y, drawing_data.end.x,
-										drawing_data.end.y, delta_y, delta_x);
-	if (low && delta_x >= delta_y)
+										drawing_data.end.y, delta.y, delta.x);
+	if (low && delta.x >= delta.y)
 		draw_low((unsigned int *)img->data, &drawing_data);
 	else
 		draw_high((unsigned int *)img->data, &drawing_data);

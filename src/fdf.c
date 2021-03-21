@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/21 01:07:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 10:48:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int					main(int argc, char **argv)
 	mlx_win = (t_mlx_win *)ft_memalloc(sizeof(*mlx_win));
 	mlx_win->img_position_offset =
 			(t_xyz_values *)ft_memalloc(sizeof(*mlx_win->img_position_offset));
-	mlx_win->img_size.x = 4000;
-	mlx_win->img_size.y = 4000;
+	mlx_win->img_size.x = 5000;
+	mlx_win->img_size.y = 5000;
 	mlx_win->img_start_position =
 				(t_position *)ft_memalloc(sizeof(*mlx_win->img_start_position));
 	mlx_win->render_action = e_no_action;
@@ -49,8 +49,7 @@ int					main(int argc, char **argv)
 	{
 		j = -1;
 		while (++j < input->map->map_size->x)
-			ft_printf(" %3d", elem_altitude[i][j]);
-		ft_printf("\n");
+			ft_log_trace(" %3d", elem_altitude[i][j]);
 	}
 	mlx_win->mlx = mlx_init();
 	initialize_window(mlx_win, "Minilibx training 4 (ex4)");

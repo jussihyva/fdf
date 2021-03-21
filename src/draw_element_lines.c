@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 23:12:39 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/20 11:38:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 08:41:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void			draw_lines(t_img *img, t_element *element)
 	t_elem_line 	elem_line;
 	int				i;
 
-	elem_lines = element->elem_lines;
+	elem_lines = (t_elem_line *)element->elem_lines;
 	i = -1;
 	ft_log_trace("Draw element lines %s %3.2f,%3.2f %s %3d,%3d",
 			"(start position):", "(offset):",
@@ -28,7 +28,7 @@ void			draw_lines(t_img *img, t_element *element)
 	{
 		elem_line = elem_lines[i];
 		elem_line.color = element->color;
-		bresenham_draw_line(img, &elem_line, &element->elem_position_offset);
+		bresenham_draw_line(img, &elem_line);
 	}
 	return ;
 }

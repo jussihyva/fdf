@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/21 00:44:07 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 10:08:09 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,12 @@ typedef struct	s_cmd_args
 	int				angle_steps;
 	t_event_type	loging_level;
 }				t_cmd_args;
+
+typedef struct	s_delta
+{
+	int			x;
+	int			y;
+}				t_delta;
 
 typedef struct	s_xyz_values
 {
@@ -152,14 +158,6 @@ typedef struct	s_elem_size
 	int			z;
 }				t_elem_size;
 
-typedef struct	s_elem_line
-{
-	t_xyz_values		*start;
-	t_xyz_values		*end;
-	int					color;
-	int					line_type;
-}				t_elem_line;
-
 typedef struct	s_drawing_data
 {
 	unsigned int		color;
@@ -175,13 +173,23 @@ typedef struct	s_element
 	t_xyz_values	*angle;
 	int				color;
 	t_position		elem_position_offset;
-	t_elem_line		*elem_lines;
+	void			*elem_lines;
 	char			*addr;
 	int				bits_per_pixel;
 	int				line_length;
 	int				endian;
 	t_xyz_values	*start_position;
 }				t_element;
+
+typedef struct	s_elem_line
+{
+	t_xyz_values		*start;
+	t_element			*start_elem;
+	t_xyz_values		*end;
+	t_element			*end_elem;
+	int					color;
+	int					line_type;
+}				t_elem_line;
 
 typedef struct	s_mlx_win
 {
@@ -211,9 +219,6 @@ int				enter_notify(t_mlx_win *mlx_win);
 int				leave_notify(t_mlx_win *mlx_win);
 void			release_mlx_win(t_mlx_win **mlx_win);
 int				render_frame(t_mlx_win *mlx_win);
-t_element		*create_element(t_mlx_win *mlx_win,
-					t_xyz_values *start_position, t_xyz_values *position_offset,
-													t_object_type *object_type);
 void			mlx_image_pixel_put(t_img *img, int x, int y, int color);
 void			initialize_window(t_mlx_win *mlx_win, char *window_name);
 t_xyz_values	*set_elem_positions(t_xyz_values *elem_size);
@@ -224,8 +229,7 @@ void			draw_lines(t_img *img, t_element *element);
 void			set_position(t_xyz_values *position, double x, double y,
 																	double z);
 t_input			*read_cmd_arguments(int argc, char **argv);
-void			bresenham_draw_line(t_img *img, t_elem_line *line,
-											t_position *elem_position_offset);
+void			bresenham_draw_line(t_img *img, t_elem_line *line);
 void			release_input_data(t_input **input);
 t_cmd_args		*argp_parse(int argc, char **argv,
 										void (fn)(t_cmd_args *, char, char *));
@@ -238,8 +242,10 @@ void			save_cmd_arguments(t_cmd_args *cmd_args, char opt,
 																char *next_arg);
 void			create_elements(t_map *map, t_element ***elem_table,
 															t_mlx_win *mlx_win);
-void			set_element_color(t_map *map, t_element *element,
+int				get_element_color(t_map *map, t_object_type *object_type,
 																int elem_color);
+int				set_drawing_data(t_drawing_data *drawing_data,
+											t_elem_line *line, t_delta *delta);
 
 # include <time.h>
 # include <sys/time.h>
