@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/21 10:48:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 12:16:07 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int					main(int argc, char **argv)
 	mlx_win->img = mlx_new_image(mlx_win->mlx, mlx_win->img_size.x,
 														mlx_win->img_size.y);
 	mlx_win->elem_table =
-						(t_element ***)ft_memalloc(sizeof(**mlx_win->elem_table)
+						(t_element ***)ft_memalloc(sizeof(*mlx_win->elem_table)
 													* input->map->map_size->y);
 	i = -1;
 	while (++i < input->map->map_size->y)

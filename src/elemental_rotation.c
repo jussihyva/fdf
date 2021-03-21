@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 20:46:08 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/17 18:54:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 12:14:56 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static double	**initialize_rotation_matrix(double radian_angle,
 	i = -1;
 	while (++i < 3)
 		rotation_matrix[i] =
-					(double *)ft_memalloc(sizeof(**rotation_matrix) * 3);
+					(double *)ft_memalloc(sizeof(*rotation_matrix[i]) * 3);
 	i = -1;
 	while (++i < 3)
 	{

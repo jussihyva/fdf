@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 22:47:55 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/21 12:27:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static void				set_level_strings(const char **level_strings)
 {
-	level_strings[LOG_TRACE] = "TRACE";
-	level_strings[LOG_DEBUG] = "DEBUG";
-	level_strings[LOG_INFO] = "INFO";
-	level_strings[LOG_WARN] = "WARN";
-	level_strings[LOG_ERROR] = "ERROR";
-	level_strings[LOG_FATAL] = "FATAL";
+	level_strings[LOG_TRACE] = ft_strdup("TRACE");
+	level_strings[LOG_DEBUG] = ft_strdup("DEBUG");
+	level_strings[LOG_INFO] = ft_strdup("INFO");
+	level_strings[LOG_WARN] = ft_strdup("WARN");
+	level_strings[LOG_ERROR] = ft_strdup("ERROR");
+	level_strings[LOG_FATAL] = ft_strdup("FATAL");
 	return ;
 }
 
@@ -30,12 +30,12 @@ static void				set_loging_parameters(t_input *input)
 	input->level_colors =
 				(const char **)ft_memalloc(sizeof(*input->level_strings) * 6);
 	set_level_strings(input->level_strings);
-	input->level_colors[LOG_TRACE] = "\x1b[94m";
-	input->level_colors[LOG_DEBUG] = "\x1b[36m";
-	input->level_colors[LOG_INFO] = "\x1b[32m";
-	input->level_colors[LOG_WARN] = "\x1b[33m";
-	input->level_colors[LOG_ERROR] = "\x1b[31m";
-	input->level_colors[LOG_FATAL] = "\x1b[35m";
+	input->level_colors[LOG_TRACE] = ft_strdup("\x1b[94m");
+	input->level_colors[LOG_DEBUG] = ft_strdup("\x1b[36m");
+	input->level_colors[LOG_INFO] = ft_strdup("\x1b[32m");
+	input->level_colors[LOG_WARN] = ft_strdup("\x1b[33m");
+	input->level_colors[LOG_ERROR] = ft_strdup("\x1b[31m");
+	input->level_colors[LOG_FATAL] = ft_strdup("\x1b[35m");
 	ft_log_set_params(input->level_strings, input->level_colors);
 	ft_log_set_level(LOG_ERROR);
 	return ;
@@ -160,8 +160,8 @@ static int				read_map_values(char *line, int size,
 	int				is_colors_included;
 
 	is_colors_included = 0;
-	*altitude_array = (int *)ft_memalloc(sizeof(**altitude_array) * size);
-	*color_array = (int *)ft_memalloc(sizeof(**color_array) * size);
+	*altitude_array = (int *)ft_memalloc(sizeof(*altitude_array) * size);
+	*color_array = (int *)ft_memalloc(sizeof(*color_array) * size);
 	i = -1;
 	input_array = ft_strsplit(line, ' ');
 	while (++i < size)
