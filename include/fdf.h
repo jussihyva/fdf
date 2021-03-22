@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 18:03:12 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 19:09:30 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,8 @@ void			set_min_max_altitude(int line_index, t_map *map);
 int				open_fd(char *map_file_path);
 int				read_altitude(char *ptr);
 int				read_color(char *ptr);
+void			set_next_start_position(t_xyz_values *elem_start_position,
+							t_element *element, t_xyz_values *current_position);
 
 /*
 ** Rest of the header file includes bonus related things

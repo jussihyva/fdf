@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 17:25:20 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 18:34:59 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,7 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 	}
 	else
 		release_input_data(&input);
+	ft_log_info("Map file: %s", input->cmd_args->map_file);
+	ft_log_info("Protection type: %d", input->cmd_args->projection_type);
 	return (input);
 }

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 12:47:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 18:20:55 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 19:27:18 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,24 @@ static void		change_angle(int keycode, t_xyz_values *angle,
 	return ;
 }
 
+static void		update_elem_position(t_xyz_values *next_start_position,
+										t_mlx_win *mlx_win, t_element *element)
+{
+	t_object_type	*object_type;
+
+	object_type = element->object_type;
+	ft_memcpy(element->start_position, next_start_position,
+									sizeof(*element->start_position));
+	get_max_position_offset(object_type->current_positions,
+				mlx_win->img_position_offset, element->start_position);
+	set_next_start_position(next_start_position, element,
+											&object_type->current_positions[1]);
+	return ;
+}
+
 static void		update_elem_positions(t_mlx_win *mlx_win)
 {
-	t_xyz_values	elem_start_position;
-	t_element		*element;
+	t_xyz_values	next_start_position;
 	t_object_type	*object_type;
 	int				i;
 	int				j;
@@ -50,30 +64,18 @@ static void		update_elem_positions(t_mlx_win *mlx_win)
 						4 + mlx_win->img_size.x * (mlx_win->img->bpp / 8));
 	ft_bzero(mlx_win->img_position_offset,
 										sizeof(*mlx_win->img_position_offset));
-	ft_memcpy(&elem_start_position, mlx_win->elem_table[0][0]->start_position,
-												sizeof(elem_start_position));
+	ft_memcpy(&next_start_position, mlx_win->elem_table[0][0]->start_position,
+												sizeof(next_start_position));
 	i = -1;
 	while (++i < mlx_win->element_map_size->y)
 	{
 		j = -1;
 		while (++j < mlx_win->element_map_size->x)
-		{
-			element = mlx_win->elem_table[i][j];
-			object_type = mlx_win->elem_table[i][j]->object_type;
-			ft_memcpy(element->start_position, &elem_start_position,
-											sizeof(*element->start_position));
-			get_max_position_offset(object_type->current_positions,
-						mlx_win->img_position_offset, element->start_position);
-			ft_memcpy(&elem_start_position, element->start_position,
-												sizeof(elem_start_position));
-			elem_start_position.x += object_type->current_positions[1].x;
-			elem_start_position.y += object_type->current_positions[1].y;
-		}
-		ft_memcpy(&elem_start_position,
-				&mlx_win->elem_table[i][0]->object_type->current_positions[2],
-												sizeof(elem_start_position));
-		elem_start_position.x *= (i + 1);
-		elem_start_position.y *= (i + 1);
+			update_elem_position(&next_start_position, mlx_win,
+													mlx_win->elem_table[i][j]);
+		object_type = mlx_win->elem_table[i][0]->object_type;
+		set_next_start_position(&next_start_position, mlx_win->elem_table[i][0],
+											&object_type->current_positions[2]);
 	}
 	return ;
 }

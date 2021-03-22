@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 16:29:48 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 19:09:17 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static t_element	*create_element(t_mlx_win *mlx_win, int color,
 	return (element);
 }
 
-static void			set_next_start_position(t_xyz_values *elem_start_position,
+void				set_next_start_position(t_xyz_values *elem_start_position,
 							t_element *element, t_xyz_values *current_position)
 {
 	t_xyz_values	*start_position;
@@ -94,6 +94,8 @@ void				create_elements(t_map *map, t_element ***elem_table,
 	i = -1;
 	while (++i < map->map_size->y)
 	{
+		elem_table[i] = (t_element **)ft_memalloc(sizeof(*elem_table[i]) *
+															map->map_size->x);
 		j = -1;
 		while (++j < map->map_size->x)
 		{
