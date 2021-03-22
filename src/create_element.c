@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/21 10:32:45 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 08:59:27 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,18 +90,22 @@ static void			add_image_lines(t_list **img_line_lst,
 	if (i)
 	{
 		elem_line = (t_elem_line *)ft_memalloc(sizeof(*elem_line));
-		elem_line->color = 0x00FF00;
-		elem_line->start = &elem_table[i][j]->object_type->start_positions[4];
-		elem_line->end = &elem_table[i - 1][j]->object_type->start_positions[4];
+		elem_line->start = &elem_table[i][j]->object_type->current_positions[4];
+		elem_line->start_elem = elem_table[i][j];
+		elem_line->end = &elem_table[i - 1][j]->object_type->current_positions[4];
+		elem_line->end_elem = elem_table[i - 1][j];
+		elem_line->color = elem_line->start_elem->color;
 		elem = ft_lstnew(&elem_line, sizeof(elem_line));
 		ft_lstadd(img_line_lst, elem);
 	}
 	if (j)
 	{
 		elem_line = (t_elem_line *)ft_memalloc(sizeof(*elem_line));
-		elem_line->color = 0x00FF00;
-		elem_line->start = &elem_table[i][j]->object_type->start_positions[4];
-		elem_line->end = &elem_table[i][j - 1]->object_type->start_positions[4];
+		elem_line->start = &elem_table[i][j]->object_type->current_positions[4];
+		elem_line->start_elem = elem_table[i][j];
+		elem_line->end = &elem_table[i][j - 1]->object_type->current_positions[4];
+		elem_line->end_elem = elem_table[i][j - 1];
+		elem_line->color = elem_line->start_elem->color;
 		elem = ft_lstnew(&elem_line, sizeof(elem_line));
 		ft_lstadd(img_line_lst, elem);
 	}

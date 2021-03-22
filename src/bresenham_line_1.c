@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/21 08:35:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 09:22:42 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,14 @@ static void		set_image_point(t_position *plot_pos,
 	return ;
 }
 
-static void		draw_low(unsigned int *img_buffer, t_drawing_data *drawing_data)
+static void		draw_low(unsigned int *img_buffer,
+								t_drawing_data *drawing_data, t_delta *delta)
 {
-	t_elem_size		delta;
 	int				difference;
 	t_position		plot_pos;
 	int				step;
 
-	delta.x = ft_abs(drawing_data->end.x - drawing_data->start.x);
-	delta.y = ft_abs(drawing_data->end.y - drawing_data->start.y);
-	difference = 2 * delta.y - delta.x;
+	difference = 2 * delta->y - delta->x;
 	step = (drawing_data->end.y < drawing_data->start.y) ? -1 : 1;
 	plot_pos.y = drawing_data->start.y;
 	plot_pos.x = drawing_data->start.x;
@@ -48,25 +46,22 @@ static void		draw_low(unsigned int *img_buffer, t_drawing_data *drawing_data)
 		if (difference > 0)
 		{
 			plot_pos.y += step;
-			difference -= (2 * delta.x);
+			difference -= (2 * delta->x);
 		}
-		difference += (2 * delta.y);
+		difference += (2 * delta->y);
 		plot_pos.x++;
 	}
 	return ;
 }
 
 static void		draw_high(unsigned int *img_buffer,
-												t_drawing_data *drawing_data)
+								t_drawing_data *drawing_data, t_delta *delta)
 {
-	t_elem_size		delta;
 	int				difference;
 	t_position		plot_pos;
 	int				step;
 
-	delta.x = ft_abs(drawing_data->end.x - drawing_data->start.x);
-	delta.y = ft_abs(drawing_data->end.y - drawing_data->start.y);
-	difference = 2 * delta.x - delta.y;
+	difference = 2 * delta->x - delta->y;
 	step = (drawing_data->end.x < drawing_data->start.x) ? -1 : 1;
 	plot_pos.y = drawing_data->start.y;
 	plot_pos.x = drawing_data->start.x;
@@ -76,9 +71,9 @@ static void		draw_high(unsigned int *img_buffer,
 		if (difference > 0)
 		{
 			plot_pos.x += step;
-			difference -= (2 * delta.y);
+			difference -= (2 * delta->y);
 		}
-		difference += (2 * delta.x);
+		difference += (2 * delta->x);
 		plot_pos.y++;
 	}
 	return ;
@@ -93,15 +88,20 @@ void			bresenham_draw_line(t_img *img, t_elem_line *line)
 	drawing_data.color = line->color;
 	drawing_data.line_type = line->line_type;
 	drawing_data.size_line = img->size_line / 4;
-	delta.x = ft_abs((int)line->end->x - (int)line->start->x);
-	delta.y = ft_abs((int)line->end->y - (int)line->start->y);
-	low = set_drawing_data(&drawing_data, line, &delta);
+	drawing_data.start.x = (int)line->start->x +
+									line->start_elem->elem_position_offset.x;
+	drawing_data.start.y = (int)line->start->y +
+									line->start_elem->elem_position_offset.y;
+	drawing_data.end.x = (int)line->end->x +
+										line->end_elem->elem_position_offset.x;
+	drawing_data.end.y = (int)line->end->y +
+										line->end_elem->elem_position_offset.y;
+	low = set_drawing_data(&drawing_data, &delta);
 	ft_log_trace("%3d,%3d --> %3d,%3d (delta_y:%d < delta_x:%d",
 				drawing_data.start.x, drawing_data.start.y, drawing_data.end.x,
 										drawing_data.end.y, delta.y, delta.x);
 	if (low && delta.x >= delta.y)
-		draw_low((unsigned int *)img->data, &drawing_data);
+		draw_low((unsigned int *)img->data, &drawing_data, &delta);
 	else
-		draw_high((unsigned int *)img->data, &drawing_data);
-	return ;
+		draw_high((unsigned int *)img->data, &drawing_data, &delta);
 }

@@ -6,48 +6,31 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 08:27:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/21 08:34:46 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 09:23:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	set_drawing_data_1(t_drawing_data *drawing_data, t_elem_line *line)
+static void		swap_start_and_end(t_drawing_data *drawing_data)
 {
-	drawing_data->start.x = (int)line->start->x +
-									line->start_elem->elem_position_offset.x;
-	drawing_data->start.y = (int)line->start->y +
-									line->start_elem->elem_position_offset.y;
-	drawing_data->end.x = (int)line->end->x +
-									line->end_elem->elem_position_offset.x;
-	drawing_data->end.y = (int)line->end->y +
-									line->end_elem->elem_position_offset.y;
+	t_xy_values_int		tmp;
+
+	ft_memcpy(&tmp, &drawing_data->end, sizeof(tmp));
+	ft_memcpy(&drawing_data->end, &drawing_data->start, sizeof(tmp));
+	ft_memcpy(&drawing_data->start, &tmp, sizeof(tmp));
 	return ;
 }
 
-static void	set_drawing_data_2(t_drawing_data *drawing_data, t_elem_line *line)
-{
-	drawing_data->end.x = (int)line->start->x +
-									line->start_elem->elem_position_offset.x;
-	drawing_data->end.y = (int)line->start->y +
-									line->start_elem->elem_position_offset.y;
-	drawing_data->start.x = (int)line->end->x +
-									line->end_elem->elem_position_offset.x;
-	drawing_data->start.y = (int)line->end->y +
-									line->end_elem->elem_position_offset.y;
-	return ;
-}
-
-int		set_drawing_data(t_drawing_data *drawing_data,
-											t_elem_line *line, t_delta *delta)
+int				set_drawing_data(t_drawing_data *drawing_data, t_delta *delta)
 {
 	int			low;
 
-	if ((delta->x >= delta->y && line->start->x > line->end->x) ||
-		(delta->y >= delta->x && line->start->y > line->end->y))
-		set_drawing_data_2(drawing_data, line);
-	else
-		set_drawing_data_1(drawing_data, line);
+	delta->x = ft_abs(drawing_data->end.x - drawing_data->start.x);
+	delta->y = ft_abs(drawing_data->end.y - drawing_data->start.y);
+	if ((delta->x >= delta->y && drawing_data->start.x > drawing_data->end.x) ||
+		(delta->y >= delta->x && drawing_data->start.y > drawing_data->end.y))
+		swap_start_and_end(drawing_data);
 	low = (drawing_data->start.x < drawing_data->end.x) ? 1 : 0;
 	return (low);
 }

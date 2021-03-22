@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/21 10:08:09 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 09:10:37 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,8 +244,8 @@ void			create_elements(t_map *map, t_element ***elem_table,
 															t_mlx_win *mlx_win);
 int				get_element_color(t_map *map, t_object_type *object_type,
 																int elem_color);
-int				set_drawing_data(t_drawing_data *drawing_data,
-											t_elem_line *line, t_delta *delta);
+int				set_drawing_data(t_drawing_data *drawing_data, t_delta *delta);
+void			draw_img_lines(t_list **img_line_lst, t_img *img);
 
 # include <time.h>
 # include <sys/time.h>

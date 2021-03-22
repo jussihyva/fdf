@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 23:12:39 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/21 08:41:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 00:18:19 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,22 @@ void			draw_lines(t_img *img, t_element *element)
 	while (++i < 12)
 	{
 		elem_line = elem_lines[i];
-		elem_line.color = element->color;
 		bresenham_draw_line(img, &elem_line);
+	}
+	return ;
+}
+
+void			draw_img_lines(t_list **img_line_lst, t_img *img)
+{
+	t_list			*elem;
+	t_elem_line		*elem_line;
+
+	elem = *img_line_lst;
+	while (elem)
+	{
+		elem_line = *((t_elem_line **)elem->content);
+		bresenham_draw_line(img, elem_line);
+		elem = elem->next;
 	}
 	return ;
 }
