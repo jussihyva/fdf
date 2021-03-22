@@ -6,25 +6,16 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 10:19:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 11:34:39 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int					main(int argc, char **argv)
+static t_mlx_win	*initialize_mlx_win(t_input *input)
 {
 	t_mlx_win			*mlx_win;
-	t_xyz_values		elem_start_position;
-	t_input				*input;
-	int					**elem_altitude;
-	int					i;
-	int					j;
 
-	if (!(input = read_cmd_arguments(argc, argv)))
-		return (42);
-	ft_log_info("Map file: %s", input->cmd_args->map_file);
-	ft_log_info("Protection type: %d", input->cmd_args->projection_type);
 	mlx_win = (t_mlx_win *)ft_memalloc(sizeof(*mlx_win));
 	mlx_win->img_position_offset =
 			(t_xyz_values *)ft_memalloc(sizeof(*mlx_win->img_position_offset));
@@ -43,15 +34,39 @@ int					main(int argc, char **argv)
 	ft_log_info("Start angle: x=%.0f, y=%.0f z=%.0f\n", mlx_win->angle->x,
 										mlx_win->angle->y, mlx_win->angle->z);
 	mlx_win->angle_step = input->cmd_args->angle_steps;
-	elem_altitude = input->map->elem_altitude;
 	mlx_win->element_map_size = input->map->map_size;
+	return (mlx_win);
+}
+
+static void			print_input_map(int **elem_altitude, t_map *map)
+{
+	int			i;
+	int			j;
+
 	i = -1;
-	while (++i < input->map->map_size->y)
+	while (++i < map->map_size->y)
 	{
 		j = -1;
-		while (++j < input->map->map_size->x)
+		while (++j < map->map_size->x)
 			ft_log_trace(" %3d", elem_altitude[i][j]);
 	}
+	return ;
+}
+
+int					main(int argc, char **argv)
+{
+	t_mlx_win			*mlx_win;
+	t_xyz_values		elem_start_position;
+	t_input				*input;
+	int					i;
+	int					j;
+
+	if (!(input = read_cmd_arguments(argc, argv)))
+		return (42);
+	ft_log_info("Map file: %s", input->cmd_args->map_file);
+	ft_log_info("Protection type: %d", input->cmd_args->projection_type);
+	mlx_win = initialize_mlx_win(input);
+	print_input_map(input->map->elem_altitude, input->map);
 	mlx_win->mlx = mlx_init();
 	initialize_window(mlx_win, "Minilibx training 4 (ex4)");
 	mlx_win->empty_img = mlx_new_image(mlx_win->mlx, mlx_win->img_size.x,
@@ -72,24 +87,18 @@ int					main(int argc, char **argv)
 										sizeof(*mlx_win->img_start_position));
 	rotate_objects(mlx_win->object_type_lst, input->angle);
 	create_elements(input->map, mlx_win->elem_table, mlx_win);
-	i = -1;
-	while (++i < input->map->map_size->y)
+	if (mlx_win->drawing_mode == 2)
 	{
-		j = -1;
-		while (++j < input->map->map_size->x)
+		i = -1;
+		while (++i < input->map->map_size->y)
 		{
-			mlx_win->elem_table[i][j]->elem_position_offset.x =
-								(int)(mlx_win->img_position_offset->x +
-							mlx_win->elem_table[i][j]->start_position->x + 0.5);
-			mlx_win->elem_table[i][j]->elem_position_offset.y =
-								(int)(mlx_win->img_position_offset->y +
-							mlx_win->elem_table[i][j]->start_position->y + 0.5);
-			if (mlx_win->drawing_mode == 2)
-				draw_lines(mlx_win->img, mlx_win->elem_table[i][j]);
+			j = -1;
+			while (++j < input->map->map_size->x)
+				draw_lines(mlx_win, mlx_win->elem_table[i][j]);
 		}
 	}
-	if (mlx_win->drawing_mode == 1)
-		draw_img_lines(mlx_win->img_line_lst, mlx_win->img);
+	else
+		draw_img_lines(mlx_win);
 	mlx_win->render_action = e_put_image_to_window;
 	mlx_loop_hook(mlx_win->mlx, render_frame, mlx_win);
 	mlx_loop(mlx_win->mlx);

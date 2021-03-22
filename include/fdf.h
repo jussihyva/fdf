@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 10:17:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 11:30:49 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,6 @@ typedef struct	s_element
 	t_object_type	*object_type;
 	t_xyz_values	*angle;
 	int				color;
-	t_position		elem_position_offset;
 	void			*elem_lines;
 	char			*addr;
 	int				bits_per_pixel;
@@ -227,11 +226,11 @@ t_xyz_values	*set_elem_positions(t_xyz_values *elem_size);
 void			elemental_rotation(t_xyz_values *current_positions,
 							t_xyz_values *angle, t_xyz_values *position_offset,
 												t_xyz_values *start_position);
-void			draw_lines(t_img *img, t_element *element);
+void			draw_lines(t_mlx_win *mlx_win, t_element *element);
 void			set_position(t_xyz_values *position, double x, double y,
 																	double z);
 t_input			*read_cmd_arguments(int argc, char **argv);
-void			bresenham_draw_line(t_img *img, t_elem_line *line);
+void			bresenham_draw_line(t_mlx_win *mlx_win, t_elem_line *line);
 void			release_input_data(t_input **input);
 t_cmd_args		*argp_parse(int argc, char **argv,
 										void (fn)(t_cmd_args *, char, char *));
@@ -247,7 +246,7 @@ void			create_elements(t_map *map, t_element ***elem_table,
 int				get_element_color(t_map *map, t_object_type *object_type,
 																int elem_color);
 int				set_drawing_data(t_drawing_data *drawing_data, t_delta *delta);
-void			draw_img_lines(t_list **img_line_lst, t_img *img);
+void			draw_img_lines(t_mlx_win *mlx_win);
 
 # include <time.h>
 # include <sys/time.h>

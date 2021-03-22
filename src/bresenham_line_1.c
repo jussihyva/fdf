@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:19:56 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 09:22:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 11:24:58 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,23 +79,25 @@ static void		draw_high(unsigned int *img_buffer,
 	return ;
 }
 
-void			bresenham_draw_line(t_img *img, t_elem_line *line)
+void			bresenham_draw_line(t_mlx_win *mlx_win, t_elem_line *line)
 {
 	t_delta			delta;
 	t_drawing_data	drawing_data;
+	t_img			*img;
 	int				low;
 
+	img = mlx_win->img;
 	drawing_data.color = line->color;
 	drawing_data.line_type = line->line_type;
 	drawing_data.size_line = img->size_line / 4;
-	drawing_data.start.x = (int)line->start->x +
-									line->start_elem->elem_position_offset.x;
-	drawing_data.start.y = (int)line->start->y +
-									line->start_elem->elem_position_offset.y;
-	drawing_data.end.x = (int)line->end->x +
-										line->end_elem->elem_position_offset.x;
-	drawing_data.end.y = (int)line->end->y +
-										line->end_elem->elem_position_offset.y;
+	drawing_data.start.x = (int)(mlx_win->img_position_offset->x +
+					line->start->x + line->start_elem->start_position->x + 0.5);
+	drawing_data.start.y = (int)(mlx_win->img_position_offset->y +
+					line->start->y + line->start_elem->start_position->y + 0.5);
+	drawing_data.end.x = (int)(mlx_win->img_position_offset->x +
+					line->end->x + line->end_elem->start_position->x + 0.5);
+	drawing_data.end.y = (int)(mlx_win->img_position_offset->y +
+					line->end->y + line->end_elem->start_position->y + 0.5);
 	low = set_drawing_data(&drawing_data, &delta);
 	ft_log_trace("%3d,%3d --> %3d,%3d (delta_y:%d < delta_x:%d",
 				drawing_data.start.x, drawing_data.start.y, drawing_data.end.x,
