@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:28:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/20 22:50:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 10:14:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int			save_args(void (fn)(t_cmd_args *, char, char *),
 	i = 0;
 	while ((opt = arg[i]))
 	{
-		if (ft_strchr("fLPSFAxyz", opt))
+		if (ft_strchr("fMLPSFAxyz", opt))
 		{
 			if (next_arg)
 			{
@@ -57,6 +57,7 @@ static t_cmd_args	*initialize_cmd_args(void)
 	cmd_args->altitude_factor = 1;
 	cmd_args->elem_side_len = 20;
 	cmd_args->loging_level = LOG_ERROR;
+	cmd_args->drawing_mode = 1;
 	return (cmd_args);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 09:10:37 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 10:17:30 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct	s_cmd_args
 	int				elem_side_len;
 	int				altitude_factor;
 	int				angle_steps;
+	int				drawing_mode;
 	t_event_type	loging_level;
 }				t_cmd_args;
 
@@ -209,6 +210,7 @@ typedef struct	s_mlx_win
 	t_img				*empty_img;
 	t_xy_values_old		img_size;
 	t_render_action		render_action;
+	int					drawing_mode;
 }				t_mlx_win;
 
 int				close_win(t_mlx_win *mlx_win);

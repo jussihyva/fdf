@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 12:47:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/19 11:43:58 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 10:18:54 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,12 @@ int				key_press(int keycode, t_mlx_win *mlx_win)
 											element->start_position->x + 0.5);
 				element->elem_position_offset.y = (int)(position_offset->y +
 											element->start_position->y + 0.5);
-				draw_lines(mlx_win->img, element);
+				if (mlx_win->drawing_mode == 2)
+					draw_lines(mlx_win->img, element);
 			}
 		}
+		if (mlx_win->drawing_mode == 1)
+			draw_img_lines(mlx_win->img_line_lst, mlx_win->img);
 		mlx_win->render_action = e_put_image_to_window;
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 09:01:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 10:19:27 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int					main(int argc, char **argv)
 					(t_list **)ft_memalloc(sizeof(*mlx_win->object_type_lst));
 	create_object_types(mlx_win->object_type_lst, input->map, input);
 	mlx_win->angle = input->angle;
+	mlx_win->drawing_mode = input->cmd_args->drawing_mode;
 	ft_log_info("Start angle: x=%.0f, y=%.0f z=%.0f\n", mlx_win->angle->x,
 										mlx_win->angle->y, mlx_win->angle->z);
 	mlx_win->angle_step = input->cmd_args->angle_steps;
@@ -83,10 +84,12 @@ int					main(int argc, char **argv)
 			mlx_win->elem_table[i][j]->elem_position_offset.y =
 								(int)(mlx_win->img_position_offset->y +
 							mlx_win->elem_table[i][j]->start_position->y + 0.5);
-			// draw_lines(mlx_win->img, mlx_win->elem_table[i][j]);
+			if (mlx_win->drawing_mode == 2)
+				draw_lines(mlx_win->img, mlx_win->elem_table[i][j]);
 		}
 	}
-	draw_img_lines(mlx_win->img_line_lst, mlx_win->img);
+	if (mlx_win->drawing_mode == 1)
+		draw_img_lines(mlx_win->img_line_lst, mlx_win->img);
 	mlx_win->render_action = e_put_image_to_window;
 	mlx_loop_hook(mlx_win->mlx, render_frame, mlx_win);
 	mlx_loop(mlx_win->mlx);
