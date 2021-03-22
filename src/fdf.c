@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 11:34:39 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 18:21:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int					main(int argc, char **argv)
 	t_xyz_values		elem_start_position;
 	t_input				*input;
 	int					i;
-	int					j;
 
 	if (!(input = read_cmd_arguments(argc, argv)))
 		return (42);
@@ -88,15 +87,7 @@ int					main(int argc, char **argv)
 	rotate_objects(mlx_win->object_type_lst, input->angle);
 	create_elements(input->map, mlx_win->elem_table, mlx_win);
 	if (mlx_win->drawing_mode == 2)
-	{
-		i = -1;
-		while (++i < input->map->map_size->y)
-		{
-			j = -1;
-			while (++j < input->map->map_size->x)
-				draw_lines(mlx_win, mlx_win->elem_table[i][j]);
-		}
-	}
+		draw_lines(mlx_win);
 	else
 		draw_img_lines(mlx_win);
 	mlx_win->render_action = e_put_image_to_window;

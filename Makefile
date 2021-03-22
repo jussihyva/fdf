@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2021/03/21 08:25:15 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/03/22 17:08:08 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,9 +44,12 @@ LD_FLAGS		=	-std=gnu17 \
 SRC_C_FILES		=	read_cmd_arguments.c ft_login_event.c initialize_window.c \
 					set_elem_positions.c create_element.c draw_element_lines.c \
 					render_frame.c release_mlx_win.c hook_functions1.c \
-					hook_functions2.c close_win.c elemental_rotation.c \
+					hook_functions2.c close_win.c rotate.c \
 					bresenham_line_1.c bresenham_line_2.c argp_parse.c \
-					object_types.c cmd_arguments.c color.c
+					object_1.c object_2.c cmd_arguments.c color.c \
+					add_image_lines.c release_input_data.c \
+					map_1.c map_2.c \
+					matrix_functions_1.c matrix_functions_2.c release_elements.c
 SRC_H_FILES		=	fdf.h
 
 # Path folders for H, C, O and APP files

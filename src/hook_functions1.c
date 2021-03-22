@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 12:47:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 11:33:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 18:20:55 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,48 @@ static void		change_angle(int keycode, t_xyz_values *angle,
 		angle->z = (angle->z >= angle_step) ?
 								(double)((int)(angle->z - angle_step) % 360) :
 												(angle->z + 360 - angle_step);
+	ft_log_info("Image angle: x=%03.0f y=%03.0f z=%03.0f", angle->x, angle->y,
+																	angle->z);
+	return ;
+}
+
+static void		update_elem_positions(t_mlx_win *mlx_win)
+{
+	t_xyz_values	elem_start_position;
+	t_element		*element;
+	t_object_type	*object_type;
+	int				i;
+	int				j;
+
+	ft_bzero(mlx_win->img->data, mlx_win->img_size.y * mlx_win->img->size_line /
+						4 + mlx_win->img_size.x * (mlx_win->img->bpp / 8));
+	ft_bzero(mlx_win->img_position_offset,
+										sizeof(*mlx_win->img_position_offset));
+	ft_memcpy(&elem_start_position, mlx_win->elem_table[0][0]->start_position,
+												sizeof(elem_start_position));
+	i = -1;
+	while (++i < mlx_win->element_map_size->y)
+	{
+		j = -1;
+		while (++j < mlx_win->element_map_size->x)
+		{
+			element = mlx_win->elem_table[i][j];
+			object_type = mlx_win->elem_table[i][j]->object_type;
+			ft_memcpy(element->start_position, &elem_start_position,
+											sizeof(*element->start_position));
+			get_max_position_offset(object_type->current_positions,
+						mlx_win->img_position_offset, element->start_position);
+			ft_memcpy(&elem_start_position, element->start_position,
+												sizeof(elem_start_position));
+			elem_start_position.x += object_type->current_positions[1].x;
+			elem_start_position.y += object_type->current_positions[1].y;
+		}
+		ft_memcpy(&elem_start_position,
+				&mlx_win->elem_table[i][0]->object_type->current_positions[2],
+												sizeof(elem_start_position));
+		elem_start_position.x *= (i + 1);
+		elem_start_position.y *= (i + 1);
+	}
 	return ;
 }
 
@@ -45,12 +87,6 @@ int				button_press(int keycode, int x, int y, t_mlx_win *mlx_win)
 
 int				key_press(int keycode, t_mlx_win *mlx_win)
 {
-	t_xyz_values	elem_start_position;
-	t_element		*element;
-	t_object_type	*object_type;
-	int				i;
-	int				j;
-
 	if (keycode == 65307)
 		close_win(mlx_win);
 	else if (mlx_win->render_action != e_no_action)
@@ -58,59 +94,15 @@ int				key_press(int keycode, t_mlx_win *mlx_win)
 	else if (ft_strchr("asdzxc", keycode))
 	{
 		change_angle(keycode, mlx_win->angle, mlx_win->angle_step);
-		ft_bzero(mlx_win->img->data,
-							mlx_win->img_size.y * mlx_win->img->size_line / 4 +
-								mlx_win->img_size.x * (mlx_win->img->bpp / 8));
-		ft_memcpy(&elem_start_position,
-									mlx_win->elem_table[0][0]->start_position,
-												sizeof(elem_start_position));
 		rotate_objects(mlx_win->object_type_lst, mlx_win->angle);
-		i = -1;
-		ft_bzero(mlx_win->img_position_offset,
-										sizeof(*mlx_win->img_position_offset));
-		while (++i < mlx_win->element_map_size->y)
-		{
-			j = -1;
-			while (++j < mlx_win->element_map_size->x)
-			{
-				element = mlx_win->elem_table[i][j];
-				object_type = mlx_win->elem_table[i][j]->object_type;
-				ft_memcpy(element->start_position, &elem_start_position,
-											sizeof(*element->start_position));
-				elemental_rotation(object_type->current_positions,
-																mlx_win->angle,
-						mlx_win->img_position_offset, element->start_position);
-				ft_memcpy(&elem_start_position, element->start_position,
-												sizeof(elem_start_position));
-				elem_start_position.x += object_type->current_positions[1].x;
-				elem_start_position.y += object_type->current_positions[1].y;
-			}
-			ft_memcpy(&elem_start_position,
-				&mlx_win->elem_table[i][0]->object_type->current_positions[2],
-												sizeof(elem_start_position));
-			elem_start_position.x *= (i + 1);
-			elem_start_position.y *= (i + 1);
-		}
-		ft_log_info("Image angle: x=%03.0f y=%03.0f z=%03.0f",
-					mlx_win->angle->x, mlx_win->angle->y, mlx_win->angle->z);
+		update_elem_positions(mlx_win);
 		if (mlx_win->drawing_mode == 2)
-		{
-			i = -1;
-			while (++i < mlx_win->element_map_size->y)
-			{
-				j = -1;
-				while (++j < mlx_win->element_map_size->x)
-				{
-					element = mlx_win->elem_table[i][j];
-					draw_lines(mlx_win, element);
-				}
-			}
-		}
+			draw_lines(mlx_win);
 		else
 			draw_img_lines(mlx_win);
 		mlx_win->render_action = e_put_image_to_window;
 	}
 	else
-		ft_printf("keycode: %#x\n", keycode);
+		ft_log_info("keycode: %#x\n", keycode);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 09:42:56 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/11 13:07:19 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 16:32:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int				motion_notify(int x, int y, t_mlx_win *mlx_win)
 	(void)mlx_win;
 	(void)x;
 	(void)y;
-	// ft_printf("Mouse location: x:%d, y:%d\n", x, y);
 	return (0);
 }
 

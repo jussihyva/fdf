@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 08:59:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 16:29:48 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ static t_element	*create_element(t_mlx_win *mlx_win, int color,
 	element->start_position =
 				(t_xyz_values *)ft_memalloc(sizeof(*element->start_position));
 	ft_memcpy(element->angle, mlx_win->angle, sizeof(*element->angle));
-	elemental_rotation(element->object_type->current_positions,
-			&element->object_type->angle, img_position_offset, start_position);
+	get_max_position_offset(element->object_type->current_positions,
+										img_position_offset, start_position);
 	element->elem_lines = set_elem_lines(element);
 	ft_memcpy(element->start_position, start_position,
 											sizeof(*element->start_position));
@@ -78,37 +78,6 @@ static void			set_next_start_position(t_xyz_values *elem_start_position,
 	start_position = element->start_position;
 	elem_start_position->x = start_position->x + current_position->x;
 	elem_start_position->y = start_position->y + current_position->y;
-	return ;
-}
-
-static void			add_image_lines(t_list **img_line_lst,
-										t_element ***elem_table, int i, int j)
-{
-	t_elem_line		*elem_line;
-	t_list			*elem;
-
-	if (i)
-	{
-		elem_line = (t_elem_line *)ft_memalloc(sizeof(*elem_line));
-		elem_line->start = &elem_table[i][j]->object_type->current_positions[4];
-		elem_line->start_elem = elem_table[i][j];
-		elem_line->end = &elem_table[i - 1][j]->object_type->current_positions[4];
-		elem_line->end_elem = elem_table[i - 1][j];
-		elem_line->color = elem_line->start_elem->color;
-		elem = ft_lstnew(&elem_line, sizeof(elem_line));
-		ft_lstadd(img_line_lst, elem);
-	}
-	if (j)
-	{
-		elem_line = (t_elem_line *)ft_memalloc(sizeof(*elem_line));
-		elem_line->start = &elem_table[i][j]->object_type->current_positions[4];
-		elem_line->start_elem = elem_table[i][j];
-		elem_line->end = &elem_table[i][j - 1]->object_type->current_positions[4];
-		elem_line->end_elem = elem_table[i][j - 1];
-		elem_line->color = elem_line->start_elem->color;
-		elem = ft_lstnew(&elem_line, sizeof(elem_line));
-		ft_lstadd(img_line_lst, elem);
-	}
 	return ;
 }
 

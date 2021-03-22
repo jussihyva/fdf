@@ -6,24 +6,9 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 11:30:49 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 18:03:12 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-** # define ft_log_trace(...)
-**					ft_login_event(LOG_TRACE, __FILE__, __LINE__, __VA_ARGS__)
-** # define ft_log_debug(...)
-**					ft_login_event(LOG_DEBUG, __FILE__, __LINE__, __VA_ARGS__)
-** # define ft_log_info(...)
-**					ft_login_event(LOG_INFO,  __FILE__, __LINE__, __VA_ARGS__)
-** # define ft_log_warn(...)
-**					ft_login_event(LOG_WARN,  __FILE__, __LINE__, __VA_ARGS__)
-** # define ft_log_error(...)
-**					ft_login_event(LOG_ERROR, __FILE__, __LINE__, __VA_ARGS__)
-** # define ft_log_fatal(...)
-**					ft_login_event(LOG_FATAL, __FILE__, __LINE__, __VA_ARGS__)
-*/
 
 #ifndef FDF_H
 # define FDF_H
@@ -39,6 +24,13 @@
 
 # define NUM_OF_ELEM_POSITIONS		8
 # define NUM_OF_OBJECT_POSITIONS	8
+
+/*
+** These three lines are for bonus features
+*/
+# include <time.h>
+# include <sys/time.h>
+# define MAX_LOGING_EXTENSIONS 32
 
 double	**g_z_rotation_matrix[360];
 int		g_z_is_rotation_matrix[360];
@@ -223,10 +215,10 @@ int				render_frame(t_mlx_win *mlx_win);
 void			mlx_image_pixel_put(t_img *img, int x, int y, int color);
 void			initialize_window(t_mlx_win *mlx_win, char *window_name);
 t_xyz_values	*set_elem_positions(t_xyz_values *elem_size);
-void			elemental_rotation(t_xyz_values *current_positions,
-							t_xyz_values *angle, t_xyz_values *position_offset,
+void			get_max_position_offset(t_xyz_values *current_positions,
+												t_xyz_values *position_offset,
 												t_xyz_values *start_position);
-void			draw_lines(t_mlx_win *mlx_win, t_element *element);
+void			draw_lines(t_mlx_win *mlx_win);
 void			set_position(t_xyz_values *position, double x, double y,
 																	double z);
 t_input			*read_cmd_arguments(int argc, char **argv);
@@ -247,12 +239,28 @@ int				get_element_color(t_map *map, t_object_type *object_type,
 																int elem_color);
 int				set_drawing_data(t_drawing_data *drawing_data, t_delta *delta);
 void			draw_img_lines(t_mlx_win *mlx_win);
+void			add_image_lines(t_list **img_line_lst,
+										t_element ***elem_table, int i, int j);
+double			**get_x_rotation_matrix(double angle);
+double			**get_y_rotation_matrix(double angle);
+double			**get_z_rotation_matrix(double angle);
+double			d_one(double nbr);
+double			d_zero(double nbr);
+double			neg_sin(double nbr);
+void			release_elements(t_xy_values_old *element_map_size,
+													t_element ***elem_table);
+t_xyz_values	*set_object_positions(t_xyz_values *object_size);
+void			set_xyz_values(t_xyz_values *position, double x,
+															double y, double z);
+t_map			*read_map_file(char *map_file);
+void			set_min_max_altitude(int line_index, t_map *map);
+int				open_fd(char *map_file_path);
+int				read_altitude(char *ptr);
+int				read_color(char *ptr);
 
-# include <time.h>
-# include <sys/time.h>
-
-# define MAX_LOGING_EXTENSIONS 32
-
+/*
+** Rest of the header file includes bonus related things
+*/
 typedef struct	s_log_event
 {
 	va_list			ap;
@@ -304,3 +312,18 @@ void			ft_log_set_params(const char **level_strings,
 													const char **level_colors);
 
 #endif
+
+/*
+** # define ft_log_trace(...)
+**					ft_login_event(LOG_TRACE, __FILE__, __LINE__, __VA_ARGS__)
+** # define ft_log_debug(...)
+**					ft_login_event(LOG_DEBUG, __FILE__, __LINE__, __VA_ARGS__)
+** # define ft_log_info(...)
+**					ft_login_event(LOG_INFO,  __FILE__, __LINE__, __VA_ARGS__)
+** # define ft_log_warn(...)
+**					ft_login_event(LOG_WARN,  __FILE__, __LINE__, __VA_ARGS__)
+** # define ft_log_error(...)
+**					ft_login_event(LOG_ERROR, __FILE__, __LINE__, __VA_ARGS__)
+** # define ft_log_fatal(...)
+**					ft_login_event(LOG_FATAL, __FILE__, __LINE__, __VA_ARGS__)
+*/

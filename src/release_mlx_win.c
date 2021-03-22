@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 19:41:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/21 12:33:06 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 16:43:04 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,6 @@ static void		release_rotation_matrix(double ***rotation_matrix,
 				ft_memdel((void **)&rotation_matrix[i][j]);
 			ft_memdel((void **)&rotation_matrix[i]);
 		}
-	}
-	return ;
-}
-
-static void		release_element(t_element **element)
-{
-	if (*element)
-	{
-		ft_memdel((void **)&(*element)->start_position);
-		ft_memdel((void **)&(*element)->elem_lines);
-		ft_memdel((void **)&(*element)->angle);
-		ft_memdel((void **)element);
 	}
 	return ;
 }
@@ -68,23 +56,6 @@ static void		delete_img_line(void *content, size_t size)
 	return ;
 }
 
-static void		release_elements(t_xy_values_old *element_map_size,
-														t_element ***elem_table)
-{
-	int			i;
-	int			j;
-
-	i = -1;
-	while (++i < element_map_size->y)
-	{
-		j = -1;
-		while (++j < element_map_size->x)
-			release_element(&elem_table[i][j]);
-		ft_memdel((void **)&elem_table[i]);
-	}
-	return ;
-}
-
 void			release_mlx_win(t_mlx_win **mlx_win)
 {
 	mlx_destroy_image((*mlx_win)->mlx, (*mlx_win)->empty_img);
@@ -105,38 +76,5 @@ void			release_mlx_win(t_mlx_win **mlx_win)
 	release_rotation_matrix(g_z_rotation_matrix, g_z_is_rotation_matrix);
 	release_rotation_matrix(g_y_rotation_matrix, g_y_is_rotation_matrix);
 	release_rotation_matrix(g_x_rotation_matrix, g_x_is_rotation_matrix);
-	return ;
-}
-
-void			release_input_data(t_input **input)
-{
-	int			i;
-
-	i = -1;
-	if ((*input)->map)
-	{
-		while (++i < (*input)->map->map_size->y)
-		{
-			ft_memdel((void **)&(*input)->map->object_type[i]);
-			ft_memdel((void **)&(*input)->map->elem_altitude[i]);
-			ft_memdel((void **)&(*input)->map->elem_color[i]);
-		}
-		ft_memdel((void **)&(*input)->map->object_type);
-		ft_memdel((void **)&(*input)->map->elem_altitude);
-		ft_memdel((void **)&(*input)->map->elem_color);
-		ft_memdel((void **)&(*input)->map->map_size);
-		ft_memdel((void **)&(*input)->map);
-	}
-	ft_memdel((void **)&(*input)->cmd_args);
-	ft_memdel((void **)&(*input)->angle);
-	i = -1;
-	while (++i < 6)
-	{
-			ft_memdel((void **)&(*input)->level_strings[i]);
-			ft_memdel((void **)&(*input)->level_colors[i]);
-	}
-	ft_memdel((void **)&(*input)->level_strings);
-	ft_memdel((void **)&(*input)->level_colors);
-	ft_memdel((void **)input);
 	return ;
 }
