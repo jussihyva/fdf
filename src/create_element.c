@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:44:46 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 19:09:17 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 19:33:46 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,6 @@ void				create_elements(t_map *map, t_element ***elem_table,
 	i = -1;
 	while (++i < map->map_size->y)
 	{
-		elem_table[i] = (t_element **)ft_memalloc(sizeof(*elem_table[i]) *
-															map->map_size->x);
 		j = -1;
 		while (++j < map->map_size->x)
 		{

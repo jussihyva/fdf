@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 18:49:27 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/22 19:42:21 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,19 @@ static void			data_from_cmd_params(t_mlx_win *mlx_win, t_input *input)
 	mlx_win->angle_step = input->cmd_args->angle_steps;
 	mlx_win->element_map_size = input->map->map_size;
 	return ;
+}
+
+static t_element	***initialize_elem_table(t_xy_values_old *map_size)
+{
+	t_element	***elem_table;
+	int			i;
+
+	elem_table = (t_element ***)ft_memalloc(sizeof(*elem_table) * map_size->y);
+	i = -1;
+	while (++i < map_size->y)
+		elem_table[i] = (t_element **)ft_memalloc(sizeof(*elem_table[i]) *
+																map_size->x);
+	return (elem_table);
 }
 
 static t_mlx_win	*initialize_mlx_win(t_input *input)
@@ -47,9 +60,7 @@ static t_mlx_win	*initialize_mlx_win(t_input *input)
 														mlx_win->img_size.y);
 	mlx_win->img = mlx_new_image(mlx_win->mlx, mlx_win->img_size.x,
 														mlx_win->img_size.y);
-	mlx_win->elem_table =
-						(t_element ***)ft_memalloc(sizeof(*mlx_win->elem_table)
-													* input->map->map_size->y);
+	mlx_win->elem_table = initialize_elem_table(input->map->map_size);
 	return (mlx_win);
 }
 
