@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/23 08:45:53 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 09:06:08 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int					main(int argc, char **argv)
 	set_position(&elem_start_position, 0, 0, 0);
 	ft_memcpy(mlx_win->img_start_position, &elem_start_position,
 										sizeof(*mlx_win->img_start_position));
-	rotate_objects(mlx_win->object_type_lst, input->angle);
+	rotate_objects(mlx_win, mlx_win->object_type_lst, input->angle);
 	create_elements(input->map, mlx_win->elem_table, mlx_win);
 	if (mlx_win->drawing_mode == 2)
 		draw_lines(mlx_win);

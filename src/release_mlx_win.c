@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 19:41:05 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 16:43:04 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 09:18:50 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,12 @@ void			release_mlx_win(t_mlx_win **mlx_win)
 	ft_memdel((void **)&(*mlx_win)->object_type_lst);
 	ft_lstdel((*mlx_win)->img_line_lst, delete_img_line);
 	ft_memdel((void **)&(*mlx_win)->img_line_lst);
+	release_rotation_matrix((*mlx_win)->z_rotation_matrix,
+											(*mlx_win)->z_is_rotation_matrix);
+	release_rotation_matrix((*mlx_win)->y_rotation_matrix,
+											(*mlx_win)->y_is_rotation_matrix);
+	release_rotation_matrix((*mlx_win)->x_rotation_matrix,
+											(*mlx_win)->x_is_rotation_matrix);
 	ft_memdel((void **)mlx_win);
-	release_rotation_matrix(g_z_rotation_matrix, g_z_is_rotation_matrix);
-	release_rotation_matrix(g_y_rotation_matrix, g_y_is_rotation_matrix);
-	release_rotation_matrix(g_x_rotation_matrix, g_x_is_rotation_matrix);
 	return ;
 }

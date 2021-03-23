@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/23 08:46:53 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 09:22:30 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,6 @@
 
 # define NUM_OF_ELEM_POSITIONS		8
 # define NUM_OF_OBJECT_POSITIONS	8
-
-double	**g_z_rotation_matrix[360];
-int		g_z_is_rotation_matrix[360];
-double	**g_y_rotation_matrix[360];
-int		g_y_is_rotation_matrix[360];
-double	**g_x_rotation_matrix[360];
-int		g_x_is_rotation_matrix[360];
 
 typedef struct	s_cmd_args
 {
@@ -179,6 +172,12 @@ typedef struct	s_mlx_win
 	t_xy_values_int		img_size;
 	t_render_action		render_action;
 	int					drawing_mode;
+	double				**z_rotation_matrix[360];
+	int					z_is_rotation_matrix[360];
+	double				**y_rotation_matrix[360];
+	int					y_is_rotation_matrix[360];
+	double				**x_rotation_matrix[360];
+	int					x_is_rotation_matrix[360];
 }				t_mlx_win;
 
 int				close_win(t_mlx_win *mlx_win);
@@ -206,8 +205,10 @@ t_cmd_args		*argp_parse(int argc, char **argv,
 void			print_start_position(t_position *elem_start_position);
 void			create_object_types(t_list **object_type_lst, t_map *map,
 																t_input *input);
-void			rotate(t_xyz_values *elem_position, t_xyz_values *angle);
-void			rotate_objects(t_list **object_type_lst, t_xyz_values *angle);
+void			rotate(t_mlx_win *mlx_win, t_xyz_values *elem_position,
+														t_xyz_values *angle);
+void			rotate_objects(t_mlx_win *mlx_win, t_list **object_type_lst,
+														t_xyz_values *angle);
 void			save_cmd_arguments(t_cmd_args *cmd_args, char opt,
 																char *next_arg);
 void			create_elements(t_map *map, t_element ***elem_table,
@@ -218,9 +219,9 @@ int				set_drawing_data(t_drawing_data *drawing_data, t_delta *delta);
 void			draw_img_lines(t_mlx_win *mlx_win);
 void			add_image_lines(t_list **img_line_lst,
 										t_element ***elem_table, int i, int j);
-double			**get_x_rotation_matrix(double angle);
-double			**get_y_rotation_matrix(double angle);
-double			**get_z_rotation_matrix(double angle);
+double			**get_x_rotation_matrix(t_mlx_win *mlx_win, double angle);
+double			**get_y_rotation_matrix(t_mlx_win *mlx_win, double angle);
+double			**get_z_rotation_matrix(t_mlx_win *mlx_win, double angle);
 double			d_one(double nbr);
 double			d_zero(double nbr);
 double			neg_sin(double nbr);

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 16:23:11 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 16:24:24 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 09:21:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static double	**initialize_rotation_matrix(double radian_angle,
 	return (rotation_matrix);
 }
 
-double			**get_z_rotation_matrix(double angle)
+double			**get_z_rotation_matrix(t_mlx_win *mlx_win, double angle)
 {
 	static double	(*fn_z_rotation_matrix[3][3])(double) = {
 													{cos, neg_sin, d_zero},
@@ -46,17 +46,17 @@ double			**get_z_rotation_matrix(double angle)
 
 	radian_angle = ft_radian(angle);
 	if ((angle == (double)((int)angle)) &&
-										(!g_z_is_rotation_matrix[(int)angle]))
+								(!mlx_win->z_is_rotation_matrix[(int)angle]))
 	{
-		g_z_rotation_matrix[(int)angle] =
+		mlx_win->z_rotation_matrix[(int)angle] =
 				initialize_rotation_matrix(radian_angle, fn_z_rotation_matrix);
-		g_z_is_rotation_matrix[(int)angle] = 1;
+		mlx_win->z_is_rotation_matrix[(int)angle] = 1;
 	}
-	rotation_matrix = g_z_rotation_matrix[(int)angle];
+	rotation_matrix = mlx_win->z_rotation_matrix[(int)angle];
 	return (rotation_matrix);
 }
 
-double			**get_y_rotation_matrix(double angle)
+double			**get_y_rotation_matrix(t_mlx_win *mlx_win, double angle)
 {
 	static double	(*fn_y_rotation_matrix[3][3])(double) = {
 													{cos, d_zero, sin},
@@ -66,18 +66,18 @@ double			**get_y_rotation_matrix(double angle)
 	double			radian_angle;
 
 	if ((angle == (double)((int)angle)) &&
-										(!g_y_is_rotation_matrix[(int)angle]))
+								(!mlx_win->y_is_rotation_matrix[(int)angle]))
 	{
 		radian_angle = ft_radian(angle);
-		g_y_rotation_matrix[(int)angle] =
+		mlx_win->y_rotation_matrix[(int)angle] =
 				initialize_rotation_matrix(radian_angle, fn_y_rotation_matrix);
-		g_y_is_rotation_matrix[(int)angle] = 1;
+		mlx_win->y_is_rotation_matrix[(int)angle] = 1;
 	}
-	rotation_matrix = g_y_rotation_matrix[(int)angle];
+	rotation_matrix = mlx_win->y_rotation_matrix[(int)angle];
 	return (rotation_matrix);
 }
 
-double			**get_x_rotation_matrix(double angle)
+double			**get_x_rotation_matrix(t_mlx_win *mlx_win, double angle)
 {
 	static double	(*fn_x_rotation_matrix[3][3])(double) = {
 													{d_one, d_zero, d_zero},
@@ -87,13 +87,13 @@ double			**get_x_rotation_matrix(double angle)
 	double			radian_angle;
 
 	if ((angle == (double)((int)angle)) &&
-										(!g_x_is_rotation_matrix[(int)angle]))
+								(!mlx_win->x_is_rotation_matrix[(int)angle]))
 	{
 		radian_angle = ft_radian(angle);
-		g_x_rotation_matrix[(int)angle] =
+		mlx_win->x_rotation_matrix[(int)angle] =
 				initialize_rotation_matrix(radian_angle, fn_x_rotation_matrix);
-		g_x_is_rotation_matrix[(int)angle] = 1;
+		mlx_win->x_is_rotation_matrix[(int)angle] = 1;
 	}
-	rotation_matrix = g_x_rotation_matrix[(int)angle];
+	rotation_matrix = mlx_win->x_rotation_matrix[(int)angle];
 	return (rotation_matrix);
 }

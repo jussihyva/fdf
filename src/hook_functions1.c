@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 12:47:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 19:27:18 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 09:05:36 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int				key_press(int keycode, t_mlx_win *mlx_win)
 	else if (ft_strchr("asdzxc", keycode))
 	{
 		change_angle(keycode, mlx_win->angle, mlx_win->angle_step);
-		rotate_objects(mlx_win->object_type_lst, mlx_win->angle);
+		rotate_objects(mlx_win, mlx_win->object_type_lst, mlx_win->angle);
 		update_elem_positions(mlx_win);
 		if (mlx_win->drawing_mode == 2)
 			draw_lines(mlx_win);
