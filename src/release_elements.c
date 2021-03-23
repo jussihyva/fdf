@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 16:42:00 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 16:43:16 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 08:45:14 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		release_element(t_element **element)
 	return ;
 }
 
-void			release_elements(t_xy_values_old *element_map_size,
+void			release_elements(t_xy_values_int *element_map_size,
 														t_element ***elem_table)
 {
 	int			i;

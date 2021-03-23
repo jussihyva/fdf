@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 19:09:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 08:46:53 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,12 @@
 # define NUM_OF_ELEM_POSITIONS		8
 # define NUM_OF_OBJECT_POSITIONS	8
 
-/*
-** These three lines are for bonus features
-*/
-# include <time.h>
-# include <sys/time.h>
-# define MAX_LOGING_EXTENSIONS 32
-
 double	**g_z_rotation_matrix[360];
 int		g_z_is_rotation_matrix[360];
 double	**g_y_rotation_matrix[360];
 int		g_y_is_rotation_matrix[360];
 double	**g_x_rotation_matrix[360];
 int		g_x_is_rotation_matrix[360];
-
-typedef enum	e_event_type
-{
-	LOG_TRACE = 0,
-	LOG_DEBUG = 1,
-	LOG_INFO = 2,
-	LOG_WARN = 3,
-	LOG_ERROR = 4,
-	LOG_FATAL = 5
-}				t_event_type;
 
 typedef struct	s_cmd_args
 {
@@ -88,12 +71,6 @@ typedef struct	s_xy_values_int
 	int			y;
 }				t_xy_values_int;
 
-typedef struct	s_xy_values_old
-{
-	int			x;
-	int			y;
-}				t_xy_values_old;
-
 typedef struct	s_object_type
 {
 	t_xyz_values	size;
@@ -110,7 +87,7 @@ typedef struct	s_map
 	int					max_altitude;
 	int					min_altitude;
 	size_t				obj_counter;
-	t_xy_values_old		*map_size;
+	t_xy_values_int		*map_size;
 	t_object_type		***object_type;
 }				t_map;
 
@@ -192,14 +169,14 @@ typedef struct	s_mlx_win
 	t_element			***elem_table;
 	t_position			*first_elem_start_position;
 	t_element			***element_map;
-	t_xy_values_old		*element_map_size;
+	t_xy_values_int		*element_map_size;
 	t_xyz_values		*angle;
 	double				angle_step;
 	t_img				*img;
 	t_position			*img_start_position;
 	t_xyz_values		*img_position_offset;
 	t_img				*empty_img;
-	t_xy_values_old		img_size;
+	t_xy_values_int		img_size;
 	t_render_action		render_action;
 	int					drawing_mode;
 }				t_mlx_win;
@@ -247,7 +224,7 @@ double			**get_z_rotation_matrix(double angle);
 double			d_one(double nbr);
 double			d_zero(double nbr);
 double			neg_sin(double nbr);
-void			release_elements(t_xy_values_old *element_map_size,
+void			release_elements(t_xy_values_int *element_map_size,
 													t_element ***elem_table);
 t_xyz_values	*set_object_positions(t_xyz_values *object_size);
 void			set_xyz_values(t_xyz_values *position, double x,
@@ -260,72 +237,4 @@ int				read_color(char *ptr);
 void			set_next_start_position(t_xyz_values *elem_start_position,
 							t_element *element, t_xyz_values *current_position);
 
-/*
-** Rest of the header file includes bonus related things
-*/
-typedef struct	s_log_event
-{
-	va_list			ap;
-	const char		*fmt;
-	const char		*file;
-	struct timeval	tv;
-	int				fd;
-	int				line;
-	int				level;
-}				t_log_event;
-
-typedef void	(*t_loging_function)(t_log_event *event);
-typedef void	(*t_loging_lock_function)(int lock, void *udata);
-
-typedef struct	s_loging_extension
-{
-	t_loging_function	fn;
-	int					fd;
-	int					level;
-}				t_loging_extension;
-
-typedef struct	s_loging_params
-{
-	void					*udata;
-	t_loging_lock_function	lock;
-	int						level;
-	int						quiet;
-	const char				**level_strings;
-	const char				**level_colors;
-	t_loging_extension		*loging_extensions[MAX_LOGING_EXTENSIONS];
-}				t_loging_params;
-
-void			ft_log_trace(const char *fmt, ...);
-void			ft_log_debug(const char *fmt, ...);
-void			ft_log_info(const char *fmt, ...);
-void			ft_log_warn(const char *fmt, ...);
-void			ft_log_error(const char *fmt, ...);
-void			ft_log_fatal(const char *fmt, ...);
-void			ft_log_set_lock(t_loging_lock_function fn, void *udata);
-void			ft_log_set_level(int level);
-/*
-** void			log_set_quiet(int enable);
-** int			log_add_callback(loging_function fn, void *udata, int level);
-*/
-int				ft_log_add_fp(int fd, int level);
-void			ft_login_event(int level, const char *file, int line,
-														const char *fmt, ...);
-void			ft_log_set_params(const char **level_strings,
-													const char **level_colors);
-
 #endif
-
-/*
-** # define ft_log_trace(...)
-**					ft_login_event(LOG_TRACE, __FILE__, __LINE__, __VA_ARGS__)
-** # define ft_log_debug(...)
-**					ft_login_event(LOG_DEBUG, __FILE__, __LINE__, __VA_ARGS__)
-** # define ft_log_info(...)
-**					ft_login_event(LOG_INFO,  __FILE__, __LINE__, __VA_ARGS__)
-** # define ft_log_warn(...)
-**					ft_login_event(LOG_WARN,  __FILE__, __LINE__, __VA_ARGS__)
-** # define ft_log_error(...)
-**					ft_login_event(LOG_ERROR, __FILE__, __LINE__, __VA_ARGS__)
-** # define ft_log_fatal(...)
-**					ft_login_event(LOG_FATAL, __FILE__, __LINE__, __VA_ARGS__)
-*/

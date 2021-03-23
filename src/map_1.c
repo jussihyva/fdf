@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 17:08:54 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 17:26:35 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 08:45:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void			read_content_of_map_file(int fd, t_map *map)
 	return ;
 }
 
-static void			validate_map_line(char *line, t_xy_values_old *map_size)
+static void			validate_map_line(char *line, t_xy_values_int *map_size)
 {
 	char			**char_array;
 	int				i;
@@ -112,7 +112,7 @@ static t_map		*validate_map(char *map_file)
 		line = NULL;
 		ft_printf("Map file path: %s\n", map_file);
 		map->map_size =
-				(t_xy_values_old *)ft_memalloc(sizeof(*map->map_size));
+				(t_xy_values_int *)ft_memalloc(sizeof(*map->map_size));
 		while (ft_get_next_line(fd, &line) > 0)
 		{
 			ft_log_debug("Line %3d: %s", map->map_size->y + 1, line);

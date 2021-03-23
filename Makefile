@@ -6,7 +6,7 @@
 #    By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/21 11:50:38 by jkauppi           #+#    #+#              #
-#    Updated: 2021/03/22 17:08:08 by jkauppi          ###   ########.fr        #
+#    Updated: 2021/03/22 19:55:36 by jkauppi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ LD_FLAGS		=	-std=gnu17 \
 					-lXext -lX11
 
 # C (Source code) and H (Header) files
-SRC_C_FILES		=	read_cmd_arguments.c ft_login_event.c initialize_window.c \
+SRC_C_FILES		=	read_cmd_arguments.c initialize_window.c \
 					set_elem_positions.c create_element.c draw_element_lines.c \
 					render_frame.c release_mlx_win.c hook_functions1.c \
 					hook_functions2.c close_win.c rotate.c \

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 19:42:21 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 08:45:53 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void			data_from_cmd_params(t_mlx_win *mlx_win, t_input *input)
 	return ;
 }
 
-static t_element	***initialize_elem_table(t_xy_values_old *map_size)
+static t_element	***initialize_elem_table(t_xy_values_int *map_size)
 {
 	t_element	***elem_table;
 	int			i;

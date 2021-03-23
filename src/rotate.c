@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   elemental_rotation.c                               :+:      :+:    :+:   */
+/*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 20:46:08 by juhani            #+#    #+#             */
-/*   Updated: 2021/03/22 16:29:24 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 08:14:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ void		rotate(t_xyz_values *position, t_xyz_values *angle)
 	vector[1] = position->y;
 	vector[2] = position->z;
 	rotation_matrix = get_z_rotation_matrix(angle->z);
-	ft_matrix_x_vector_double(matrix_size, rotation_matrix, vector,
+	ft_matrix_vector_double(matrix_size, rotation_matrix, vector,
 													result_vector);
 	ft_memcpy(vector, result_vector, sizeof(vector));
 	rotation_matrix = get_y_rotation_matrix(angle->y);
-	ft_matrix_x_vector_double(matrix_size, rotation_matrix, vector,
+	ft_matrix_vector_double(matrix_size, rotation_matrix, vector,
 													result_vector);
 	ft_memcpy(vector, result_vector, sizeof(vector));
 	rotation_matrix = get_x_rotation_matrix(angle->x);
-	ft_matrix_x_vector_double(matrix_size, rotation_matrix, vector,
+	ft_matrix_vector_double(matrix_size, rotation_matrix, vector,
 													result_vector);
 	position->x = result_vector[0];
 	position->y = result_vector[1];
