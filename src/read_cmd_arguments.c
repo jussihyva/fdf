@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 18:34:59 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 11:59:43 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,9 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 		ft_log_set_level(input->cmd_args->loging_level);
 		input->map = read_map_file(input->cmd_args->map_file);
 		input->angle = prepare_projection_params(input->cmd_args);
-		input->object_xy_size.x = (double)input->cmd_args->elem_side_len;
-		input->object_xy_size.y = (double)input->cmd_args->elem_side_len;
+		calculate_object_size(input, &input->object_xy_size);
+		// input->object_xy_size.x = (double)input->cmd_args->elem_side_len;
+		// input->object_xy_size.y = (double)input->cmd_args->elem_side_len;
 	}
 	else
 		release_input_data(&input);

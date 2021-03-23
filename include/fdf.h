@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/23 09:22:30 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 10:50:42 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,5 +237,6 @@ int				read_altitude(char *ptr);
 int				read_color(char *ptr);
 void			set_next_start_position(t_xyz_values *elem_start_position,
 							t_element *element, t_xyz_values *current_position);
+void			calculate_object_size(t_input *input, t_xy_values *obj_size);
 
 #endif

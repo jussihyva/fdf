@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 04:03:20 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/23 09:06:08 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 12:02:39 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void			data_from_cmd_params(t_mlx_win *mlx_win, t_input *input)
 {
-	mlx_win->img_size.x = 5000;
-	mlx_win->img_size.y = 5000;
+	mlx_win->img_size.x = 1000;
+	mlx_win->img_size.y = 1000;
 	mlx_win->angle = input->angle;
 	mlx_win->drawing_mode = input->cmd_args->drawing_mode;
 	ft_log_info("Start angle: x=%.0f, y=%.0f z=%.0f\n", mlx_win->angle->x,

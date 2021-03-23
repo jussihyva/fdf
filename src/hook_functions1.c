@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 12:47:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/23 09:05:36 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 11:45:02 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ static void		update_elem_positions(t_mlx_win *mlx_win)
 	int				i;
 	int				j;
 
-	ft_bzero(mlx_win->img->data, mlx_win->img_size.y * mlx_win->img->size_line /
-						4 + mlx_win->img_size.x * (mlx_win->img->bpp / 8));
+	ft_bzero(mlx_win->img->data, mlx_win->img_size.y * mlx_win->img->size_line);
 	ft_bzero(mlx_win->img_position_offset,
 										sizeof(*mlx_win->img_position_offset));
 	ft_memcpy(&next_start_position, mlx_win->elem_table[0][0]->start_position,
