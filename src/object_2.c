@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 16:59:49 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/23 12:02:10 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/24 00:13:47 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,58 @@ t_xyz_values	*set_object_positions(t_xyz_values *object_size)
 	return (object_positions);
 }
 
+static int		set_altitude_factor(t_cmd_args *cmd_args, double max_altitude)
+{
+	int		alt_factor;
+
+	alt_factor = (int)(1000 / sqrt(3) / max_altitude);
+	if (cmd_args->altitude_factor)
+	{
+		if (alt_factor < cmd_args->altitude_factor)
+		{
+			ft_log_error("Maximun value for altitude factor (-F) is %d",
+																	alt_factor);
+			exit(42);
+		}
+		alt_factor = cmd_args->altitude_factor;
+	}
+	return (alt_factor);
+}
+
+static void		set_object_size(t_xy_values *obj_size, t_input *input)
+{
+	obj_size->x = 1000 / sqrt(3) / ft_max_double(input->map->map_size->x,
+													input->map->map_size->x);
+	obj_size->y = obj_size->x;
+	if (input->cmd_args->elem_side_len)
+	{
+		if (obj_size->x < input->cmd_args->elem_side_len)
+		{
+			ft_log_error("Maximun value for element size (-S) is %d",
+															(int)obj_size->y);
+			exit(42);
+		}
+		obj_size->x = input->cmd_args->elem_side_len;
+		obj_size->y = obj_size->x;
+	}
+	return ;
+}
+
 void			calculate_object_size(t_input *input, t_xy_values *obj_size)
 {
 	t_map				*map;
-	t_xy_values_int		max_obj_size;
+	double				max_altitude;
 
-	(void)obj_size;
 	map = input->map;
-	max_obj_size.x = (int)(1000 / sqrtl(
-						powl((long)map->map_size->x, (long)2) +
-						powl((long)map->map_size->y, (long)2)));
-	max_obj_size.y = max_obj_size.x;
-	obj_size->x = (double)max_obj_size.x;
-	obj_size->y = (double)max_obj_size.y;
+	max_altitude = map->max_altitude > 0 ? map->max_altitude : 0;
+	max_altitude += map->min_altitude < 0 ? ft_abs(map->min_altitude) : 0;
+	set_object_size(obj_size, input);
+	map->alt_factor = set_altitude_factor(input->cmd_args, max_altitude);
 	ft_log_info("Object size calculation");
-	ft_log_info("Map size: X=%d Y=%d", map->map_size->x, map->map_size->y);
-	ft_log_info("Max element size: X=%d Y=%d", max_obj_size.x, max_obj_size.y);
+	ft_log_info("Altitude factor: %d", input->cmd_args->altitude_factor);
+	ft_log_info("Map size: X=%d Y=%d Z=%d", map->map_size->x, map->map_size->y,
+															(int)max_altitude);
+	ft_log_info("Max element size: X=%d Y=%d", (int)obj_size->x,
+															(int)obj_size->y);
 	return ;
 }

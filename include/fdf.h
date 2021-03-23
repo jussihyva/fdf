@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 10:30:23 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/23 10:50:42 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 23:42:16 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct	s_map
 	size_t				obj_counter;
 	t_xy_values_int		*map_size;
 	t_object_type		***object_type;
+	int					alt_factor;
 }				t_map;
 
 typedef struct	s_position

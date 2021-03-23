@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 17:18:00 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 17:21:54 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 22:36:15 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void		set_min_max_altitude(int line_index, t_map *map)
 	j = -1;
 	while (++j < map->map_size->x)
 	{
-		map->min_altitude = ft_min_int(map->max_altitude,
+		map->min_altitude = ft_min_int(map->min_altitude,
 											map->elem_altitude[line_index][j]);
 		map->max_altitude = ft_max_int(map->max_altitude,
 											map->elem_altitude[line_index][j]);

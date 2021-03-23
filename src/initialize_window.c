@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 03:57:26 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/23 11:50:31 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/24 00:16:29 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void		initialize_window(t_mlx_win *mlx_win, char *window_name)
 {
-	mlx_win->win = mlx_new_window(mlx_win->mlx, 1000, 1000, window_name);
+	mlx_win->win = mlx_new_window(mlx_win->mlx, mlx_win->img_size.x,
+											mlx_win->img_size.y, window_name);
 	mlx_hook(mlx_win->win, 2, 0x01, key_press, mlx_win);
 	mlx_hook(mlx_win->win, 4, 0x04, button_press, mlx_win);
 	mlx_hook(mlx_win->win, 6, 0x40, motion_notify, mlx_win);

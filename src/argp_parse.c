@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:28:12 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 10:14:29 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/24 00:09:50 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ static t_cmd_args	*initialize_cmd_args(void)
 
 	cmd_args = (t_cmd_args *)ft_memalloc(sizeof(*cmd_args));
 	cmd_args->angle_steps = 5;
-	cmd_args->altitude_factor = 1;
-	cmd_args->elem_side_len = 20;
+	cmd_args->altitude_factor = 0;
+	cmd_args->elem_side_len = 0;
 	cmd_args->loging_level = LOG_ERROR;
 	cmd_args->drawing_mode = 1;
 	return (cmd_args);

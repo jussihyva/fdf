@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 01:33:27 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/23 11:59:43 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/24 00:47:22 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,14 @@ static t_xyz_values		*prepare_projection_params(t_cmd_args *cmd_args)
 
 	if (cmd_args->projection_type)
 	{
+		if (!cmd_args->altitude_factor)
+			cmd_args->altitude_factor = 1;
 		if (cmd_args->projection_type == 2)
 			angle = set_angle(-30, -45, 0);
 		else if (cmd_args->projection_type == 3)
 			angle = set_angle(-35, -45, 0);
+		else if (cmd_args->projection_type == 4)
+			angle = set_angle(90, 0, 0);
 		else
 			angle = set_angle(0, 0, 0);
 	}
@@ -82,8 +86,6 @@ t_input					*read_cmd_arguments(int argc, char **argv)
 		input->map = read_map_file(input->cmd_args->map_file);
 		input->angle = prepare_projection_params(input->cmd_args);
 		calculate_object_size(input, &input->object_xy_size);
-		// input->object_xy_size.x = (double)input->cmd_args->elem_side_len;
-		// input->object_xy_size.y = (double)input->cmd_args->elem_side_len;
 	}
 	else
 		release_input_data(&input);

@@ -6,7 +6,7 @@
 /*   By: jkauppi <jkauppi@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 15:26:13 by jkauppi           #+#    #+#             */
-/*   Updated: 2021/03/22 16:59:47 by jkauppi          ###   ########.fr       */
+/*   Updated: 2021/03/23 23:43:01 by jkauppi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,7 @@ void					create_object_types(t_list **object_type_lst,
 		j = -1;
 		while (++j < map->map_size->x)
 		{
-			altitude = (double)map->elem_altitude[i][j] *
-											input->cmd_args->altitude_factor;
+			altitude = (double)map->elem_altitude[i][j] * map->alt_factor;
 			if (!(object_type = get_object_type(object_type_lst, altitude)))
 			{
 				object_type = create_new_object_type(altitude, input,
